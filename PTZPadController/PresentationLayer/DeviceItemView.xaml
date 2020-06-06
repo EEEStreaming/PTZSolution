@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="PTZPadController.PresentationLayer.DeviceItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PTZPadController.PresentationLayer"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Border BorderBrush="Black"
+            BorderThickness="2"
+            VerticalAlignment="Center"
+            CornerRadius="5"
+            Margin="5">
+        <StackPanel Margin="5"
+                    Orientation="Horizontal">
+            <Image Source="/PTZPadController;component/Images/Icons/32/Link - 02.png" 
+                   Height="18"/>
+            <TextBlock Text="ATEM" Margin="3 0 0 0"/>
+        </StackPanel>
+
+
+    </Border>
+</UserControl>

@@ -1,0 +1,114 @@
+﻿<Window x:Class="PTZPadController.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PTZPadController"
+        xmlns:pl="clr-namespace:PTZPadController.PresentationLayer"
+        mc:Ignorable="d"
+        Title="PTZ Pad Controler" Height="615.789" Width="286.427">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="Devices" Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <pl:DeviceItemView Grid.Column="0"></pl:DeviceItemView>
+                <pl:DeviceItemView Grid.Column="1"></pl:DeviceItemView>
+                <pl:DeviceItemView Grid.Column="2"> </pl:DeviceItemView>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Cameras" Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <pl:CameraItemView Grid.Column="0"></pl:CameraItemView>
+                <pl:CameraItemView Grid.Column="1"></pl:CameraItemView>
+                <pl:CameraItemView Grid.Column="2"></pl:CameraItemView>
+            </Grid>
+        </GroupBox>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Slider Grid.Column="0" Orientation="Vertical" Margin="10"/>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Grid.Row="0" Margin="5">
+                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Left45.png"/>
+                </Button>
+                <Button Grid.Column="1" Grid.Row="0" Margin="5">
+                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Up.png"/>
+                </Button>
+                <Button Grid.Column="2" Grid.Row="0" Margin="5">
+                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Up45.png"/>
+                </Button>
+                <Button Grid.Column="0" Grid.Row="1" Margin="5">
+                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Left.png"/>
+                </Button>
+                <Button Grid.Column="1" Grid.Row="1" Margin="5">
+                    <Image Source="/PTZPadController;component/Images/Icons/32/Pointer-WF.png"/>
+                </Button>
+                <Button Grid.Column="2" Grid.Row="1" Margin="5">
+                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Right.png"/>
+                </Button>
+                <Button Grid.Column="0" Grid.Row="2" Margin="5">
+                    <Image Source="/PTZPadController;component/Images/Icons/32/Expander down45.png"/>
+                </Button>
+                <Button Grid.Column="1" Grid.Row="2" Margin="5">
+                    <Image Source="/PTZPadController;component/Images/Icons/32/Expander down.png"/>
+                </Button>
+                <Button Grid.Column="2" Grid.Row="2" Margin="5">
+                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Right45.png"/>
+                </Button>
+
+            </Grid>
+        </Grid>
+
+        <GroupBox Header="Presets" Grid.Row="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Row="0" Grid.Column="0" Margin="5" Height="48" FontSize="36" FontWeight="Bold">1</Button>
+                <Button Grid.Row="0" Grid.Column="1" Margin="5" Height="48" FontSize="36" FontWeight="Bold">2</Button>
+                <Button Grid.Row="0" Grid.Column="2" Margin="5" Height="48" FontSize="36" FontWeight="Bold">3</Button>
+                <Button Grid.Row="0" Grid.Column="3" Margin="5" Height="48" FontSize="36" FontWeight="Bold">4</Button>
+                <Button Grid.Row="1" Grid.Column="0" Margin="5" Height="48" FontSize="36" FontWeight="Bold">5</Button>
+                <Button Grid.Row="1" Grid.Column="1" Margin="5" Height="48" FontSize="36" FontWeight="Bold">6</Button>
+                <Button Grid.Row="1" Grid.Column="2" Margin="5" Height="48" FontSize="36" FontWeight="Bold">7</Button>
+                <Button Grid.Row="1" Grid.Column="3" Margin="5" Height="48" FontSize="36" FontWeight="Bold">8</Button>
+
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

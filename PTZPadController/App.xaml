@@ -1,0 +1,14 @@
+<Application x:Class="PTZPadController.App" 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:PTZPadController.ViewModel"
+             xmlns:local="clr-namespace:PTZPadController" 
+             StartupUri="PresentationLayer\MainWindow.xaml" ShutdownMode="OnMainWindowClose" Exit="Application_Exit" Startup="Application_Startup" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
+  <Application.Resources>
+    <ResourceDictionary>
+      <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True"/>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>
