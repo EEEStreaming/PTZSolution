@@ -39,7 +39,7 @@ namespace PTZPadController.ViewModel
             }
             else
             {
-                SimpleIoc.Default.Register<IPTZManager, PTZManager>();
+                SimpleIoc.Default.Register<IPTZManager>(()=> new PTZManager(new HanlderCreator()));
             }
 
             SimpleIoc.Default.Register<PTZMainViewModel>();

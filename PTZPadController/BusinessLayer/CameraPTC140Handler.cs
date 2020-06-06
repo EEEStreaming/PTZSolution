@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PTZPadController.BusinessLayer
 {
-    class CameraPTC140Handler : IClientCallback
+    class CameraPTC140Handler : ICameraHandler, IClientCallback
     {
         private SocketAutoConnectParser m_SocketClient;
         private CameraConnexionModel m_Connexion;

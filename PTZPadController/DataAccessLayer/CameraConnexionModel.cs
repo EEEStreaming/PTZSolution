@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PTZPadController.DataAccessLayer
 {
-    internal class CameraConnexionModel
+    public class CameraConnexionModel
     {
         public string CameraName { get; internal set; }
         public string CameraHost { get; internal set; }

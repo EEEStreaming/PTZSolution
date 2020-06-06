@@ -106,6 +106,13 @@
     <Compile Include="BusinessLayer\CameraPTC140Handler.cs" />
     <Compile Include="BusinessLayer\ConfigurationFileHandler.cs" />
     <Compile Include="BusinessLayer\ConfigurationManager.cs" />
+    <Compile Include="BusinessLayer\HanlderCreator.cs" />
+    <Compile Include="BusinessLayer\IAtemSwitcherHandler.cs" />
+    <Compile Include="BusinessLayer\ICameraHandler.cs" />
+    <Compile Include="BusinessLayer\IConfigurationHandler.cs" />
+    <Compile Include="BusinessLayer\IHanlderCreator.cs" />
+    <Compile Include="BusinessLayer\IMouseHandler.cs" />
+    <Compile Include="BusinessLayer\IPadHandler.cs" />
     <Compile Include="BusinessLayer\IPTZManager.cs" />
     <Compile Include="BusinessLayer\MouseHandler.cs" />
     <Compile Include="BusinessLayer\PadHandler.cs" />

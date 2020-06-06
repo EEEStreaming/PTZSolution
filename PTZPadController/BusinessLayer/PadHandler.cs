@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PTZPadController.BusinessLayer
 {
-    class PadHandler
+    public class PadHandler : IPadHandler
     {
     }
 }
