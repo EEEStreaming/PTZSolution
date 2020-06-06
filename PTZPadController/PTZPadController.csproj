@@ -40,6 +40,9 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>EEE-Software.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Remote Control-WF.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
@@ -84,14 +87,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BusinessLayer\AtemSwitcherHandler.cs" />
+    <Compile Include="BusinessLayer\CameraPTC140Handler.cs" />
+    <Compile Include="BusinessLayer\ConfigurationFileHandler.cs" />
+    <Compile Include="BusinessLayer\ConfigurationManager.cs" />
+    <Compile Include="BusinessLayer\MouseHandler.cs" />
+    <Compile Include="BusinessLayer\PadHandler.cs" />
+    <Compile Include="BusinessLayer\PTZManager.cs" />
     <Compile Include="Common\Icons.cs" />
+    <Compile Include="DataAccessLayer\CameraConnexionModel.cs" />
+    <Compile Include="DataAccessLayer\ConfigurationFileParser.cs" />
+    <Compile Include="DataAccessLayer\ConfigurationModel.cs" />
+    <Compile Include="DataAccessLayer\IClientCallback.cs" />
+    <Compile Include="DataAccessLayer\SocketAutoConnectParser.cs" />
     <Compile Include="PresentationLayer\CameraItemView.xaml.cs">
       <DependentUpon>CameraItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLayer\DeviceItemView.xaml.cs">
       <DependentUpon>DeviceItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\PTZMainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="PresentationLayer\CameraItemView.xaml">
       <SubType>Designer</SubType>
@@ -128,6 +143,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Remote Control-WF.ico" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -160,9 +176,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BusinessLayer\" />
-    <Folder Include="DataAccessLayer\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

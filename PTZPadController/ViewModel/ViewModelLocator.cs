@@ -42,14 +42,14 @@ namespace PTZPadController.ViewModel
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
-            SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<PTZMainViewModel>();
         }
 
-        public MainViewModel Main
+        public PTZMainViewModel Main
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
+                return ServiceLocator.Current.GetInstance<PTZMainViewModel>();
             }
         }
         

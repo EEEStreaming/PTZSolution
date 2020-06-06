@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PTZPadController.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace PTZPadController
         public MainWindow()
         {
             InitializeComponent();
+            Closing += (s, e) => ViewModelLocator.Cleanup();
         }
     }
 }
