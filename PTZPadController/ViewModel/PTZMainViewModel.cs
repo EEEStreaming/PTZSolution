@@ -1,6 +1,9 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using PTZPadController.BusinessLayer;
 using PTZPadController.DataAccessLayer;
+using System;
+using System.Windows.Input;
 
 namespace PTZPadController.ViewModel
 {
@@ -21,10 +24,20 @@ namespace PTZPadController.ViewModel
         private CameraConnexionModel m_ConnexionCamera1;
         private CameraPTC140Handler m_Camera1;
 
+        private readonly IPTZManager m_PtzManager;
+
+        #region Commands
+        public ICommand CameraUp { get; private set; }
+        public ICommand CameraDown { get; private set; }
+        public ICommand CameraLeft { get; private set; }
+        public ICommand CameraRight { get; private set; }
+        #endregion
+
+
         /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
+        /// Initializes a new instance of the PTZMainViewModel class.
         /// </summary>
-        public PTZMainViewModel()
+        public PTZMainViewModel(IPTZManager manager)
         {
             ////if (IsInDesignMode)
             ////{
@@ -34,11 +47,15 @@ namespace PTZPadController.ViewModel
             ////{
             ////    // Code runs "for real"
             ////}
-            ///
-            m_ConnexionCamera1 = new CameraConnexionModel { CameraName = "CAM 1", CameraHost = "127.0.0.1", CameraPort = 5002 };
-            m_Camera1 = new CameraPTC140Handler(m_ConnexionCamera1);
-            m_Camera1.Initialize();
-            m_Camera1.PanTiltUp();
+            m_PtzManager = manager;
+            CameraUp = new RelayCommand(CameraUpExecute);
+
+            
+        }
+
+        private void CameraUpExecute()
+        {
+            m_PtzManager.CameraPanTiltUp();
         }
     }
 }

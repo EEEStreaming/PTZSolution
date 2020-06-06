@@ -60,7 +60,7 @@
                 <Button Grid.Column="0" Grid.Row="0" Margin="5">
                     <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Left45.png"/>
                 </Button>
-                <Button Grid.Column="1" Grid.Row="0" Margin="5">
+                <Button Grid.Column="1" Grid.Row="0" Margin="5" Command="{Binding CameraUp}">
                     <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Up.png"/>
                 </Button>
                 <Button Grid.Column="2" Grid.Row="0" Margin="5">
