@@ -94,12 +94,14 @@ namespace PTZPadController.DataAccessLayer
                 // Release the socket.
                 m_Socket.Shutdown(SocketShutdown.Both);
                 m_Socket.Close();
-                m_Socket = null;
             }
+            m_Socket = null;
 
             if (m_Cancellation != null)
+            {
                 m_Cancellation.Cancel();
-           
+                m_Cancellation = null;
+            }
             App.logger.Debug("{0},{1}, Socket ShutDown",m_Name,m_Host);
         }
 
