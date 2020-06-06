@@ -26,7 +26,7 @@ namespace PTZPadController.DataAccessLayer
 
         public void Initialize(string name, string host, int port)
         {
-            if (!Connected)
+            if (!m_Initialized)
             {
                 m_Name = name;
                 m_Host = host;
@@ -37,51 +37,54 @@ namespace PTZPadController.DataAccessLayer
 
         public void OpenChanel(IClientCallback callback)
         {
-            m_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            try
+            if (m_Initialized)
             {
-                App.logger.Info("{0}, Try connect to {1}:{2}", m_Name, m_Host, m_Port);
-                m_Socket.Connect(m_Host, m_Port);
-                // Disable the Nagle Algorithm for this tcp socket.
-                m_Socket.NoDelay = true;
-                //m_Socket.Blocking = false; // This needs to be done after Connect or it will error out.
-                m_ClientCallback = callback;
-
-                App.logger.Debug("{0}, {1}, Connected : {2}",m_Name, m_Host, m_Socket.Connected);
-
-            }
-            catch (Exception ex)
-            {
-                App.logger.Error(ex, "{0}, Connection error to {1}",m_Name,m_Host);
-            }
-            if (m_Socket.Connected)
-            {
-                App.logger.Debug("Socket for {0}, {1}, Start new Task to recieved data.",m_Name,m_Host);
-                m_Task = Task.Factory.StartNew<bool>(ReceiveData, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-                m_Task.ContinueWith(SocketConnectionFaulted);
-            }
-            else
-            {
-                if (m_Cancellation == null)
-                    m_Cancellation = new CancellationTokenSource();
-                // Create the task to re-connect.
-                var task = Task.Factory.StartNew(() =>
+                m_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                try
                 {
-                    if (!m_Cancellation.IsCancellationRequested)
+                    App.logger.Info("{0}, Try connect to {1}:{2}", m_Name, m_Host, m_Port);
+                    m_Socket.Connect(m_Host, m_Port);
+                    // Disable the Nagle Algorithm for this tcp socket.
+                    m_Socket.NoDelay = true;
+                    //m_Socket.Blocking = false; // This needs to be done after Connect or it will error out.
+                    m_ClientCallback = callback;
+
+                    App.logger.Debug("{0}, {1}, Connected : {2}", m_Name, m_Host, m_Socket.Connected);
+
+                }
+                catch (Exception ex)
+                {
+                    App.logger.Error(ex, "{0}, Connection error to {1}", m_Name, m_Host);
+                }
+                if (m_Socket.Connected)
+                {
+                    App.logger.Debug("Socket for {0}, {1}, Start new Task to recieved data.", m_Name, m_Host);
+                    m_Task = Task.Factory.StartNew<bool>(ReceiveData, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+                    m_Task.ContinueWith(SocketConnectionFaulted);
+                }
+                else
+                {
+                    if (m_Cancellation == null)
+                        m_Cancellation = new CancellationTokenSource();
+                    // Create the task to re-connect.
+                    var task = Task.Factory.StartNew(() =>
                     {
-                        Thread.Sleep(300);
-                        App.logger.Info("{0},{1}, try to re-connect ", m_Name, m_Host);
-                        OpenChanel(callback);
+                        if (!m_Cancellation.IsCancellationRequested)
+                        {
+                            Thread.Sleep(1000);
+                            App.logger.Info("{0},{1}, try to re-connect ", m_Name, m_Host);
+                            OpenChanel(callback);
+                        }
+                    }, m_Cancellation.Token, TaskCreationOptions.None, TaskScheduler.Default);
+                    if (m_Cancellation.Token.IsCancellationRequested)
+                    {
+                        m_Cancellation = null;
+                        m_Socket = null;
                     }
-                }, m_Cancellation.Token, TaskCreationOptions.None, TaskScheduler.Default);
-                if (m_Cancellation.Token.IsCancellationRequested)
-                {
-                    m_Cancellation = null;
-                    m_Socket = null;
                 }
             }
-
-
+            else
+                App.logger.Info("{0}, {1}, Unable to OpenChanel, the class is not initialized", m_Name, m_Host);
         }
 
         private void ShutDown()
@@ -96,7 +99,7 @@ namespace PTZPadController.DataAccessLayer
 
             if (m_Cancellation != null)
                 m_Cancellation.Cancel();
-
+           
             App.logger.Debug("{0},{1}, Socket ShutDown",m_Name,m_Host);
         }
 

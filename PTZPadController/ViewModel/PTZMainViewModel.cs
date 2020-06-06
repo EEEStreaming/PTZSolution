@@ -21,9 +21,6 @@ namespace PTZPadController.ViewModel
     /// </summary>
     public class PTZMainViewModel : ViewModelBase
     {
-        private CameraConnexionModel m_ConnexionCamera1;
-        private CameraPTC140Handler m_Camera1;
-
         private readonly IPTZManager m_PtzManager;
 
         #region Commands
