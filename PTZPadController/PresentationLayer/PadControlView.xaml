@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="PTZPadController.PresentationLayer.PadControlView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="200">
+    <Grid MouseDown="Slider_MouseDown"
+          MouseUp="Slider_MouseUp"
+          MouseMove="Slider_MouseMove" >
+
+        <Border x:Name="BorderSlider"
+                BorderBrush="Black" BorderThickness="2" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Top"
+                Background="White"
+                Width="200" Height="200">
+        </Border>
+        <Button x:Name="arrowY" Width="186" Click="arrowY_Click">
+            <Button.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Path Data="M33.28602,29.219971 55.090998,29.219971 55.090998,22.869883 60.863997,28.090665 66.637999,33.311446 60.863997,38.522227 55.090998,43.74301 55.090998,37.14797 37.298014,37.14797 37.298014,37.14797 11.54704,37.14797 11.54704,43.74301 5.77352,38.522227 0,33.311447 5.77352,28.090665 11.54704,22.869883 11.54704,29.219971 29.368015,29.219971 29.368015,29.368015z" Stretch="Uniform" RenderTransformOrigin="0.5,0.5" >
+                                    <Path.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="90"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </Path.RenderTransform>
+                                    <Path.Fill>
+                                        <LinearGradientBrush>
+                                            <GradientStop Color="#FF666666" Offset="0.0" />
+                                            <GradientStop Color="#FF666666" Offset="0.5" />
+                                            <GradientStop Color="#FF666666" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </Path.Fill>
+                                </Path>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button x:Name="arrowX" Width="186" Click="arrowX_Click">
+            <Button.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Path Data="M33.28602,29.219971 55.090998,29.219971 55.090998,22.869883 60.863997,28.090665 66.637999,33.311446 60.863997,38.522227 55.090998,43.74301 55.090998,37.14797 37.298014,37.14797 37.298014,37.14797 11.54704,37.14797 11.54704,43.74301 5.77352,38.522227 0,33.311447 5.77352,28.090665 11.54704,22.869883 11.54704,29.219971 29.368015,29.219971 29.368015,29.368015z" Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
+                                    <Path.Fill>
+                                        <LinearGradientBrush>
+                                            <GradientStop Color="#FF666666" Offset="0.0" />
+                                            <GradientStop Color="#FF666666" Offset="0.5" />
+                                            <GradientStop Color="#FF666666" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </Path.Fill>                                    
+                                </Path>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Resources>
+        </Button>
+    
+        <Grid x:Name="target" Width="64" Height="64">
+            <Ellipse Fill="White" Visibility="Visible" Stroke="Black" />
+            <Ellipse Fill="Black" Visibility="Visible" Width="48" Height="48" />
+            <Ellipse Fill="White" Visibility="Visible" Width="32" Height="32" />
+        </Grid>
+
+
+
+    </Grid>
+
+</UserControl>

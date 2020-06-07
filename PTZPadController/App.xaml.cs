@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Threading;
+using PTZPadController.DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,7 +15,6 @@ namespace PTZPadController
     /// </summary>
     public partial class App : Application
     {
-        internal static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         static App()
         {
@@ -23,13 +23,13 @@ namespace PTZPadController
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            logger.Info("PTZPad Controller application start");
+            PTZLogger.Log.Info("PTZPad Controller application start");
 
         }        
         
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            NLog.LogManager.Shutdown(); // Flush and close down internal threads and timers
+            PTZLogger.Shutdown();
         }
 
 

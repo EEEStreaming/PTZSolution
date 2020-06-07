@@ -122,6 +122,7 @@
     <Compile Include="DataAccessLayer\ConfigurationFileParser.cs" />
     <Compile Include="DataAccessLayer\ConfigurationModel.cs" />
     <Compile Include="DataAccessLayer\IClientCallback.cs" />
+    <Compile Include="DataAccessLayer\PTZLogger.cs" />
     <Compile Include="DataAccessLayer\SocketAutoConnectParser.cs" />
     <Compile Include="Design\DesignPTZManager.cs" />
     <Compile Include="PresentationLayer\CameraItemView.xaml.cs">
@@ -129,6 +130,9 @@
     </Compile>
     <Compile Include="PresentationLayer\DeviceItemView.xaml.cs">
       <DependentUpon>DeviceItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLayer\PadControlView.xaml.cs">
+      <DependentUpon>PadControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\PTZMainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -152,6 +156,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PresentationLayer\PadControlView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

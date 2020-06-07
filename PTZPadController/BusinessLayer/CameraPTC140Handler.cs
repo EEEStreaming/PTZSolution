@@ -93,7 +93,7 @@ namespace PTZPadController.BusinessLayer
         }
         public void CompletionMessage()
         {
-            App.logger.Debug("message OK");
+            PTZLogger.Log.Debug("message OK");
         }
     }
 }
