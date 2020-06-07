@@ -1,189 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{69AD4B6F-5304-47E2-8E66-19414DCCC243}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>PTZPadController</RootNamespace>
-    <AssemblyName>PTZPadController</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Remote Control-WF.ico</ApplicationIcon>
     <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
     <AssemblyOriginatorKeyFile>EEE-Software.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Remote Control-WF.ico</ApplicationIcon>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.1.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.7.2\lib\net45\NLog.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <None Remove="Images\Icons\32\Arrowhead-Left.png" />
+    <None Remove="Images\Icons\32\Arrowhead-Left45.png" />
+    <None Remove="Images\Icons\32\Arrowhead-Right.png" />
+    <None Remove="Images\Icons\32\Arrowhead-Right45.png" />
+    <None Remove="Images\Icons\32\Arrowhead-Up.png" />
+    <None Remove="Images\Icons\32\Arrowhead-Up45.png" />
+    <None Remove="Images\Icons\32\Expander down.png" />
+    <None Remove="Images\Icons\32\Expander down45.png" />
+    <None Remove="Images\Icons\32\Link - 01.png" />
+    <None Remove="Images\Icons\32\Link - 02.png" />
+    <None Remove="Images\Icons\32\Pointer-WF.png" />
+    <None Remove="Images\Icons\32\Remote Control-WF.ico" />
+    <None Remove="Images\Icons\32\Remote Control-WF.png" />
   </ItemGroup>
+
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="BusinessLayer\AtemSwitcherHandler.cs" />
-    <Compile Include="BusinessLayer\CameraPTC140Handler.cs" />
-    <Compile Include="BusinessLayer\ConfigurationFileHandler.cs" />
-    <Compile Include="BusinessLayer\ConfigurationManager.cs" />
-    <Compile Include="BusinessLayer\HanlderCreator.cs" />
-    <Compile Include="BusinessLayer\IAtemSwitcherHandler.cs" />
-    <Compile Include="BusinessLayer\ICameraHandler.cs" />
-    <Compile Include="BusinessLayer\IConfigurationHandler.cs" />
-    <Compile Include="BusinessLayer\IHanlderCreator.cs" />
-    <Compile Include="BusinessLayer\IMouseHandler.cs" />
-    <Compile Include="BusinessLayer\IPadHandler.cs" />
-    <Compile Include="BusinessLayer\IPTZManager.cs" />
-    <Compile Include="BusinessLayer\MouseHandler.cs" />
-    <Compile Include="BusinessLayer\PadHandler.cs" />
-    <Compile Include="BusinessLayer\PTZManager.cs" />
-    <Compile Include="Common\Icons.cs" />
-    <Compile Include="DataAccessLayer\CameraConnexionModel.cs" />
-    <Compile Include="DataAccessLayer\ConfigurationFileParser.cs" />
-    <Compile Include="DataAccessLayer\ConfigurationModel.cs" />
-    <Compile Include="DataAccessLayer\IClientCallback.cs" />
-    <Compile Include="DataAccessLayer\PTZLogger.cs" />
-    <Compile Include="DataAccessLayer\SocketAutoConnectParser.cs" />
-    <Compile Include="Design\DesignPTZManager.cs" />
-    <Compile Include="PresentationLayer\CameraItemView.xaml.cs">
-      <DependentUpon>CameraItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PresentationLayer\DeviceItemView.xaml.cs">
-      <DependentUpon>DeviceItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PresentationLayer\PadControlView.xaml.cs">
-      <DependentUpon>PadControlView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModel\PTZMainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Page Include="PresentationLayer\CameraItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PresentationLayer\DeviceItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PresentationLayer\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PresentationLayer\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="PresentationLayer\PadControlView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <PackageReference Include="MvvmLightStd10" Version="5.4.1.2" />
+    <PackageReference Include="NLog.Config" Version="4.7.2" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Resource Include="Remote Control-WF.ico" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="EEE-Software.snk" />
-    <Resource Include="Images\Icons\32\Link - 01.png" />
-    <Resource Include="Images\Icons\32\Link - 02.png" />
-    <Resource Include="Images\Icons\32\Remote Control-WF.png" />
+    <Folder Include="ViewModel\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\Icons\32\Arrowhead-Left.png" />
     <Resource Include="Images\Icons\32\Arrowhead-Left45.png" />
     <Resource Include="Images\Icons\32\Arrowhead-Right.png" />
@@ -192,33 +43,11 @@
     <Resource Include="Images\Icons\32\Arrowhead-Up45.png" />
     <Resource Include="Images\Icons\32\Expander down.png" />
     <Resource Include="Images\Icons\32\Expander down45.png" />
+    <Resource Include="Images\Icons\32\Link - 01.png" />
+    <Resource Include="Images\Icons\32\Link - 02.png" />
     <Resource Include="Images\Icons\32\Pointer-WF.png" />
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
+    <Resource Include="Images\Icons\32\Remote Control-WF.ico" />
+    <Resource Include="Images\Icons\32\Remote Control-WF.png" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 et x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

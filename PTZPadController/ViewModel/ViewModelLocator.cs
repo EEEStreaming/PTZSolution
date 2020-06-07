@@ -14,7 +14,6 @@
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
-using CommonServiceLocator;
 using PTZPadController.BusinessLayer;
 using PTZPadController.Design;
 
@@ -31,7 +30,7 @@ namespace PTZPadController.ViewModel
         /// </summary>
         public ViewModelLocator()
         {
-            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+            //ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             if (ViewModelBase.IsInDesignModeStatic)
             {
@@ -49,7 +48,7 @@ namespace PTZPadController.ViewModel
         {
             get
             {
-                return ServiceLocator.Current.GetInstance<PTZMainViewModel>();
+                return SimpleIoc.Default.GetInstance<PTZMainViewModel>();
             }
         }
         

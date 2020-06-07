@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTZPadController", "PTZPadController\PTZPadController.csproj", "{69AD4B6F-5304-47E2-8E66-19414DCCC243}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestPTZPadController", "UnitTestPTZPadController\UnitTestPTZPadController.csproj", "{357E3687-ECA5-4C88-8ED2-9DD9265980D3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTZPadController", "PTZPadController\PTZPadController.csproj", "{B5F7CA88-695F-4325-8103-182F855F1B07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{69AD4B6F-5304-47E2-8E66-19414DCCC243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69AD4B6F-5304-47E2-8E66-19414DCCC243}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69AD4B6F-5304-47E2-8E66-19414DCCC243}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69AD4B6F-5304-47E2-8E66-19414DCCC243}.Release|Any CPU.Build.0 = Release|Any CPU
-		{357E3687-ECA5-4C88-8ED2-9DD9265980D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{357E3687-ECA5-4C88-8ED2-9DD9265980D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{357E3687-ECA5-4C88-8ED2-9DD9265980D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{357E3687-ECA5-4C88-8ED2-9DD9265980D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5F7CA88-695F-4325-8103-182F855F1B07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5F7CA88-695F-4325-8103-182F855F1B07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5F7CA88-695F-4325-8103-182F855F1B07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5F7CA88-695F-4325-8103-182F855F1B07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

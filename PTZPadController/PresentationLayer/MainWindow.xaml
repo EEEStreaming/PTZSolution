@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PTZPadController"
         xmlns:pl="clr-namespace:PTZPadController.PresentationLayer"
+        xmlns:local="clr-namespace:PTZPadController"
         mc:Ignorable="d"
         Title="PTZ Pad Controler" Height="615.789" Width="286.427"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -24,7 +24,7 @@
                 </Grid.ColumnDefinitions>
                 <pl:DeviceItemView Grid.Column="0"></pl:DeviceItemView>
                 <pl:DeviceItemView Grid.Column="1"></pl:DeviceItemView>
-                <pl:DeviceItemView Grid.Column="2"> </pl:DeviceItemView>
+                <pl:DeviceItemView Grid.Column="2"></pl:DeviceItemView>
             </Grid>
         </GroupBox>
         <GroupBox Header="Cameras" Grid.Row="1">
@@ -111,5 +111,6 @@
 
             </Grid>
         </GroupBox>
+
     </Grid>
 </Window>
