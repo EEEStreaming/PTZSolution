@@ -12,4 +12,4 @@ This program will be developed for the Windows OS, and only for the Datavideo PT
 Design a desktop application that allows the cameras to be controlled using a joystick from the EEA Streaming computer. The application should also be able to turn the camera's LED to green when it is in Preview of the ATEM Mini and to red when it is in Program.
 The application will be used live, so it must be extremely stable and manage automatic disconnection and reconnection with the different peripherals without having to reboot the application.
 
-![Build PTZPadConctroller](https://github.com/EEEStreaming/PTZSolution/workflows/Build%20PTZPadConctroller/badge.svg)
+![Build PTZPadController](https://github.com/EEEStreaming/PTZSolution/workflows/Build%20PTZPadController/badge.svg)
