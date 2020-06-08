@@ -87,7 +87,7 @@ jobs:
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Build the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      run: msbuild $env:Solution_Name /p:DeployOnBuild=true /p:Configuration=$env:Configuration /p:PublishProfile=FolderProfile
       env:
         Configuration: ${{ matrix.configuration }}
 
