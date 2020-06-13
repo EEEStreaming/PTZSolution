@@ -1,4 +1,5 @@
 ﻿using PTZPadController.DataAccessLayer;
+using PTZPadController.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -23,6 +24,10 @@ namespace PTZPadController
         {
             PTZLogger.Log.Info("PTZPad Controller application start");
 
+            //Load configuration
+            var locator = this.FindResource("Locator") as ViewModelLocator;
+
+            locator.Initialize();
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)

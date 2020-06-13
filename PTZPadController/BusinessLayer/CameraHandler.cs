@@ -91,5 +91,10 @@ namespace PTZPadController.BusinessLayer
         {
             m_CamParser.Tally(ledRed, ledGreen);
         }
+
+        public void Connect()
+        {
+            m_CamParser.Connect();
+        }
     }
 }

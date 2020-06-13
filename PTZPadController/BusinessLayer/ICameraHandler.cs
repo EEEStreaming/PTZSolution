@@ -7,5 +7,6 @@ namespace PTZPadController.BusinessLayer
         void Initialize(ICameraParser camParser);
         void PanTiltUp();
         void Tally(bool ledRed, bool ledGreen);
+        void Connect();
     }
 }
