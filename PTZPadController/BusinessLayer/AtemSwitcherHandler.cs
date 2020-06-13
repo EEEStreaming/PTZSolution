@@ -15,8 +15,7 @@ namespace PTZPadController.BusinessLayer
     public delegate void SwitcherEventHandler(object sender, object args);
     class AtemSwitcherHandler : IAtemSwitcherHandler
     {
-        private IBMDSwitcherDiscovery atem_discovery;
-        private IBMDSwitcher atem_switcher;
+        private volatile IBMDSwitcher atem_switcher;
         private IBMDSwitcherCallback atem_callback;
         private volatile List<IBMDSwitcherInput> inputs;
 
@@ -48,7 +47,7 @@ namespace PTZPadController.BusinessLayer
             // Connect to switcher
             _BMDSwitcherConnectToFailure failureReason = 0;
             is_connecting = true;
-            Task m_Task = Task.Factory.StartNew(() => { try
+            try
                 {
                     CBMDSwitcherDiscovery atem_discovery = new CBMDSwitcherDiscovery();
                     atem_discovery.ConnectTo(atem_ip, out atem_switcher, out failureReason);
@@ -59,16 +58,27 @@ namespace PTZPadController.BusinessLayer
                     Log.Error("Failed to connect to ATM, got error: " + comEx.Message);
                     atem_switcher = null;
                 }
-                finally {
-                    if (failureReason == 0 && atem_switcher != null) {
+                finally
+                {
+                    if (failureReason == 0 && atem_switcher != null)
+                    {
                         switcherConnected();
-                        if (inputs[0] != null && inputs[1] != null && inputs[2] != null && inputs[3] != null) {
+                        if (inputs != null && inputs[0] != null && inputs[1] != null && inputs[2] != null && inputs[3] != null)
+                        {
                             is_connected = true;
                         }
+                        else
+                        {
+                            is_connected = false;
+
+                        }
+                    }
+                    else
+                    {
+                        is_connected = false;
                     }
                     is_connecting = false;
                 }
-            });
         }
         public bool waitForConnection() {
             while (is_connecting) {
@@ -100,7 +110,7 @@ namespace PTZPadController.BusinessLayer
         public void setPreviewSource(Source previewSource)
         {
             connect();
-            var mixEffectBlock = this.MixEffectBlocks.First();
+            IBMDSwitcherMixEffectBlock mixEffectBlock = this.MixEffectBlocks.First();
             inputs.ElementAt((int)previewSource).GetInputId(out long inputId);
             mixEffectBlock.SetPreviewInput(inputId);
         }
@@ -112,7 +122,7 @@ namespace PTZPadController.BusinessLayer
 
         private void switcherConnected()
         {
-            atem_switcher.AddCallback(atem_callback);
+            // atem_switcher.AddCallback(atem_callback);
             inputs = this.SwitcherInputs
                 .Where((i, ret) =>
                 {
