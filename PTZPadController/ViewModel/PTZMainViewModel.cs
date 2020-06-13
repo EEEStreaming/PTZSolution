@@ -25,9 +25,15 @@ namespace PTZPadController.ViewModel
 
         #region Commands
         public ICommand CameraUp { get; private set; }
+        public ICommand CameraUpLeft { get; private set; }
+        public ICommand CameraUpRight { get; private set; }
         public ICommand CameraDown { get; private set; }
+        public ICommand CameraDownLeft { get; private set; }
+        public ICommand CameraDownRight { get; private set; }
         public ICommand CameraLeft { get; private set; }
         public ICommand CameraRight { get; private set; }
+        public ICommand CameraPanStop { get; private set; }
+
         #endregion
 
 
@@ -46,13 +52,51 @@ namespace PTZPadController.ViewModel
             ////}
             m_PtzManager = manager;
             CameraUp = new RelayCommand(CameraUpExecute);
-
-            
+            CameraUpLeft = new RelayCommand(CameraUpLeftExecute);
+            CameraUpRight = new RelayCommand(CameraUpRightExecute);
+            CameraDown = new RelayCommand(CameraDownExecute);
+            CameraDownLeft = new RelayCommand(CameraDownLeftExecute);
+            CameraDownRight = new RelayCommand(CameraDownRightExecute);
+            CameraLeft = new RelayCommand(CameraLeftExecute);
+            CameraRight = new RelayCommand(CameraRightExecute);
+            CameraPanStop = new RelayCommand(CameraPanStopExecute);
         }
 
         private void CameraUpExecute()
         {
             m_PtzManager.CameraPanTiltUp();
+        }
+        private void CameraUpLeftExecute()
+        {
+            m_PtzManager.CameraPanTiltUpLeft();
+        }
+        private void CameraUpRightExecute()
+        {
+            m_PtzManager.CameraPanTiltUpRight();
+        }
+        private void CameraDownExecute()
+        {
+            m_PtzManager.CameraPanTiltDown();
+        }
+        private void CameraDownLeftExecute()
+        {
+            m_PtzManager.CameraPanTiltDownLeft();
+        }
+        private void CameraDownRightExecute()
+        {
+            m_PtzManager.CameraPanTiltDownRight();
+        }
+        private void CameraLeftExecute()
+        {
+            m_PtzManager.CameraPanTiltLeft();
+        }
+        private void CameraRightExecute()
+        {
+            m_PtzManager.CameraPanTiltRight();
+        }
+        private void CameraPanStopExecute()
+        {
+            m_PtzManager.CameraPanTiltRight();
         }
     }
 }

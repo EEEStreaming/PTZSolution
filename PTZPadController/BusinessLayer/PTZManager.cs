@@ -12,6 +12,8 @@ namespace PTZPadController.BusinessLayer
 {
     public class PTZManager : IPTZManager
     {
+        const short SPEED_MEDIUM = 64;
+
         private List<ICameraHandler> m_CameraList;
         private IAtemSwitcherHandler m_AtemHandler;
 
@@ -73,7 +75,7 @@ namespace PTZPadController.BusinessLayer
                     CameraProgram.Tally(true, false);
 
                     if (CameraProgram.PanTileWorking)
-                        CameraProgram.StopPanTile();
+                        CameraProgram.PanTiltStop();
 
                 }
                 
@@ -113,20 +115,74 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraPanTiltUp()
         {
-            if (m_CurrentCamera== null)
+            if (CameraPreview != null)
             {
-                m_CurrentCamera = m_CameraList[0];
+                CameraPreview.PanTiltUp(SPEED_MEDIUM, SPEED_MEDIUM);
             }
-            m_CurrentCamera.PanTiltUp();
         }
-        public void CameraTally()
-        {
-            if (m_CurrentCamera == null)
-            {
-                m_CurrentCamera = m_CameraList[0];
-            }
 
+        void IPTZManager.CameraPanTiltUpLeft()
+        {
+            if (CameraPreview != null)
+            {
+                CameraPreview.PanTiltUpLeft(SPEED_MEDIUM, SPEED_MEDIUM);
+            }
         }
-        
+
+        void IPTZManager.CameraPanTiltUpRight()
+        {
+            if (CameraPreview != null)
+            {
+                CameraPreview.PanTiltUpRight(SPEED_MEDIUM, SPEED_MEDIUM);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltDown()
+        {
+            if (CameraPreview != null)
+            {
+                CameraPreview.PanTiltDown(SPEED_MEDIUM, SPEED_MEDIUM);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltDownLeft()
+        {
+            if (CameraPreview != null)
+            {
+                CameraPreview.PanTiltDownLeft(SPEED_MEDIUM, SPEED_MEDIUM);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltDownRight()
+        {
+            if (CameraPreview != null)
+            {
+                CameraPreview.PanTiltDownRight(SPEED_MEDIUM, SPEED_MEDIUM);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltLeft()
+        {
+            if (CameraPreview != null)
+            {
+                CameraPreview.PanTiltLeft(SPEED_MEDIUM, SPEED_MEDIUM);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltRight()
+        {
+            if (CameraPreview != null)
+            {
+                CameraPreview.PanTiltRight(SPEED_MEDIUM, SPEED_MEDIUM);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltStop()
+        {
+            if (CameraPreview != null)
+            {
+                CameraPreview.PanTiltStop();
+            }
+        }
     }
 }
