@@ -1,4 +1,5 @@
 ﻿using PTZPadController.BusinessLayer;
+using PTZPadController.DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,12 @@ namespace PTZPadController.Design
             //
         }
 
+        public void InitSeetings(ConfigurationModel cfg)
+        {
+        }
+
         public void SetAtemHandler(IAtemSwitcherHandler atemHandler)
         {
-            throw new NotImplementedException();
         }
 
         public void StartUp()

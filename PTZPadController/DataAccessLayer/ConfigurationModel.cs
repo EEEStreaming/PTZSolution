@@ -10,7 +10,7 @@ namespace PTZPadController.DataAccessLayer
 
     public class ConfigurationModel
     {
-
+        public bool UseTallyGreen { get; set; }
         public string AtemHost { get; set; }
 
         public List<CameraConnexionModel> Cameras = new List<CameraConnexionModel>();
