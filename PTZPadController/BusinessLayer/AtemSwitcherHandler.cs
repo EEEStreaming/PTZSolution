@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace PTZPadController.BusinessLayer
 {
     public delegate void SwitcherEventHandler(object sender, object args);
-    class AtemSwitcherHandler : IAtemSwitcherHandler
+    class AtemSwitcherHandler : IAtemSwitcherHandler, IBMDSwitcherInputCallback
     {
         private volatile IBMDSwitcher atem_switcher;
         private IBMDSwitcherCallback atem_callback;
@@ -29,7 +29,6 @@ namespace PTZPadController.BusinessLayer
             this.atem_ip = ip;
             this.is_connecting = false;
             this.is_connected = false;
-            this.atem_callback = new SwitcherCallback();
             this.inputs = new List<IBMDSwitcherInput>(4);
         }
 
@@ -97,12 +96,12 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-        public void onPreviewSourceChange()
+        public void onPreviewSourceChange(Source previewSource)
         {
             throw new NotImplementedException();
         }
 
-        public void onProgramSourceChange()
+        public void onProgramSourceChange(Source source)
         {
             throw new NotImplementedException();
         }
@@ -122,14 +121,21 @@ namespace PTZPadController.BusinessLayer
 
         private void switcherConnected()
         {
-            // atem_switcher.AddCallback(atem_callback);
+            // Initialize ATEM Inputs
             inputs = this.SwitcherInputs
                 .Where((i, ret) =>
                 {
                     _BMDSwitcherPortType type;
                     i.GetPortType(out type);
+                    
                     return type == _BMDSwitcherPortType.bmdSwitcherPortTypeExternal;
                 }).ToList();
+            // Register callbacks for state changes on Inputs
+            for (var i = 0; i < inputs.Count; i++)
+            {
+                var input = inputs[i];
+                input.AddCallback(this);
+            }
         }
 
         private IEnumerable<IBMDSwitcherMixEffectBlock> MixEffectBlocks
@@ -184,78 +190,36 @@ namespace PTZPadController.BusinessLayer
         /// <summary>
         /// Thank's http://difanet.jamu.cz/az_vyuka/manualy/Blackmagic_ATEM_studio/ATEM_Blackmagic_OSX10.13/ATEMProduction_Studio4K/Blackmagic%20ATEM%20Switchers%20SDK%208.0.3/Windows/Samples/SwitcherPanelCSharp/SwitcherMonitors.cs
         /// </summary>
-        class MixEffectBlockMonitor : IBMDSwitcherMixEffectBlockCallback
+        
+        public void Notify(_BMDSwitcherInputEventType eventType)
         {
-            // Events:
-            public event SwitcherEventHandler ProgramInputChanged;
-            public event SwitcherEventHandler PreviewInputChanged;
-            public event SwitcherEventHandler TransitionFramesRemainingChanged;
-            public event SwitcherEventHandler TransitionPositionChanged;
-            public event SwitcherEventHandler InTransitionChanged;
-
-            public MixEffectBlockMonitor()
+            IBMDSwitcherMixEffectBlock mixEffectBlock = this.MixEffectBlocks.First();
+            long currentInput = -1;
+            switch (eventType)
             {
+                case _BMDSwitcherInputEventType.bmdSwitcherInputEventTypeIsPreviewTalliedChanged:
+                    mixEffectBlock.GetPreviewInput(out currentInput);
+                    onPreviewSourceChange(GetInputById(currentInput));
+                    break;
+                case _BMDSwitcherInputEventType.bmdSwitcherInputEventTypeIsProgramTalliedChanged:
+                    mixEffectBlock.GetProgramInput(out currentInput);
+                    onProgramSourceChange(GetInputById(currentInput));
+                    break;
             }
+        }
 
-            void IBMDSwitcherMixEffectBlockCallback.Notify(_BMDSwitcherMixEffectBlockEventType eventType)
+        private Source GetInputById (long input_id)
+        {
+            for (var i = 0; i < inputs.Count; i++)
             {
-                switch (eventType)
+                long currentInputId;
+                inputs[i].GetInputId(out currentInputId);
+                if (currentInputId == input_id)
                 {
-                    case _BMDSwitcherMixEffectBlockEventType.bmdSwitcherMixEffectBlockEventTypeProgramInputChanged:
-                        if (ProgramInputChanged != null)
-                            ProgramInputChanged(this, null);
-                        break;
-                    case _BMDSwitcherMixEffectBlockEventType.bmdSwitcherMixEffectBlockEventTypePreviewInputChanged:
-                        if (PreviewInputChanged != null)
-                            PreviewInputChanged(this, null);
-                        break;
-                    case _BMDSwitcherMixEffectBlockEventType.bmdSwitcherMixEffectBlockEventTypeTransitionFramesRemainingChanged:
-                        if (TransitionFramesRemainingChanged != null)
-                            TransitionFramesRemainingChanged(this, null);
-                        break;
-                    case _BMDSwitcherMixEffectBlockEventType.bmdSwitcherMixEffectBlockEventTypeTransitionPositionChanged:
-                        if (TransitionPositionChanged != null)
-                            TransitionPositionChanged(this, null);
-                        break;
-                    case _BMDSwitcherMixEffectBlockEventType.bmdSwitcherMixEffectBlockEventTypeInTransitionChanged:
-                        if (InTransitionChanged != null)
-                            InTransitionChanged(this, null);
-                        break;
+                    return (Source) i;
                 }
             }
-
+            throw new ArgumentException("No input found");
         }
-        private class SwitcherCallback : IBMDSwitcherCallback
-        {
-            public void Notify(_BMDSwitcherEventType eventType, _BMDSwitcherVideoMode coreVideoMode)
-            {
-                throw new NotImplementedException();
-            }
-        }
-        class InputMonitor : IBMDSwitcherInputCallback
-        {
-            // Events:
-            public event SwitcherEventHandler LongNameChanged;
-
-            private IBMDSwitcherInput m_input;
-            public IBMDSwitcherInput Input { get { return m_input; } }
-
-            public InputMonitor(IBMDSwitcherInput input)
-            {
-                m_input = input;
-            }
-
-            void IBMDSwitcherInputCallback.Notify(_BMDSwitcherInputEventType eventType)
-            {
-                switch (eventType)
-                {
-                    case _BMDSwitcherInputEventType.bmdSwitcherInputEventTypeLongNameChanged:
-                        if (LongNameChanged != null)
-                            LongNameChanged(this, null);
-                        break;
-                }
-            }
-        }
-
     }
 }

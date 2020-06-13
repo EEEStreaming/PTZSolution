@@ -23,8 +23,8 @@ namespace PTZPadController.BusinessLayer
         /// <returns></returns>
         bool waitForConnection();
         void disconnect();
-        void onPreviewSourceChange();
-        void onProgramSourceChange();
+        void onPreviewSourceChange(Source previewCamera);
+        void onProgramSourceChange(Source programCamera);
         /// <summary>
         /// 
         /// </summary>
