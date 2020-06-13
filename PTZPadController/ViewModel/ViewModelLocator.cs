@@ -69,35 +69,23 @@ namespace PTZPadController.ViewModel
         internal void Initialize()
         {
             //Load configuration
-            var cfg = ConfigurationFileParser.LoadConfigurationFile("PTZPadController");
+            var cfg = ConfigurationFileParser.LoadConfigurationFile("Configuration.json");
 
             var ptzManager = SimpleIoc.Default.GetInstance<IPTZManager>();
             //Create and connect connection to ATEM
 
             //Create How many Camera
-            var cam = new CameraHandler();
-            var camParser = new CameraPTC140Parser();
-            var socket = new SocketAutoConnectParser();
-            socket.Initialize("CAM 1", "192.168.1.131", 5002, camParser);
-            camParser.Initialize(socket);
-            cam.Initialize(camParser);
-            ptzManager.AddCcameraHandler(cam);
+            foreach (var camcfg in cfg.Cameras)
+            {
+                var cam = new CameraHandler();
+                var camParser = new CameraPTC140Parser();
+                var socket = new SocketAutoConnectParser();
+                socket.Initialize(camcfg.CameraName, camcfg.CameraHost, camcfg.CameraPort, camParser);
+                camParser.Initialize(socket);
+                cam.Initialize(camParser);
+                ptzManager.AddCcameraHandler(cam);
 
-            cam = new CameraHandler();
-            camParser = new CameraPTC140Parser();
-            socket = new SocketAutoConnectParser();
-            socket.Initialize("CAM 2", "192.168.1.132", 5002, camParser);
-            camParser.Initialize(socket);
-            cam.Initialize(camParser);
-            ptzManager.AddCcameraHandler(cam);
-
-            cam = new CameraHandler();
-            camParser = new CameraPTC140Parser();
-            socket = new SocketAutoConnectParser();
-            socket.Initialize("CAM 3", "192.168.1.133", 5002, camParser);
-            camParser.Initialize(socket);
-            cam.Initialize(camParser);
-            ptzManager.AddCcameraHandler(cam);
+            }
 
             //Create and connect to pad
 
