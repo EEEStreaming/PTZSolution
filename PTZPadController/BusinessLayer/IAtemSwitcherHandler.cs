@@ -11,7 +11,17 @@ namespace PTZPadController.BusinessLayer
     public interface IAtemSwitcherHandler
     {
 
-        Task connect();
+        void connect();
+        /// <summary>
+        /// Checks if the switcher is actually connected. Will not wait the completion of a connection if it is in progress.
+        /// </summary>
+        /// <returns></returns>
+        bool isConnected();
+        /// <summary>
+        /// If a connection is in progress, waits it's completition and then returns the switcher connection status.
+        /// </summary>
+        /// <returns></returns>
+        bool waitForConnection();
         void disconnect();
         void onPreviewSourceChange();
         void onProgramSourceChange();
