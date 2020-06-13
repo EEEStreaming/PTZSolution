@@ -8,6 +8,8 @@ namespace PTZPadController.DataAccessLayer
     {
         private ISocketParser m_SocketClient;
 
+        public bool Connected { get { return (m_SocketClient != null) && (m_SocketClient.Connected); } }
+
         public void CompletionMessage()
         {
             throw new NotImplementedException();

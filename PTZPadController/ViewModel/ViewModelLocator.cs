@@ -69,7 +69,7 @@ namespace PTZPadController.ViewModel
         internal void Initialize()
         {
             //Load configuration
-
+            var cfg = ConfigurationFileParser.LoadConfigurationFile("PTZPadController");
 
             var ptzManager = SimpleIoc.Default.GetInstance<IPTZManager>();
             //Create and connect connection to ATEM

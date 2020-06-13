@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace PTZPadController.DataAccessLayer
 {
-    class ConfigurationModel
+    public class ConfigurationModel
     {
+        public List<CameraConnexionModel> Cameras;
     }
 }

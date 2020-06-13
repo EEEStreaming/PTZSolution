@@ -40,7 +40,7 @@ namespace PTZPadController.BusinessLayer
             //Basic reset
             foreach (var cam in m_CameraList)
             {
-                cam.Tally(false, false);
+                cam.Tally(true, false);
             }
 
             //Connect ATEM
