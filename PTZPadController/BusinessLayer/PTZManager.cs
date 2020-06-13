@@ -1,4 +1,5 @@
 ﻿using PTZPadController.DataAccessLayer;
+using PTZPadController.PresentationLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,12 @@ namespace PTZPadController.BusinessLayer
     public class PTZManager : IPTZManager
     {
         private List<ICameraHandler> m_CameraList;
-        private ICameraHandler m_CurrentCamera;
         private IAtemSwitcherHandler m_AtemHandler;
+
+        public ICameraHandler CameraPreview { get; private set; }
+
+        public ICameraHandler CameraProgram { get; private set; }
+
         #region Constructor
         /// <summary>
         /// Initializes a new instance of the PTZManager class.
@@ -41,7 +46,18 @@ namespace PTZPadController.BusinessLayer
 
         private void AtemPreviewSourceChange(object sender, SourceArgs e)
         {
-            //throw new NotImplementedException();
+            foreach (var cam in m_CameraList)
+            {
+                if (cam.CameraName == e.CurrentInputName)
+                {
+                    if (CameraPreview != null)
+                        CameraPreview.Tally(false, false);
+
+                    CameraPreview = cam;
+                    CameraPreview.Tally(false, true);
+                }
+
+            }
         }
 
         private void AtemProgramSourceChange(object sender, SourceArgs e)
@@ -49,12 +65,26 @@ namespace PTZPadController.BusinessLayer
             foreach (var cam in m_CameraList)
             {
                 if (cam.CameraName == e.CurrentInputName)
-                    cam.Tally(true, false);
-                else
-                    cam.Tally(false, false);
+                {
+                    if (CameraProgram != null)
+                        CameraProgram.Tally(false, false);
+
+                    CameraProgram = cam;
+                    CameraProgram.Tally(true, false);
+
+                    if (CameraProgram.PanTileWorking)
+                        CameraProgram.StopPanTile();
+
+                }
                 
             }
+
      
+        }
+
+        private void UpdateTally()
+        {
+            throw new NotImplementedException();
         }
 
         public void StartUp()

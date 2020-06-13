@@ -9,6 +9,10 @@ namespace PTZPadController.Design
 {
     public class DesignPTZManager : IPTZManager
     {
+        public ICameraHandler CameraPreview { get; set; }
+
+        public ICameraHandler CameraProgram { get; set; }
+
         public void AddCcameraHandler(ICameraHandler camHandler)
         {
         }

@@ -3,6 +3,10 @@
     public interface IPTZManager
     {
 
+        public ICameraHandler CameraPreview { get; }
+
+        public ICameraHandler CameraProgram { get; }
+
         void StartUp();
 
         void CameraPanTiltUp();

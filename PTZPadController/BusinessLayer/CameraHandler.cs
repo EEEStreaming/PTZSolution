@@ -13,6 +13,10 @@ namespace PTZPadController.BusinessLayer
 
         public string CameraName { get; set; }
 
+        public bool PanTileWorking { get; private set; }
+
+        public bool ZoomWorking { get; private set; }
+
         public CameraHandler()
         {
         }
@@ -25,45 +29,54 @@ namespace PTZPadController.BusinessLayer
 
         public void PanTiltUp()
         {
+            PanTileWorking = true;
         }
 
         public void PanTiltDown()
         {
+            PanTileWorking = true;
 
         }
 
         public void PanTiltLeft()
         {
+            PanTileWorking = true;
 
         }
 
         public void PanTiltRight()
         {
+            PanTileWorking = true;
 
         }
 
         public void PanTiltUpLeft()
         {
+            PanTileWorking = true;
 
         }
 
         public void PanTiltUpRight()
         {
+            PanTileWorking = true;
 
         }
 
         public void PanTiltDownLeft()
         {
+            PanTileWorking = true;
 
         }
 
         public void PanTiltDownRight()
         {
+            PanTileWorking = true;
 
         }
 
         public void PanTiltStop()
         {
+            PanTileWorking = false;
 
         }
 
@@ -98,6 +111,11 @@ namespace PTZPadController.BusinessLayer
         public void Connect()
         {
             m_CamParser.Connect();
+        }
+
+        public void StopPanTile()
+        {
+            throw new NotImplementedException();
         }
     }
 }
