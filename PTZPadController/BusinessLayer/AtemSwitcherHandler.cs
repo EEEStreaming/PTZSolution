@@ -93,17 +93,9 @@ namespace PTZPadController.BusinessLayer
         public void setPreviewSource(Source previewSource)
         {
             connect();
-            switch (previewSource)
-            {
-                case Source.Source_1:
-                    break;
-                case Source.Source_2:
-                    break;
-                case Source.Source_3:
-                    break;
-                case Source.Source_4:
-                    break;
-            }
+            var mixEffectBlock = this.MixEffectBlocks.First();
+            inputs.ElementAt((int)previewSource).GetInputId(out long inputId);
+            mixEffectBlock.SetPreviewInput(inputId);
         }
 
         public void setProgramSource(Source programCamera)
