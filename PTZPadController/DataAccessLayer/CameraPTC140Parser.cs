@@ -12,10 +12,13 @@ namespace PTZPadController.DataAccessLayer
 
         public void CompletionMessage(string message)
         {
-            if(message == "00-08-90-41-FF-90-51-FF")
+            PTZLogger.Log.Info("Message reçu {0}", message);
+            if (message == "00-08-90-41-FF-90-51-FF")
             {
-                PTZLogger.Log.Info("Message reçu {0}",message);
-            }            
+                //TODO
+            }
+
+            //TODO
         }
 
         public void Initialize(ISocketParser socket)
@@ -64,9 +67,12 @@ namespace PTZPadController.DataAccessLayer
             byte bytePanSpeed = ConvertSpeed(panSpeed);
             byte bytetiltSpeed = ConvertSpeed(tiltSpeed);
 
+            PTZLogger.Log.Info("PanTiltUp({0},{1})", panSpeed, tiltSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
-                m_SocketClient.SendData(new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x03, 0x01, 0xFF });
+                byte[] data = new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x03, 0x01, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
             }
         }
 
@@ -75,9 +81,12 @@ namespace PTZPadController.DataAccessLayer
             byte bytePanSpeed = ConvertSpeed(panSpeed);
             byte bytetiltSpeed = ConvertSpeed(tiltSpeed);
 
+            PTZLogger.Log.Info("PanTiltDown({0},{1})", panSpeed, tiltSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
-                m_SocketClient.SendData(new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x03, 0x02, 0xFF });
+                byte[] data = new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x03, 0x02, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
             }
         }
 
@@ -86,9 +95,12 @@ namespace PTZPadController.DataAccessLayer
             byte bytePanSpeed = ConvertSpeed(panSpeed);
             byte bytetiltSpeed = ConvertSpeed(tiltSpeed);
 
+            PTZLogger.Log.Info("PanTiltLeft({0},{1})", panSpeed, tiltSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
-                m_SocketClient.SendData(new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x01, 0x03, 0xFF });
+                byte[] data = new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x01, 0x03, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
             }
         }
 
@@ -97,9 +109,12 @@ namespace PTZPadController.DataAccessLayer
             byte bytePanSpeed = ConvertSpeed(panSpeed);
             byte bytetiltSpeed = ConvertSpeed(tiltSpeed);
 
+            PTZLogger.Log.Info("PanTiltRight({0},{1})", panSpeed, tiltSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
-                m_SocketClient.SendData(new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x02, 0x03, 0xFF });
+                byte[] data = new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x02, 0x03, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
             }
         }
 
@@ -108,9 +123,12 @@ namespace PTZPadController.DataAccessLayer
             byte bytePanSpeed = ConvertSpeed(panSpeed);
             byte bytetiltSpeed = ConvertSpeed(tiltSpeed);
 
+            PTZLogger.Log.Info("PanTiltUpLeft({0},{1})", panSpeed, tiltSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
-                m_SocketClient.SendData(new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x01, 0x01, 0xFF });
+                byte[] data = new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x01, 0x01, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
             }
         }
 
@@ -119,9 +137,12 @@ namespace PTZPadController.DataAccessLayer
             byte bytePanSpeed = ConvertSpeed(panSpeed);
             byte bytetiltSpeed = ConvertSpeed(tiltSpeed);
 
+            PTZLogger.Log.Info("PanTiltUpRight({0},{1})", panSpeed, tiltSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
-                m_SocketClient.SendData(new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x02, 0x01, 0xFF });
+                byte[] data = new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x02, 0x01, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
             }
         }
 
@@ -130,9 +151,12 @@ namespace PTZPadController.DataAccessLayer
             byte bytePanSpeed = ConvertSpeed(panSpeed);
             byte bytetiltSpeed = ConvertSpeed(tiltSpeed);
 
+            PTZLogger.Log.Info("PanTiltDownLeft({0},{1})", panSpeed, tiltSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
-                m_SocketClient.SendData(new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x01, 0x02, 0xFF });
+                byte[] data = new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x01, 0x02, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
             }
         }
 
@@ -141,17 +165,23 @@ namespace PTZPadController.DataAccessLayer
             byte bytePanSpeed = ConvertSpeed(panSpeed);
             byte bytetiltSpeed = ConvertSpeed(tiltSpeed);
 
+            PTZLogger.Log.Info("PanTiltDownRight({0},{1})", panSpeed, tiltSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
-                m_SocketClient.SendData(new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x02, 0x02, 0xFF });
+                byte[] data = new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, bytePanSpeed, bytetiltSpeed, 0x02, 0x02, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
             }
         }
 
         public void PanTiltStop()
         {
+            PTZLogger.Log.Info("PanTiltStop()");
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
-                m_SocketClient.SendData(new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, 0x00, 0x00, 0x03, 0x03, 0xFF });
+                byte[] data = new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, 0x01, 0x01, 0x03, 0x03, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
             }
         }
     }

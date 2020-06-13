@@ -83,21 +83,21 @@ namespace PTZPadController.BusinessLayer
 
         public void PanTiltHome()
         {
-            
+            //TODO
         }
         public void CameraMemoryReset()
         {
-
+            //TODO
         }
 
         public void CameraMemorySet()
         {
-
+            //TODO
         }
 
         public void CameraMemoryRecall()
         {
-
+            //TODO
         }
         public void CompletionMessage()
         {
