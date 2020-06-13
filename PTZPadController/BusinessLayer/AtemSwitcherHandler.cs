@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media.Animation;
 
 namespace PTZPadController.BusinessLayer
 {
@@ -89,6 +90,7 @@ namespace PTZPadController.BusinessLayer
         public IBMDSwitcherInput Input { get { return m_input; } }
 
         public string InputName { get; set; }
+        public long InputId { get; set; }
 
         public InputMonitor(IBMDSwitcherInput input)
         {
@@ -96,6 +98,10 @@ namespace PTZPadController.BusinessLayer
             string inputName;
             m_input.GetLongName(out inputName);
             InputName = inputName;
+            long inputId;
+            m_input.GetInputId(out inputId);
+
+            InputId = inputId;
         }
 
         void IBMDSwitcherInputCallback.Notify(_BMDSwitcherInputEventType eventType)
@@ -416,51 +422,6 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-        private IEnumerable<IBMDSwitcherInput> SwitcherInputs
-        {
-            get
-            {
-                // Create an input iterator
-                IntPtr inputIteratorPtr;
-                atem_switcher.CreateIterator(typeof(IBMDSwitcherInputIterator).GUID, out inputIteratorPtr);
-                IBMDSwitcherInputIterator inputIterator = Marshal.GetObjectForIUnknown(inputIteratorPtr) as IBMDSwitcherInputIterator;
-                if (inputIterator == null)
-                    yield break;
-
-                // Scan through all inputs
-                while (true)
-                {
-                    IBMDSwitcherInput input;
-                    inputIterator.Next(out input);
-
-                    if (input != null)
-                        yield return input;
-                    else
-                        yield break;
-                }
-            }
-        }
-        /// <summary>
-        /// Thank's http://difanet.jamu.cz/az_vyuka/manualy/Blackmagic_ATEM_studio/ATEM_Blackmagic_OSX10.13/ATEMProduction_Studio4K/Blackmagic%20ATEM%20Switchers%20SDK%208.0.3/Windows/Samples/SwitcherPanelCSharp/SwitcherMonitors.cs
-        /// </summary>
-
-        //public void Notify(_BMDSwitcherInputEventType eventType)
-        //{
-
-        //    long currentInput = -1;
-        //    switch (eventType)
-        //    {
-        //        case _BMDSwitcherInputEventType.bmdSwitcherInputEventTypeIsPreviewTalliedChanged:
-        //            firstMixEffectBlock.GetPreviewInput(out currentInput);
-        //            onPreviewSourceChange(GetInputById(currentInput));
-        //            break;
-        //        case _BMDSwitcherInputEventType.bmdSwitcherInputEventTypeIsProgramTalliedChanged:
-        //            firstMixEffectBlock.GetProgramInput(out currentInput);
-        //            onProgramSourceChange(GetInputById(currentInput));
-        //            break;
-        //    }
-        //}
-
         private string GetInputNameById(long input_id)
         {
             for (var i = 0; i < m_inputHDMIMonitors.Count; i++)
@@ -473,6 +434,28 @@ namespace PTZPadController.BusinessLayer
                 }
             }
             throw new ArgumentException("No input found");
+        }
+
+        public string GetCameraProgramName()
+        {
+            long programId;
+
+            firstMixEffectBlock.GetProgramInput(out programId);
+            var input = m_inputHDMIMonitors.FirstOrDefault(x => x.InputId == programId);
+            if (input != null)
+                return input.InputName;
+            return String.Empty;
+        }
+
+        public string GetCameraPreviewName()
+        {
+            long previewId;
+
+            firstMixEffectBlock.GetPreviewInput(out previewId);
+            var input = m_inputHDMIMonitors.FirstOrDefault(x => x.InputId == previewId);
+            if (input != null)
+                return input.InputName;
+            return String.Empty;
         }
     }
 }

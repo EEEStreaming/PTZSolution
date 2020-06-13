@@ -42,5 +42,8 @@ namespace PTZPadController.BusinessLayer
             setProgramSource(programCamera);
             setPreviewSource(previewCamera);
         }
+
+        public string GetCameraProgramName();
+        public string GetCameraPreviewName();
     }
 }

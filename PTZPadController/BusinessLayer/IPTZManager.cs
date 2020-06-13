@@ -1,4 +1,6 @@
-﻿namespace PTZPadController.BusinessLayer
+﻿using PTZPadController.DataAccessLayer;
+
+namespace PTZPadController.BusinessLayer
 {
     public interface IPTZManager
     {
@@ -24,5 +26,7 @@
         void AddCcameraHandler(ICameraHandler camHandler);
 
         void SetAtemHandler(IAtemSwitcherHandler atemHandler);
+
+        void InitSeetings(ConfigurationModel cfg);
     }
 }

@@ -73,6 +73,8 @@ namespace PTZPadController.ViewModel
 
             var ptzManager = SimpleIoc.Default.GetInstance<IPTZManager>();
 
+            ptzManager.InitSeetings(cfg);
+
             //Create and connect connection to ATEM
             var atemHandler = new AtemSwitcherHandler(cfg.AtemHost);
             ptzManager.SetAtemHandler(atemHandler);

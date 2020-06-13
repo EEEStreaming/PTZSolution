@@ -16,6 +16,7 @@ namespace PTZPadController.BusinessLayer
 
         private List<ICameraHandler> m_CameraList;
         private IAtemSwitcherHandler m_AtemHandler;
+        private bool m_UseTallyGreen;
 
         public ICameraHandler CameraPreview { get; private set; }
 
@@ -28,12 +29,19 @@ namespace PTZPadController.BusinessLayer
         public PTZManager()
         {
             m_CameraList = new List<ICameraHandler>();
+            m_UseTallyGreen = false;
 
 
         }
         #endregion
 
         #region Methods for the Initialization
+
+        public void InitSeetings(ConfigurationModel cfg)
+        {
+            m_UseTallyGreen = cfg.UseTallyGreen;
+        }
+       
         public void AddCcameraHandler(ICameraHandler camHandler)
         {
             m_CameraList.Add(camHandler);
@@ -45,31 +53,37 @@ namespace PTZPadController.BusinessLayer
             m_AtemHandler.ProgramSourceChanged += AtemProgramSourceChange;
             m_AtemHandler.PreviewSourceChanged += AtemPreviewSourceChange;
         }
+        #endregion
 
         private void AtemPreviewSourceChange(object sender, SourceArgs e)
         {
+            if (CameraPreview != null)
+                CameraPreview.Tally(CameraPreview == CameraProgram, false);
+            CameraPreview = null;
             foreach (var cam in m_CameraList)
             {
                 if (cam.CameraName == e.CurrentInputName)
                 {
-                    if (CameraPreview != null)
-                        CameraPreview.Tally(false, false);
 
                     CameraPreview = cam;
-                    CameraPreview.Tally(false, true);
+                    CameraPreview.Tally(false, m_UseTallyGreen);
                 }
 
             }
+            
         }
 
         private void AtemProgramSourceChange(object sender, SourceArgs e)
         {
+            if (CameraProgram != null)
+                CameraProgram.Tally(false, m_UseTallyGreen?CameraPreview == CameraProgram:false);
+
+            CameraProgram = null;
+
             foreach (var cam in m_CameraList)
             {
                 if (cam.CameraName == e.CurrentInputName)
                 {
-                    if (CameraProgram != null)
-                        CameraProgram.Tally(false, false);
 
                     CameraProgram = cam;
                     CameraProgram.Tally(true, false);
@@ -78,10 +92,9 @@ namespace PTZPadController.BusinessLayer
                         CameraProgram.PanTiltStop();
 
                 }
-                
+
             }
 
-     
         }
 
         private void UpdateTally()
@@ -105,13 +118,19 @@ namespace PTZPadController.BusinessLayer
 
             //Connect ATEM
             m_AtemHandler.connect();
-            //if (m_AtemHandler.waitForConnection())
-           // {
-           //     m_AtemHandler.setPreviewSource(Source.Source_1);
-            //}
+            if (m_AtemHandler.waitForConnection() )
+            {
+                var prgName = m_AtemHandler.GetCameraProgramName();
+                var previewName = m_AtemHandler.GetCameraPreviewName();
+                CameraProgram = m_CameraList.FirstOrDefault(x => x.CameraName == prgName);
+                if (CameraProgram != null)
+                    CameraProgram.Tally(true, false);
+                CameraPreview = m_CameraList.FirstOrDefault(x => x.CameraName == previewName);
+                if (CameraPreview != null)
+                    CameraPreview.Tally(false, m_UseTallyGreen);
+            }
             //Connect PAD
         }
-        #endregion
 
         public void CameraPanTiltUp()
         {
@@ -176,7 +195,7 @@ namespace PTZPadController.BusinessLayer
                 CameraPreview.PanTiltRight(SPEED_MEDIUM, SPEED_MEDIUM);
             }
         }
-
+        
         void IPTZManager.CameraPanTiltStop()
         {
             if (CameraPreview != null)

@@ -16,5 +16,6 @@
       "CameraPort": 5002
     }
   ],
+  "UseTallyGreen" : "false", 
   "AtemHost": "192.168.1.135"
 }
