@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace PTZPadController.BusinessLayer
 {
@@ -23,8 +24,8 @@ namespace PTZPadController.BusinessLayer
         /// <returns></returns>
         bool waitForConnection();
         void disconnect();
-        void onPreviewSourceChange(Source previewCamera);
-        void onProgramSourceChange(Source programCamera);
+        public event EventHandler PreviewSourceChanged;
+        public event EventHandler ProgramSourceChanged;
         /// <summary>
         /// 
         /// </summary>

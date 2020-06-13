@@ -23,6 +23,13 @@ namespace PTZPadController.BusinessLayer
         volatile private bool is_connecting;
         volatile private bool is_connected;
 
+        public event EventHandler PreviewSourceChanged;
+        public event EventHandler ProgramSourceChanged;
+
+        public class SourceArgs: EventArgs
+        {
+            public Source CurrentSource { get; set; }
+        }
 
         public AtemSwitcherHandler(string ip)
         {
@@ -96,14 +103,20 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-        public void onPreviewSourceChange(Source previewSource)
+        protected virtual void onPreviewSourceChange(Source previewSource)
         {
-            throw new NotImplementedException();
+            EventHandler handler = PreviewSourceChanged;
+            SourceArgs args = new SourceArgs();
+            args.CurrentSource = previewSource;
+            handler?.Invoke(this, args);
         }
 
-        public void onProgramSourceChange(Source source)
+        protected virtual void onProgramSourceChange(Source programSource)
         {
-            throw new NotImplementedException();
+            EventHandler handler = ProgramSourceChanged;
+            SourceArgs args = new SourceArgs();
+            args.CurrentSource = programSource;
+            handler?.Invoke(this, args);
         }
 
         public void setPreviewSource(Source previewSource)

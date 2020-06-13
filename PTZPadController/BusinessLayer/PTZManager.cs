@@ -34,6 +34,18 @@ namespace PTZPadController.BusinessLayer
         public void SetAtemHandler(IAtemSwitcherHandler atemHandler)
         {
             m_AtemHandler = atemHandler;
+            m_AtemHandler.ProgramSourceChanged += AtemProgramSourceChange;
+            m_AtemHandler.PreviewSourceChanged += AtemPreviewSourceChange;
+        }
+
+        private void AtemPreviewSourceChange(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AtemProgramSourceChange(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         public void StartUp()
