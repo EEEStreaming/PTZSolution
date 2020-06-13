@@ -8,5 +8,7 @@
         void CameraPanTiltUp();
 
         void AddCcameraHandler(ICameraHandler camHandler);
+
+        void SetAtemHandler(IAtemSwitcherHandler atemHandler);
     }
 }

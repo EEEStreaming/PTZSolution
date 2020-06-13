@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PTZPadController.BusinessLayer
@@ -11,6 +12,7 @@ namespace PTZPadController.BusinessLayer
     {
         private List<ICameraHandler> m_CameraList;
         private ICameraHandler m_CurrentCamera;
+        private IAtemSwitcherHandler m_AtemHandler;
         #region Constructor
         /// <summary>
         /// Initializes a new instance of the PTZManager class.
@@ -29,6 +31,23 @@ namespace PTZPadController.BusinessLayer
             m_CameraList.Add(camHandler);
         }
 
+        public void SetAtemHandler(IAtemSwitcherHandler atemHandler)
+        {
+            m_AtemHandler = atemHandler;
+            m_AtemHandler.ProgramSourceChanged += AtemProgramSourceChange;
+            m_AtemHandler.PreviewSourceChanged += AtemPreviewSourceChange;
+        }
+
+        private void AtemPreviewSourceChange(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AtemProgramSourceChange(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         public void StartUp()
         {
             //Connect cameras
@@ -44,7 +63,11 @@ namespace PTZPadController.BusinessLayer
             }
 
             //Connect ATEM
-
+            m_AtemHandler.connect();
+            if (m_AtemHandler.waitForConnection())
+            {
+                m_AtemHandler.setPreviewSource(Source.Source_1);
+            }
             //Connect PAD
         }
         #endregion

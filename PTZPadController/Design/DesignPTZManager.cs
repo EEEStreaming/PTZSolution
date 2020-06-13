@@ -18,6 +18,11 @@ namespace PTZPadController.Design
             //
         }
 
+        public void SetAtemHandler(IAtemSwitcherHandler atemHandler)
+        {
+            throw new NotImplementedException();
+        }
+
         public void StartUp()
         {
         }

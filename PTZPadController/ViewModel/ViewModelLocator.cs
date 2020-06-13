@@ -72,7 +72,10 @@ namespace PTZPadController.ViewModel
             var cfg = ConfigurationFileParser.LoadConfigurationFile("Configuration.json");
 
             var ptzManager = SimpleIoc.Default.GetInstance<IPTZManager>();
+
             //Create and connect connection to ATEM
+            var atemHandler = new AtemSwitcherHandler();
+            ptzManager.SetAtemHandler(atemHandler);
 
             //Create How many Camera
             foreach (var camcfg in cfg.Cameras)
