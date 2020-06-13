@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:pl="clr-namespace:PTZPadController.PresentationLayer"
         xmlns:local="clr-namespace:PTZPadController"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="PTZ Pad Controler" Height="615.789" Width="286.427"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
@@ -58,30 +59,94 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Grid.Row="0" Margin="5">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraUpLeft}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Left45.png"/>
                 </Button>
-                <Button Grid.Column="1" Grid.Row="0" Margin="5" Command="{Binding CameraUp}">
+                <Button Grid.Column="1" Grid.Row="0" Margin="5">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraUp}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Up.png"/>
                 </Button>
                 <Button Grid.Column="2" Grid.Row="0" Margin="5">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraUpRight}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Up45.png"/>
                 </Button>
                 <Button Grid.Column="0" Grid.Row="1" Margin="5">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraLeft}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Left.png"/>
                 </Button>
                 <Button Grid.Column="1" Grid.Row="1" Margin="5">
                     <Image Source="/PTZPadController;component/Images/Icons/32/Pointer-WF.png"/>
                 </Button>
                 <Button Grid.Column="2" Grid.Row="1" Margin="5">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraRight}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Right.png"/>
                 </Button>
                 <Button Grid.Column="0" Grid.Row="2" Margin="5">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraDownLeft}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <Image Source="/PTZPadController;component/Images/Icons/32/Expander down45.png"/>
                 </Button>
                 <Button Grid.Column="1" Grid.Row="2" Margin="5">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraDown}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <Image Source="/PTZPadController;component/Images/Icons/32/Expander down.png"/>
                 </Button>
                 <Button Grid.Column="2" Grid.Row="2" Margin="5">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraDownRight}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Right45.png"/>
                 </Button>
 
@@ -95,19 +160,20 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="69*"/>
+                    <ColumnDefinition Width="69*"/>
+                    <ColumnDefinition Width="13*"/>
+                    <ColumnDefinition Width="56*"/>
+                    <ColumnDefinition Width="69*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Row="0" Grid.Column="0" Margin="5" Height="48" FontSize="36" FontWeight="Bold">1</Button>
-                <Button Grid.Row="0" Grid.Column="1" Margin="5" Height="48" FontSize="36" FontWeight="Bold">2</Button>
-                <Button Grid.Row="0" Grid.Column="2" Margin="5" Height="48" FontSize="36" FontWeight="Bold">3</Button>
-                <Button Grid.Row="0" Grid.Column="3" Margin="5" Height="48" FontSize="36" FontWeight="Bold">4</Button>
-                <Button Grid.Row="1" Grid.Column="0" Margin="5" Height="48" FontSize="36" FontWeight="Bold">5</Button>
-                <Button Grid.Row="1" Grid.Column="1" Margin="5" Height="48" FontSize="36" FontWeight="Bold">6</Button>
-                <Button Grid.Row="1" Grid.Column="2" Margin="5" Height="48" FontSize="36" FontWeight="Bold">7</Button>
-                <Button Grid.Row="1" Grid.Column="3" Margin="5" Height="48" FontSize="36" FontWeight="Bold">8</Button>
+                <Button Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">1</Button>
+                <Button Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">2</Button>
+                <Button Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold" Grid.ColumnSpan="2">3</Button>
+                <Button Grid.Row="0" Grid.Column="4" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">4</Button>
+                <Button Grid.Row="1" Grid.Column="0" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">5</Button>
+                <Button Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">6</Button>
+                <Button Grid.Row="1" Grid.Column="2" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold" Grid.ColumnSpan="2">7</Button>
+                <Button Grid.Row="1" Grid.Column="4" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">8</Button>
 
             </Grid>
         </GroupBox>
