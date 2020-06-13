@@ -7,30 +7,21 @@ using System.Threading.Tasks;
 
 namespace PTZPadController.BusinessLayer
 {
-    class CameraPTC140Handler : ICameraHandler, IClientCallback
+    public class CameraHandler : ICameraHandler
     {
-        private SocketAutoConnectParser m_SocketClient;
-        private CameraConnexionModel m_Connexion;
+        private ICameraParser m_CamParser;
 
-        public CameraPTC140Handler(CameraConnexionModel model)
+        public CameraHandler()
         {
-            m_Connexion = model;
         }
 
-        public void Initialize()
+        public void Initialize(ICameraParser camParser)
         {
-            if (m_SocketClient == null || !m_SocketClient.Connected)
-            {
-                m_SocketClient = new SocketAutoConnectParser();
-                m_SocketClient.Initialize(m_Connexion.CameraName, m_Connexion.CameraHost, m_Connexion.CameraPort);
-                m_SocketClient.OpenChanel(this);
-            }
+            m_CamParser = camParser;
         }
 
         public void PanTiltUp()
         {
-            if (m_SocketClient != null && m_SocketClient.Connected)
-                m_SocketClient.SendData(new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x06, 0x01, 0x17, 0x17, 0x03, 0x01, 0xFF });
         }
 
         public void PanTiltDown()
@@ -94,6 +85,16 @@ namespace PTZPadController.BusinessLayer
         public void CompletionMessage()
         {
             PTZLogger.Log.Debug("message OK");
+        }
+
+        public void Tally(bool ledRed, bool ledGreen)
+        {
+            m_CamParser.Tally(ledRed, ledGreen);
+        }
+
+        public void Connect()
+        {
+            m_CamParser.Connect();
         }
     }
 }
