@@ -218,7 +218,7 @@ namespace PTZPadController.BusinessLayer
         {
             if (CameraPreview != null)
             {
-                CameraPreview.ZooomWide();
+                CameraPreview.ZoomWide();
             }
         }
 
