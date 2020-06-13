@@ -8,8 +8,8 @@ namespace PTZPadController.DataAccessLayer
 {
     public class CameraConnexionModel
     {
-        public string CameraName { get; internal set; }
-        public string CameraHost { get; internal set; }
-        public int CameraPort { get; internal set; }
+        public string CameraName { get; set; }
+        public string CameraHost { get; set; }
+        public int CameraPort { get; set; }
     }
 }

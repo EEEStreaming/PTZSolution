@@ -8,9 +8,11 @@ namespace PTZPadController.DataAccessLayer
     {
         private ISocketParser m_SocketClient;
 
-        public void CompletionMessage()
+        public bool Connected { get { return (m_SocketClient != null) && (m_SocketClient.Connected); } }
+
+        public void CompletionMessage(string message)
         {
-            throw new NotImplementedException();
+            //TODO
         }
 
         public void Initialize(ISocketParser socket)
@@ -31,7 +33,6 @@ namespace PTZPadController.DataAccessLayer
             m_SocketClient.Disconnect();
         }
 
-
         /// <summary>
         /// Led control 
         /// </summary>
@@ -48,5 +49,14 @@ namespace PTZPadController.DataAccessLayer
                 m_SocketClient.SendData(new byte[] { 0x00, 0x0B, 0x81, 0x01, 0x7E, 0x01, 0x0A, 0x00, red, green, 0xFF });
             }
         }
+
+        //public void test1()
+        //{
+
+        //    if (m_SocketClient != null && m_SocketClient.Connected)
+        //    {
+        //        m_SocketClient.SendData();
+        //    }
+        //}
     }
 }
