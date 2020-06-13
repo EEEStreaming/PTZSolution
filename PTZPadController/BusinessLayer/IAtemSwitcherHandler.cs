@@ -2,11 +2,11 @@
 
 namespace PTZPadController.BusinessLayer
 {
-    public enum Camera { 
-        Camera_1,
-        Camera_2,
-        Camera_3,
-        Camera_4,
+    public enum Source { 
+        Source_1,
+        Source_2,
+        Source_3,
+        Source_4,
     }
     public interface IAtemSwitcherHandler
     {
@@ -19,14 +19,14 @@ namespace PTZPadController.BusinessLayer
         /// 
         /// </summary>
         /// <param name="programCamera">Sets the program camera: the actual red camera that is on air.</param>
-        void setProgramSource(Camera programCamera);
+        void setProgramSource(Source programCamera);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="previewCamera">Sets the preview camera: the actual green camera that is about to be on air.</param>
-        void setPreviewSource(Camera previewCamera);
+        void setPreviewSource(Source previewCamera);
 
-        void setBothSource(Camera programCamera, Camera previewCamera) {
+        void setBothSource(Source programCamera, Source previewCamera) {
             setProgramSource(programCamera);
             setPreviewSource(previewCamera);
         }
