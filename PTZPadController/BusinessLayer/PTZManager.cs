@@ -21,6 +21,7 @@ namespace PTZPadController.BusinessLayer
 
 
         }
+        #endregion
 
         #region Methods for the Initialization
         public void AddCcameraHandler(ICameraHandler camHandler)
@@ -34,6 +35,12 @@ namespace PTZPadController.BusinessLayer
             foreach (var cam in m_CameraList)
             {
                 cam.Connect();
+            }
+
+            //Basic reset
+            foreach (var cam in m_CameraList)
+            {
+                cam.Tally(false, false);
             }
 
             //Connect ATEM

@@ -98,7 +98,13 @@ namespace PTZPadController.ViewModel
             camParser.Initialize(socket);
             cam.Initialize(camParser);
             ptzManager.AddCcameraHandler(cam);
+
             //Create and connect to pad
+
+
+            //Startup the whole system
+            ptzManager.StartUp();
+
         }
     }
 }
