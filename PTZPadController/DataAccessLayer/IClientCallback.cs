@@ -1,6 +1,6 @@
 ﻿namespace PTZPadController.DataAccessLayer
 {
-    internal interface IClientCallback
+    public  interface IClientCallback
     {
         void CompletionMessage();
     }

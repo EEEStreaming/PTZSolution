@@ -9,9 +9,22 @@ namespace PTZPadController.Design
 {
     public class DesignPTZManager : IPTZManager
     {
+        public void AddCcameraHandler(ICameraHandler camHandler)
+        {
+        }
+
         public void CameraPanTiltUp()
         {
             //
+        }
+
+        public void SetAtemHandler(IAtemSwitcherHandler atemHandler)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StartUp()
+        {
         }
     }
 }

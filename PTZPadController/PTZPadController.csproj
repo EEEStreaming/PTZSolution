@@ -7,6 +7,15 @@
     <ApplicationIcon>Remote Control-WF.ico</ApplicationIcon>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>EEE-Software.snk</AssemblyOriginatorKeyFile>
+    <StartupObject>PTZPadController.App</StartupObject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +32,17 @@
     <None Remove="Images\Icons\32\Pointer-WF.png" />
     <None Remove="Images\Icons\32\Remote Control-WF.ico" />
     <None Remove="Images\Icons\32\Remote Control-WF.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <COMReference Include="BMDSwitcherAPI.dll">
+      <Guid>8a92b919-156c-4d61-94ef-03f9be4004b0</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+    </COMReference>
   </ItemGroup>
 
   <ItemGroup>

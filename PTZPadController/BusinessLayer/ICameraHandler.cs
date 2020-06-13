@@ -1,8 +1,12 @@
-﻿namespace PTZPadController.BusinessLayer
+﻿using PTZPadController.DataAccessLayer;
+
+namespace PTZPadController.BusinessLayer
 {
     public interface ICameraHandler
     {
-        void Initialize();
+        void Initialize(ICameraParser camParser);
         void PanTiltUp();
+        void Tally(bool ledRed, bool ledGreen);
+        void Connect();
     }
 }

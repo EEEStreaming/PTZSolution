@@ -2,6 +2,13 @@
 {
     public interface IPTZManager
     {
+
+        void StartUp();
+
         void CameraPanTiltUp();
+
+        void AddCcameraHandler(ICameraHandler camHandler);
+
+        void SetAtemHandler(IAtemSwitcherHandler atemHandler);
     }
 }
