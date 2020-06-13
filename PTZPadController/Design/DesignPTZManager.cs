@@ -23,6 +23,18 @@ namespace PTZPadController.Design
             //
         }
 
+        public void CameraZoomStop()
+        {
+        }
+
+        public void CameraZoomTele()
+        {
+        }
+
+        public void CameraZoomWide()
+        {
+        }
+
         public void InitSeetings(ConfigurationModel cfg)
         {
         }
@@ -37,42 +49,34 @@ namespace PTZPadController.Design
 
         void IPTZManager.CameraPanTiltDown()
         {
-            throw new NotImplementedException();
         }
 
         void IPTZManager.CameraPanTiltDownLeft()
         {
-            throw new NotImplementedException();
         }
 
         void IPTZManager.CameraPanTiltDownRight()
         {
-            throw new NotImplementedException();
         }
 
         void IPTZManager.CameraPanTiltLeft()
         {
-            throw new NotImplementedException();
         }
 
         void IPTZManager.CameraPanTiltRight()
         {
-            throw new NotImplementedException();
         }
 
         void IPTZManager.CameraPanTiltStop()
         {
-            throw new NotImplementedException();
         }
 
         void IPTZManager.CameraPanTiltUpLeft()
         {
-            throw new NotImplementedException();
         }
 
         void IPTZManager.CameraPanTiltUpRight()
         {
-            throw new NotImplementedException();
         }
     }
 }

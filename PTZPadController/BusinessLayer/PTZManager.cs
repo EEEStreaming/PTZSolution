@@ -91,6 +91,8 @@ namespace PTZPadController.BusinessLayer
                     if (CameraProgram.PanTileWorking)
                         CameraProgram.PanTiltStop();
 
+                    if (CameraProgram.ZoomWorking)
+                        CameraProgram.ZoomStop();
                 }
 
             }
@@ -201,6 +203,30 @@ namespace PTZPadController.BusinessLayer
             if (CameraPreview != null)
             {
                 CameraPreview.PanTiltStop();
+            }
+        }
+
+        public void CameraZoomStop()
+        {
+            if (CameraPreview != null)
+            {
+                CameraPreview.ZoomStop();
+            }
+        }
+
+        public void CameraZoomWide()
+        {
+            if (CameraPreview != null)
+            {
+                CameraPreview.ZooomWide();
+            }
+        }
+
+        public void CameraZoomTele()
+        {
+            if (CameraPreview != null)
+            {
+                CameraPreview.ZoomTele();
             }
         }
     }

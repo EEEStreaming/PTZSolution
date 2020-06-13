@@ -46,7 +46,34 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Slider Grid.Column="0" Orientation="Vertical" Margin="10"/>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button Width="32" Height="32">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraZoomTele}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraZoomStop}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-UP.png"/>
+                </Button>
+                <Button Width="32" Height="32" Grid.Row="1">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraZoomWidde}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding Path=CameraZoomStop}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <Image Source="/PTZPadController;component/Images/Icons/32/Expander down.png"/>
+                </Button>
+            </Grid>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>

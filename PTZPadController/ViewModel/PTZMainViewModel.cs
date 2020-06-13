@@ -33,6 +33,9 @@ namespace PTZPadController.ViewModel
         public ICommand CameraLeft { get; private set; }
         public ICommand CameraRight { get; private set; }
         public ICommand CameraPanStop { get; private set; }
+        public ICommand CameraZoomTele { get; private set; }
+        public ICommand CameraZoomWidde { get; private set; }
+        public ICommand CameraZoomStop { get; private set; }
 
         #endregion
 
@@ -60,6 +63,24 @@ namespace PTZPadController.ViewModel
             CameraLeft = new RelayCommand(CameraLeftExecute);
             CameraRight = new RelayCommand(CameraRightExecute);
             CameraPanStop = new RelayCommand(CameraPanStopExecute);
+            CameraZoomTele = new RelayCommand(CameraZoomTeleExecute);
+            CameraZoomWidde = new RelayCommand(CameraZoomWiddeExecute);
+            CameraZoomStop = new RelayCommand(CameraZoomStopExecute);
+        }
+
+        private void CameraZoomStopExecute()
+        {
+            m_PtzManager.CameraZoomStop();
+        }
+
+        private void CameraZoomWiddeExecute()
+        {
+            m_PtzManager.CameraZoomWide();
+        }
+
+        private void CameraZoomTeleExecute()
+        {
+            m_PtzManager.CameraZoomTele();
         }
 
         private void CameraUpExecute()

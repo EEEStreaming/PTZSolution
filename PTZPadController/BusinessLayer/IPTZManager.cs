@@ -20,7 +20,9 @@ namespace PTZPadController.BusinessLayer
         void CameraPanTiltLeft();
         void CameraPanTiltRight();
         void CameraPanTiltStop();
-
+        void CameraZoomStop();
+        void CameraZoomWide();
+        void CameraZoomTele();
 
 
         void AddCcameraHandler(ICameraHandler camHandler);
@@ -28,5 +30,6 @@ namespace PTZPadController.BusinessLayer
         void SetAtemHandler(IAtemSwitcherHandler atemHandler);
 
         void InitSeetings(ConfigurationModel cfg);
+
     }
 }
