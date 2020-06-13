@@ -1,16 +1,40 @@
-﻿using System;
+﻿using BMDSwitcherAPI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PTZPadController.BusinessLayer
 {
     class AtemSwitcherHandler : IAtemSwitcherHandler
     {
-        public void connect()
+        private IBMDSwitcherDiscovery atem_discovery;
+        private IBMDSwitcher atem_switcher;
+        private string atem_ip;
+
+        public AtemSwitcherHandler(string ip)
         {
-            throw new NotImplementedException();
+            this.atem_ip = ip;
+        }
+
+        public AtemSwitcherHandler() : this("192.168.1.135") { } // TODO : read ip from config.
+
+        public Task connect()
+        {
+            // Create switcher discovery object
+            atem_discovery = new CBMDSwitcherDiscovery();
+
+            if (atem_switcher != null)
+            {
+                return Task.Factory.StartNew(() => { return; });
+            }
+
+            // Connect to switcher
+            _BMDSwitcherConnectToFailure failureReason;
+            Task m_Task = Task.Factory.StartNew(() => atem_discovery.ConnectTo(this.atem_ip, out atem_switcher, out failureReason));
+            return m_Task;
         }
 
         public void disconnect()

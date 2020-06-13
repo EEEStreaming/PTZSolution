@@ -1,4 +1,6 @@
-﻿namespace PTZPadController.BusinessLayer
+﻿using System.Threading.Tasks;
+
+namespace PTZPadController.BusinessLayer
 {
     public enum Camera { 
         Camera_1,
@@ -8,8 +10,8 @@
     }
     public interface IAtemSwitcherHandler
     {
-        
-        void connect();
+
+        Task connect();
         void disconnect();
         void onPreviewSourceChange();
         void onProgramSourceChange();
