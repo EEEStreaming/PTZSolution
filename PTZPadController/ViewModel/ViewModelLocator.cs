@@ -72,7 +72,10 @@ namespace PTZPadController.ViewModel
 
 
             var ptzManager = SimpleIoc.Default.GetInstance<IPTZManager>();
+
             //Create and connect connection to ATEM
+            var atemHandler = new AtemSwitcherHandler();
+            ptzManager.SetAtemHandler(atemHandler);
 
             //Create How many Camera
             var cam = new CameraHandler();

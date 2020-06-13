@@ -44,14 +44,15 @@ namespace PTZPadController.BusinessLayer
             {
                 return;
             }
-            // Create switcher discovery object
-            atem_discovery = new CBMDSwitcherDiscovery();
+            
             // Connect to switcher
             _BMDSwitcherConnectToFailure failureReason = 0;
             is_connecting = true;
             Task m_Task = Task.Factory.StartNew(() => { try
                 {
-                    atem_discovery.ConnectTo(this.atem_ip, out this.atem_switcher, out failureReason);
+                    CBMDSwitcherDiscovery atem_discovery = new CBMDSwitcherDiscovery();
+                    atem_discovery.ConnectTo(atem_ip, out atem_switcher, out failureReason);
+                    Log.Debug("Connected to ATEM");
                 }
                 catch (COMException comEx)
                 {
@@ -71,6 +72,7 @@ namespace PTZPadController.BusinessLayer
         }
         public bool waitForConnection() {
             while (is_connecting) {
+                Console.WriteLine("sleeping for connexion");
                 Thread.Sleep(10);
             }
             return is_connected;
@@ -117,7 +119,7 @@ namespace PTZPadController.BusinessLayer
                     _BMDSwitcherPortType type;
                     i.GetPortType(out type);
                     return type == _BMDSwitcherPortType.bmdSwitcherPortTypeExternal;
-                }) as List<IBMDSwitcherInput>;
+                }).ToList();
         }
 
         private IEnumerable<IBMDSwitcherMixEffectBlock> MixEffectBlocks
