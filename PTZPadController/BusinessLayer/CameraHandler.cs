@@ -95,7 +95,7 @@ namespace PTZPadController.BusinessLayer
         }
         public void ZoomStop()
         {
-            m_CamParser.ZoomTele();
+            m_CamParser.ZoomStop();
             ZoomWorking = false;
         }
 
