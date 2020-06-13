@@ -12,16 +12,18 @@ using System.Threading.Tasks;
 
 namespace PTZPadController.BusinessLayer
 {
+    public delegate void SwitcherEventHandler(object sender, object args);
     class AtemSwitcherHandler : IAtemSwitcherHandler
     {
         private IBMDSwitcherDiscovery atem_discovery;
         private IBMDSwitcher atem_switcher;
-        private SwitcherCallback atem_callback;
+        private IBMDSwitcherCallback atem_callback;
         private volatile List<IBMDSwitcherInput> inputs;
 
         private string atem_ip;
         volatile private bool is_connecting;
         volatile private bool is_connected;
+
 
         public AtemSwitcherHandler(string ip)
         {
@@ -38,8 +40,6 @@ namespace PTZPadController.BusinessLayer
         }
         public void connect()
         {
-            
-
             if (is_connecting || is_connected)
             {
                 return;
@@ -59,11 +59,15 @@ namespace PTZPadController.BusinessLayer
                     atem_switcher = null;
                 }
                 finally {
-                    is_connected = failureReason == 0 && atem_switcher != null;
+                    if (failureReason == 0 && atem_switcher != null) {
+                        switcherConnected();
+                        if (inputs[0] != null && inputs[1] != null && inputs[2] != null && inputs[3] != null) {
+                            is_connected = true;
+                        }
+                    }
                     is_connecting = false;
                 }
             });
-            return;
         }
         public bool waitForConnection() {
             while (is_connecting) {
@@ -75,8 +79,9 @@ namespace PTZPadController.BusinessLayer
         public void disconnect()
         {
             if (this.atem_switcher != null) {
-               // atem_switcher.RemoveCallback();   TODO: implement the callback used, remove it here
-
+                atem_switcher.RemoveCallback(atem_callback);
+                atem_switcher = null;
+                is_connected = false;
             }
         }
 
@@ -164,12 +169,79 @@ namespace PTZPadController.BusinessLayer
                 }
             }
         }
+        /// <summary>
+        /// Thank's http://difanet.jamu.cz/az_vyuka/manualy/Blackmagic_ATEM_studio/ATEM_Blackmagic_OSX10.13/ATEMProduction_Studio4K/Blackmagic%20ATEM%20Switchers%20SDK%208.0.3/Windows/Samples/SwitcherPanelCSharp/SwitcherMonitors.cs
+        /// </summary>
+        class MixEffectBlockMonitor : IBMDSwitcherMixEffectBlockCallback
+        {
+            // Events:
+            public event SwitcherEventHandler ProgramInputChanged;
+            public event SwitcherEventHandler PreviewInputChanged;
+            public event SwitcherEventHandler TransitionFramesRemainingChanged;
+            public event SwitcherEventHandler TransitionPositionChanged;
+            public event SwitcherEventHandler InTransitionChanged;
 
+            public MixEffectBlockMonitor()
+            {
+            }
+
+            void IBMDSwitcherMixEffectBlockCallback.Notify(_BMDSwitcherMixEffectBlockEventType eventType)
+            {
+                switch (eventType)
+                {
+                    case _BMDSwitcherMixEffectBlockEventType.bmdSwitcherMixEffectBlockEventTypeProgramInputChanged:
+                        if (ProgramInputChanged != null)
+                            ProgramInputChanged(this, null);
+                        break;
+                    case _BMDSwitcherMixEffectBlockEventType.bmdSwitcherMixEffectBlockEventTypePreviewInputChanged:
+                        if (PreviewInputChanged != null)
+                            PreviewInputChanged(this, null);
+                        break;
+                    case _BMDSwitcherMixEffectBlockEventType.bmdSwitcherMixEffectBlockEventTypeTransitionFramesRemainingChanged:
+                        if (TransitionFramesRemainingChanged != null)
+                            TransitionFramesRemainingChanged(this, null);
+                        break;
+                    case _BMDSwitcherMixEffectBlockEventType.bmdSwitcherMixEffectBlockEventTypeTransitionPositionChanged:
+                        if (TransitionPositionChanged != null)
+                            TransitionPositionChanged(this, null);
+                        break;
+                    case _BMDSwitcherMixEffectBlockEventType.bmdSwitcherMixEffectBlockEventTypeInTransitionChanged:
+                        if (InTransitionChanged != null)
+                            InTransitionChanged(this, null);
+                        break;
+                }
+            }
+
+        }
         private class SwitcherCallback : IBMDSwitcherCallback
         {
             public void Notify(_BMDSwitcherEventType eventType, _BMDSwitcherVideoMode coreVideoMode)
             {
                 throw new NotImplementedException();
+            }
+        }
+        class InputMonitor : IBMDSwitcherInputCallback
+        {
+            // Events:
+            public event SwitcherEventHandler LongNameChanged;
+
+            private IBMDSwitcherInput m_input;
+            public IBMDSwitcherInput Input { get { return m_input; } }
+
+            public InputMonitor(IBMDSwitcherInput input)
+            {
+                m_input = input;
+            }
+
+            void IBMDSwitcherInputCallback.Notify(_BMDSwitcherInputEventType eventType)
+            {
+                switch (eventType)
+                {
+                    case _BMDSwitcherInputEventType.bmdSwitcherInputEventTypeLongNameChanged:
+                        if (LongNameChanged != null)
+                            LongNameChanged(this, null);
+                        break;
+                }
             }
         }
 
