@@ -21,5 +21,8 @@ namespace PTZPadController.BusinessLayer
         public void PanTiltDownLeft(short panSpeed, short tiltSpeed);
         public void PanTiltDownRight(short panSpeed, short tiltSpeed);
         public void PanTiltStop();
+        public void ZoomTele();
+        public void ZoomWide();
+        public void ZoomStop();
     }
 }
