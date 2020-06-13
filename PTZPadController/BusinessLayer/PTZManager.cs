@@ -12,7 +12,7 @@ namespace PTZPadController.BusinessLayer
 {
     public class PTZManager : IPTZManager
     {
-        const short SPEED_MEDIUM = 64;
+        const short SPEED_MEDIUM = 15;
 
         private List<ICameraHandler> m_CameraList;
         private IAtemSwitcherHandler m_AtemHandler;

@@ -96,7 +96,7 @@ namespace PTZPadController.ViewModel
         }
         private void CameraPanStopExecute()
         {
-            m_PtzManager.CameraPanTiltRight();
+            m_PtzManager.CameraPanTiltStop();
         }
     }
 }
