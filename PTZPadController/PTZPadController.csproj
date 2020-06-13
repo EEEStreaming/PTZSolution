@@ -26,6 +26,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <COMReference Include="BMDSwitcherAPI.dll">
+      <Guid>8a92b919-156c-4d61-94ef-03f9be4004b0</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>false</Isolated>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MvvmLightStd10" Version="5.4.1.2" />
     <PackageReference Include="NLog.Config" Version="4.7.2" />
   </ItemGroup>
