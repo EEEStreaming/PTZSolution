@@ -27,62 +27,63 @@ namespace PTZPadController.BusinessLayer
             CameraName = name;
         }
 
-        public void PanTiltUp()
+        public void PanTiltUp(short panSpeed, short tiltSpeed)
         {
+            m_CamParser.PanTiltUp(panSpeed, tiltSpeed);
             PanTileWorking = true;
         }
 
-        public void PanTiltDown()
+        public void PanTiltDown(short panSpeed, short tiltSpeed)
         {
+            m_CamParser.PanTiltDown(panSpeed, tiltSpeed);
             PanTileWorking = true;
-
         }
 
-        public void PanTiltLeft()
+        public void PanTiltLeft(short panSpeed, short tiltSpeed)
         {
+            m_CamParser.PanTiltLeft(panSpeed, tiltSpeed);
             PanTileWorking = true;
-
         }
 
-        public void PanTiltRight()
+        public void PanTiltRight(short panSpeed, short tiltSpeed)
         {
+            m_CamParser.PanTiltRight(panSpeed, tiltSpeed);
             PanTileWorking = true;
-
         }
 
-        public void PanTiltUpLeft()
+        public void PanTiltUpLeft(short panSpeed, short tiltSpeed)
         {
+            m_CamParser.PanTiltUpLeft(panSpeed, tiltSpeed);
             PanTileWorking = true;
-
         }
 
-        public void PanTiltUpRight()
+        public void PanTiltUpRight(short panSpeed, short tiltSpeed)
         {
+            m_CamParser.PanTiltUpRight(panSpeed, tiltSpeed);
             PanTileWorking = true;
-
         }
 
-        public void PanTiltDownLeft()
+        public void PanTiltDownLeft(short panSpeed, short tiltSpeed)
         {
+            m_CamParser.PanTiltDownLeft(panSpeed, tiltSpeed);
             PanTileWorking = true;
-
         }
 
-        public void PanTiltDownRight()
+        public void PanTiltDownRight(short panSpeed, short tiltSpeed)
         {
+            m_CamParser.PanTiltDownRight(panSpeed, tiltSpeed);
             PanTileWorking = true;
-
         }
 
         public void PanTiltStop()
         {
+            m_CamParser.PanTiltStop();
             PanTileWorking = false;
-
         }
 
         public void PanTiltHome()
         {
-
+            
         }
         public void CameraMemoryReset()
         {
