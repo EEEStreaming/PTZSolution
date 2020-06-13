@@ -81,6 +81,25 @@ namespace PTZPadController.BusinessLayer
             PanTileWorking = false;
         }
 
+
+        public void ZoomTele()
+        {
+            m_CamParser.ZoomTele();
+            ZoomWorking = true;
+        }
+
+        public void ZoomWide()
+        {
+            m_CamParser.ZoomWide();
+            ZoomWorking = true;
+        }
+        public void ZoomStop()
+        {
+            m_CamParser.ZoomTele();
+            ZoomWorking = false;
+        }
+
+
         public void PanTiltHome()
         {
             //TODO
