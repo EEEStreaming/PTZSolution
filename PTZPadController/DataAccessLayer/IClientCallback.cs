@@ -2,6 +2,6 @@
 {
     public  interface IClientCallback
     {
-        void CompletionMessage();
+        void CompletionMessage(string message);
     }
 }

@@ -21,6 +21,9 @@ namespace PTZPadController.DataAccessLayer
         private bool m_FreeSocket = false;
         private CancellationTokenSource m_Cancellation;
 
+        private const short MAX_BYTEARRAY_LENGTH = 4096;
+        private const short MAX_RECEIVED_BYTEARRAY_LENGTH = 1024;
+
 
         public bool Connected { get { return (m_Socket != null) && (m_Socket.Connected); } }
 
@@ -128,28 +131,79 @@ namespace PTZPadController.DataAccessLayer
             }
         }
 
-
-
         private bool ReceiveData()
         {
-            var msg = new Byte[4096];
+            var bufferByteArray = new Byte[MAX_BYTEARRAY_LENGTH];
+            var receivedByteArray = new Byte[MAX_RECEIVED_BYTEARRAY_LENGTH];
+            short lenByteArray = 0;
             while (true)
             {
                 if (m_FreeSocket)
+                {
                     return true;
+                }
+
                 if ((m_Socket != null) && (m_Socket.Connected))
                 {
                     try
-                    {
-
-                        var bytesRead = m_Socket.Receive(msg, 0, 4096, SocketFlags.None);
+                    {                        
+                        var bytesRead = m_Socket.Receive(receivedByteArray, 0, MAX_RECEIVED_BYTEARRAY_LENGTH, SocketFlags.None);
                         if (bytesRead > 0)
                         {
                             //msgReceived += Encoding.UTF8.GetString(msg, 0, bytesRead);
                             if (PTZLogger.Log.IsEnabled(LogLevel.Debug))
-                                PTZLogger.Log.Debug("Raw msg : {0}", BitConverter.ToString(msg, 0, bytesRead));
-                            if (true)
-                                m_ClientCallback.CompletionMessage();
+                            {
+                                PTZLogger.Log.Debug("Raw msg : {0}", BitConverter.ToString(receivedByteArray, 0, bytesRead));
+                            }
+
+                            // check length max and move received byte array in global byte array
+                            if(lenByteArray+bytesRead >= MAX_BYTEARRAY_LENGTH)
+                            {
+                                PTZLogger.Log.Error("Buffer byteArray overflow (waiting buffer:{0}, bytesRead:{1}, total:{2}, max allowed:{3}) BUFFER CLEARED", lenByteArray,bytesRead, lenByteArray+bytesRead,MAX_BYTEARRAY_LENGTH);
+                                lenByteArray = 0;
+                                Array.Clear(receivedByteArray,0, MAX_RECEIVED_BYTEARRAY_LENGTH);
+                                Array.Clear(bufferByteArray,0, MAX_BYTEARRAY_LENGTH);
+                                continue;
+                            }
+
+                            Array.Copy(receivedByteArray, lenByteArray, bufferByteArray, 0, bytesRead);
+                            Array.Clear(receivedByteArray, 0, MAX_RECEIVED_BYTEARRAY_LENGTH);
+
+                            // search message begin
+                            short startPosition = 0;
+                            for (; startPosition < bytesRead-1; startPosition++)
+                            {
+                                // found
+                                if (bufferByteArray[startPosition] == 0x00 && bufferByteArray[startPosition+1] != 0x00)
+                                {
+                                    break;
+                                }
+                            }
+
+                            // check startPosition
+                            if (startPosition > bytesRead - 2)
+                            {
+                                PTZLogger.Log.Debug("startPos({0}) > bytesRead({1}) - 2", startPosition, bytesRead);
+                                continue;
+                            }
+
+                            // check remaining length contains the message
+                            short msgLen = bufferByteArray[startPosition + 1];
+                            if(msgLen> bytesRead - startPosition)
+                            {
+                                PTZLogger.Log.Debug("msgLen({0})> bytesRead({1}) - startPos({2})", msgLen, bytesRead,startPosition);
+                                continue;
+                            }
+
+                            // prepare the message for callback
+                            byte[] message = new byte[msgLen];
+                            Array.Copy(bufferByteArray, startPosition, message, 0, msgLen);
+
+                            // delete message and dummy
+                            Array.Clear(bufferByteArray, 0, startPosition + msgLen);
+
+                            // callback
+                            m_ClientCallback.CompletionMessage(BitConverter.ToString(message, 0, msgLen));
                         }
                         else
                         {
@@ -170,8 +224,6 @@ namespace PTZPadController.DataAccessLayer
                         //a socket error has occured
                         return m_FreeSocket;
                     }
-
-
 
                     //PTZLogger.Log.Debug("Residue after parsing : {0}", msgReceived);
 
