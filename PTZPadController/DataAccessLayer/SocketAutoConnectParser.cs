@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PTZPadController.DataAccessLayer
 {
-    class SocketAutoConnectParser
+    public class SocketAutoConnectParser : ISocketParser
     {
         private string m_Host;
         private int m_Port;
@@ -24,18 +24,19 @@ namespace PTZPadController.DataAccessLayer
 
         public bool Connected { get { return (m_Socket != null) && (m_Socket.Connected); } }
 
-        public void Initialize(string name, string host, int port)
+        public void Initialize(string name, string host, int port, IClientCallback callback)
         {
             if (!m_Initialized)
             {
                 m_Name = name;
                 m_Host = host;
                 m_Port = port;
+                m_ClientCallback = callback;
                 m_Initialized = true;
             }
         }
 
-        public void OpenChanel(IClientCallback callback)
+        public void Connect()
         {
             if (m_Initialized)
             {
@@ -47,7 +48,6 @@ namespace PTZPadController.DataAccessLayer
                     // Disable the Nagle Algorithm for this tcp socket.
                     m_Socket.NoDelay = true;
                     //m_Socket.Blocking = false; // This needs to be done after Connect or it will error out.
-                    m_ClientCallback = callback;
 
                     PTZLogger.Log.Debug("{0}, {1}, Connected : {2}", m_Name, m_Host, m_Socket.Connected);
 
@@ -73,7 +73,7 @@ namespace PTZPadController.DataAccessLayer
                         {
                             Thread.Sleep(1000);
                             PTZLogger.Log.Info("{0},{1}, try to re-connect ", m_Name, m_Host);
-                            OpenChanel(callback);
+                            Connect();
                         }
                     }, m_Cancellation.Token, TaskCreationOptions.None, TaskScheduler.Default);
                     if (m_Cancellation.Token.IsCancellationRequested)
@@ -105,7 +105,7 @@ namespace PTZPadController.DataAccessLayer
             PTZLogger.Log.Debug("{0},{1}, Socket ShutDown",m_Name,m_Host);
         }
 
-        public void CloseChanel()
+        public void Disconnect()
         {
             m_FreeSocket = true;
             ShutDown();
@@ -120,7 +120,7 @@ namespace PTZPadController.DataAccessLayer
             {
                 PTZLogger.Log.Error("{0},{1}, Socket connection failed, task.Result=fasle", m_Name, m_Host);
                 ShutDown();
-                OpenChanel(m_ClientCallback);
+                Connect();
             }
             else
             {
