@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static PTZPadController.BusinessLayer.AtemSwitcherHandler;
 
 namespace PTZPadController.BusinessLayer
 {
@@ -38,14 +39,22 @@ namespace PTZPadController.BusinessLayer
             m_AtemHandler.PreviewSourceChanged += AtemPreviewSourceChange;
         }
 
-        private void AtemPreviewSourceChange(object sender, EventArgs e)
+        private void AtemPreviewSourceChange(object sender, SourceArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
-        private void AtemProgramSourceChange(object sender, EventArgs e)
+        private void AtemProgramSourceChange(object sender, SourceArgs e)
         {
-            throw new NotImplementedException();
+            foreach (var cam in m_CameraList)
+            {
+                if (cam.CameraName == e.CurrentInputName)
+                    cam.Tally(true, false);
+                else
+                    cam.Tally(false, false);
+                
+            }
+     
         }
 
         public void StartUp()
@@ -59,15 +68,15 @@ namespace PTZPadController.BusinessLayer
             //Basic reset
             foreach (var cam in m_CameraList)
             {
-                cam.Tally(true, false);
+                cam.Tally(false, false);
             }
 
             //Connect ATEM
             m_AtemHandler.connect();
-            if (m_AtemHandler.waitForConnection())
-            {
-                m_AtemHandler.setPreviewSource(Source.Source_1);
-            }
+            //if (m_AtemHandler.waitForConnection())
+           // {
+           //     m_AtemHandler.setPreviewSource(Source.Source_1);
+            //}
             //Connect PAD
         }
         #endregion
@@ -88,5 +97,6 @@ namespace PTZPadController.BusinessLayer
             }
 
         }
+        
     }
 }

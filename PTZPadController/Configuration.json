@@ -1,17 +1,17 @@
 {
   "Cameras": [
     {
-      "CameraName": "CAM 1",
+      "CameraName": "Camera 1",
       "CameraHost": "192.168.1.131",
       "CameraPort": 5002
     },
     {
-      "CameraName": "CAM 2",
+      "CameraName": "Camera 2",
       "CameraHost": "192.168.1.132",
       "CameraPort": 5002
     },
     {
-      "CameraName": "CAM 3",
+      "CameraName": "Camera 3",
       "CameraHost": "192.168.1.133",
       "CameraPort": 5002
     }

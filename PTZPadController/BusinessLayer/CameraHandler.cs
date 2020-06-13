@@ -11,13 +11,16 @@ namespace PTZPadController.BusinessLayer
     {
         private ICameraParser m_CamParser;
 
+        public string CameraName { get; set; }
+
         public CameraHandler()
         {
         }
 
-        public void Initialize(ICameraParser camParser)
+        public void Initialize(ICameraParser camParser, string name)
         {
             m_CamParser = camParser;
+            CameraName = name;
         }
 
         public void PanTiltUp()

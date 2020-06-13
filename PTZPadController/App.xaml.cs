@@ -20,6 +20,8 @@ namespace PTZPadController
             //DispatcherHelper.Initialize();
         }
 
+        static public Window Win;
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             PTZLogger.Log.Info("PTZPad Controller application start");
@@ -28,6 +30,7 @@ namespace PTZPadController
             var locator = this.FindResource("Locator") as ViewModelLocator;
 
             locator.Initialize();
+        
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)

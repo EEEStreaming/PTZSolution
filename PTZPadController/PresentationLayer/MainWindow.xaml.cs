@@ -23,6 +23,7 @@ namespace PTZPadController
         public MainWindow()
         {
             InitializeComponent();
+            App.Win = this;
         }
     }
 }
