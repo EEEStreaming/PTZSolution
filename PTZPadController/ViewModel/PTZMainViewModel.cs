@@ -6,6 +6,7 @@ using PTZPadController.Common;
 using PTZPadController.DataAccessLayer;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace PTZPadController.ViewModel
@@ -83,45 +84,57 @@ namespace PTZPadController.ViewModel
                 cameraInput++;
             }
 
-            Messenger.Default.Register<NotificationMessage<AtemSourceArgs>>(this, AtemSourceChange);
-
+            //Messenger.Default.Register<NotificationMessage<AtemSourceArgs>>(this, AtemSourceChange);
+            Messenger.Default.Register<NotificationMessage<CameraEventArgs>>(this, CameraStatusChange);
         }
 
-        private void AtemSourceChange(NotificationMessage<AtemSourceArgs> msg)
+        private void CameraStatusChange(NotificationMessage<CameraEventArgs> obj)
         {
-            if (msg.Notification == ConstMessages.ProgramSourceChanged)
+            if (obj.Notification == ConstMessages.CameraStatusChanged)
             {
-                foreach (var camera in Cameras)
-                {
-                    if (camera.Name == msg.Content.CurrentInputName)
-                        camera.SourceStatus = SourceEnum.Program;
-                    else if (camera.Name == msg.Content.PreviousInputName)
-                    {
-                        if (camera.Name == m_PtzManager.CameraPreview.CameraName)
-                            camera.SourceStatus = SourceEnum.Preview;
-                        else
-                            camera.SourceStatus = SourceEnum.Off;
-                    }
-                }
+                var camera = Cameras.FirstOrDefault(x => x.Name == obj.Content.CameraName);
+                if (camera != null)
+                    camera.SourceStatus = obj.Content.Status;
             }
-            else if (msg.Notification == ConstMessages.PreviewSourceChanged)
-            {
-                foreach (var camera in Cameras)
-                {
-                    if (camera.Name == msg.Content.CurrentInputName)
-                        camera.SourceStatus = SourceEnum.Preview;
-                    else if (camera.Name == msg.Content.PreviousInputName)
-                    {
-                        if (camera.Name == m_PtzManager.CameraProgram.CameraName)
-                            camera.SourceStatus = SourceEnum.Program;
-                        else
-                            camera.SourceStatus = SourceEnum.Off;
-                    }
-                }
-
-            }
-
         }
+
+        //private void AtemSourceChange(NotificationMessage<AtemSourceArgs> msg)
+        //{
+        //    // C'est un peu le même code que dans les méthodes AtemPreviewSourceChange et AtemProgramSourceChange du PTZManager. 
+        //    // Voir s'il ne faudrait pas Simplement Binder une propriété
+        //    if (msg.Notification == ConstMessages.ProgramSourceChanged)
+        //    {
+        //        foreach (var camera in Cameras)
+        //        {
+        //            if (camera.Name == msg.Content.CurrentInputName)
+        //                camera.SourceStatus = CameraStatusEnum.Program;
+        //            else if (camera.Name == msg.Content.PreviousInputName)
+        //            {
+        //                if (camera.Name == m_PtzManager.CameraPreview.CameraName)
+        //                    camera.SourceStatus = CameraStatusEnum.Preview;
+        //                else
+        //                    camera.SourceStatus = CameraStatusEnum.Off;
+        //            }
+        //        }
+        //    }
+        //    else if (msg.Notification == ConstMessages.PreviewSourceChanged)
+        //    {
+        //        foreach (var camera in Cameras)
+        //        {
+        //            if (camera.Name == msg.Content.CurrentInputName)
+        //                camera.SourceStatus = CameraStatusEnum.Preview;
+        //            else if (camera.Name == msg.Content.PreviousInputName)
+        //            {
+        //                if (camera.Name == m_PtzManager.CameraProgram.CameraName)
+        //                    camera.SourceStatus = CameraStatusEnum.Program;
+        //                else
+        //                    camera.SourceStatus = CameraStatusEnum.Off;
+        //            }
+        //        }
+
+        //    }
+
+        //}
 
         private void CameraZoomStopExecute()
         {
@@ -174,15 +187,5 @@ namespace PTZPadController.ViewModel
         {
             m_PtzManager.CameraPanTiltStop();
         }
-    }
-}
-
-namespace PTZPadController
-{
-    enum SourceEnum
-    {
-        Program,
-        Off,
-        Preview
     }
 }

@@ -12,6 +12,12 @@ using static PTZPadController.BusinessLayer.AtemSwitcherHandler;
 
 namespace PTZPadController.BusinessLayer
 {
+    public class CameraEventArgs : EventArgs
+    {
+        public CameraStatusEnum Status { get; set; }
+        public string CameraName { get; set; }
+    }
+
     public class PTZManager : IPTZManager
     {
         const short SPEED_MEDIUM = 15;
@@ -70,8 +76,20 @@ namespace PTZPadController.BusinessLayer
 
         private void AtemPreviewSourceChange(object sender, AtemSourceArgs e)
         {
+            CameraEventArgs args;
             if (CameraPreview != null)
-                CameraPreview.Tally(CameraPreview == CameraProgram, false);
+            {
+                var lRed = CameraPreview == CameraProgram;
+                CameraPreview.Tally(lRed, false);
+
+                args = new CameraEventArgs { CameraName = CameraPreview.CameraName };
+                if (lRed)
+                    args.Status = CameraStatusEnum.Program;
+                else
+                    args.Status = CameraStatusEnum.Off;
+
+                Messenger.Default.Send<NotificationMessage<CameraEventArgs>>(new NotificationMessage<CameraEventArgs>(args, ConstMessages.CameraStatusChanged));
+            }
             CameraPreview = null;
             foreach (var cam in m_CameraList)
             {
@@ -80,6 +98,10 @@ namespace PTZPadController.BusinessLayer
 
                     CameraPreview = cam;
                     CameraPreview.Tally(false, m_UseTallyGreen);
+
+                    args = new CameraEventArgs { CameraName = CameraPreview.CameraName, Status = CameraStatusEnum.Preview };
+                    Messenger.Default.Send<NotificationMessage<CameraEventArgs>>(new NotificationMessage<CameraEventArgs>(args, ConstMessages.CameraStatusChanged));
+
                 }
 
             }
@@ -88,9 +110,20 @@ namespace PTZPadController.BusinessLayer
 
         private void AtemProgramSourceChange(object sender, AtemSourceArgs e)
         {
+            CameraEventArgs args;
             if (CameraProgram != null)
-                CameraProgram.Tally(false, m_UseTallyGreen?CameraPreview == CameraProgram:false);
+            {
+                var lGreen = CameraPreview == CameraProgram;
+                CameraProgram.Tally(false, m_UseTallyGreen ? lGreen : false);
+                args = new CameraEventArgs { CameraName = CameraProgram.CameraName };
+                if (lGreen)
+                    args.Status = CameraStatusEnum.Preview;
+                else
+                    args.Status = CameraStatusEnum.Off;
 
+                Messenger.Default.Send<NotificationMessage<CameraEventArgs>>(new NotificationMessage<CameraEventArgs>(args, ConstMessages.CameraStatusChanged));
+
+            }
             CameraProgram = null;
 
             foreach (var cam in m_CameraList)
@@ -106,6 +139,10 @@ namespace PTZPadController.BusinessLayer
 
                     if (CameraProgram.ZoomWorking)
                         CameraProgram.ZoomStop();
+
+                    args = new CameraEventArgs { CameraName = CameraProgram.CameraName, Status = CameraStatusEnum.Program };
+                    Messenger.Default.Send<NotificationMessage<CameraEventArgs>>(new NotificationMessage<CameraEventArgs>(args, ConstMessages.CameraStatusChanged));
+
                 }
 
             }

@@ -11,7 +11,7 @@
         <converters:ParametrizedBooleanToVisibilityConverter x:Key="ParametrizedBooleanToVisibilityConverter"/>
     </UserControl.Resources>
     <Border BorderBrush="Green"
-            BorderThickness="2"
+            BorderThickness="5"
             VerticalAlignment="Center"
             CornerRadius="5"
             Margin="5">
