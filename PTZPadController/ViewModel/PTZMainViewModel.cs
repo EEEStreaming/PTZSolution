@@ -1,8 +1,11 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using PTZPadController.BusinessLayer;
+using PTZPadController.Common;
 using PTZPadController.DataAccessLayer;
 using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace PTZPadController.ViewModel
@@ -39,6 +42,7 @@ namespace PTZPadController.ViewModel
 
         #endregion
 
+        public ObservableCollection<CameraViewModel> Cameras { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the PTZMainViewModel class.
@@ -66,6 +70,57 @@ namespace PTZPadController.ViewModel
             CameraZoomTele = new RelayCommand(CameraZoomTeleExecute);
             CameraZoomWidde = new RelayCommand(CameraZoomWiddeExecute);
             CameraZoomStop = new RelayCommand(CameraZoomStopExecute);
+            Cameras = new ObservableCollection<CameraViewModel>();
+
+            //Initialize viewModel
+            CameraViewModel camvm;
+            int cameraInput = 1;
+            
+            foreach (var cam in m_PtzManager.Cameras)
+            {
+                camvm = new CameraViewModel(cam.Parser, cameraInput);
+                Cameras.Add(camvm);
+                cameraInput++;
+            }
+
+            Messenger.Default.Register<NotificationMessage<AtemSourceArgs>>(this, AtemSourceChange);
+
+        }
+
+        private void AtemSourceChange(NotificationMessage<AtemSourceArgs> msg)
+        {
+            if (msg.Notification == ConstMessages.ProgramSourceChanged)
+            {
+                foreach (var camera in Cameras)
+                {
+                    if (camera.Name == msg.Content.CurrentInputName)
+                        camera.SourceStatus = SourceEnum.Program;
+                    else if (camera.Name == msg.Content.PreviousInputName)
+                    {
+                        if (camera.Name == m_PtzManager.CameraPreview.CameraName)
+                            camera.SourceStatus = SourceEnum.Preview;
+                        else
+                            camera.SourceStatus = SourceEnum.Off;
+                    }
+                }
+            }
+            else if (msg.Notification == ConstMessages.PreviewSourceChanged)
+            {
+                foreach (var camera in Cameras)
+                {
+                    if (camera.Name == msg.Content.CurrentInputName)
+                        camera.SourceStatus = SourceEnum.Preview;
+                    else if (camera.Name == msg.Content.PreviousInputName)
+                    {
+                        if (camera.Name == m_PtzManager.CameraProgram.CameraName)
+                            camera.SourceStatus = SourceEnum.Program;
+                        else
+                            camera.SourceStatus = SourceEnum.Off;
+                    }
+                }
+
+            }
+
         }
 
         private void CameraZoomStopExecute()
@@ -119,5 +174,15 @@ namespace PTZPadController.ViewModel
         {
             m_PtzManager.CameraPanTiltStop();
         }
+    }
+}
+
+namespace PTZPadController
+{
+    enum SourceEnum
+    {
+        Program,
+        Off,
+        Preview
     }
 }

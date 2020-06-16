@@ -11,20 +11,21 @@ namespace PTZPadController.BusinessLayer
     {
         private ICameraParser m_CamParser;
 
-        public string CameraName { get; set; }
+        public string CameraName { get { return m_CamParser.CameraName; } }
 
         public bool PanTileWorking { get; private set; }
 
         public bool ZoomWorking { get; private set; }
 
+        public ICameraParserModel Parser { get { return m_CamParser; } }
+
         public CameraHandler()
         {
         }
 
-        public void Initialize(ICameraParser camParser, string name)
+        public void Initialize(ICameraParser camParser)
         {
             m_CamParser = camParser;
-            CameraName = name;
         }
 
         public void PanTiltUp(short panSpeed, short tiltSpeed)

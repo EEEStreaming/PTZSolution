@@ -1,5 +1,7 @@
 ﻿using BMDSwitcherAPI;
+using GalaSoft.MvvmLight.Messaging;
 using NLog.Fluent;
+using PTZPadController.Common;
 using PTZPadController.DataAccessLayer;
 using System;
 using System.Collections.Generic;
@@ -15,8 +17,9 @@ using System.Windows.Media.Animation;
 namespace PTZPadController.BusinessLayer
 {
     public delegate void SwitcherEventHandler(object sender, object args);
-    public class SourceArgs : EventArgs
+    public class AtemSourceArgs : EventArgs
     {
+        public string PreviousInputName { get; set; }
         public string CurrentInputName { get; set; }
     }
 
@@ -128,12 +131,12 @@ namespace PTZPadController.BusinessLayer
         private MixEffectBlockMonitor m_mixEffectBlockMonitor;
         private SwitcherMonitor m_switcherMonitor;
 
+        private string m_CurrentProgramName;
+        private string m_CurrentPreviewName;
+
         private string atem_ip;
         volatile private bool is_connecting;
         volatile private bool is_connected;
-
-        public event EventHandler<SourceArgs> PreviewSourceChanged;
-        public event EventHandler<SourceArgs> ProgramSourceChanged;
 
 
         public AtemSwitcherHandler(string ip)
@@ -151,8 +154,8 @@ namespace PTZPadController.BusinessLayer
             m_switcherMonitor.SwitcherDisconnected += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => SwitcherDisconnected())));
 
             m_mixEffectBlockMonitor = new MixEffectBlockMonitor();
-            m_mixEffectBlockMonitor.ProgramInputChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => onProgramSourceChange())));
-            m_mixEffectBlockMonitor.PreviewInputChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => onPreviewSourceChange())));
+            m_mixEffectBlockMonitor.ProgramInputChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => OnProgramSourceChange())));
+            m_mixEffectBlockMonitor.PreviewInputChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => OnPreviewSourceChange())));
             //m_mixEffectBlockMonitor.TransitionFramesRemainingChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => UpdateTransitionFramesRemaining())));
             //m_mixEffectBlockMonitor.TransitionPositionChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => UpdateSliderPosition())));
             //m_mixEffectBlockMonitor.InTransitionChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => OnInTransitionChanged())));
@@ -269,28 +272,31 @@ namespace PTZPadController.BusinessLayer
             //}
         }
 
-        protected virtual void onPreviewSourceChange()
+        protected virtual void OnPreviewSourceChange()
         {
             long previewId;
 
             firstMixEffectBlock.GetPreviewInput(out previewId);
 
-            EventHandler<SourceArgs> handler = PreviewSourceChanged;
-            SourceArgs args = new SourceArgs();
-            args.CurrentInputName = GetInputNameById(previewId);
-            handler?.Invoke(this, args);
+            AtemSourceArgs args = new AtemSourceArgs();
+            args.PreviousInputName = m_CurrentPreviewName;
+            m_CurrentPreviewName = GetInputNameById(previewId);
+            args.CurrentInputName = m_CurrentPreviewName;
+
+            Messenger.Default.Send<NotificationMessage<AtemSourceArgs>>(new NotificationMessage<AtemSourceArgs>(args, ConstMessages.PreviewSourceChanged));
         }
 
-        protected virtual void onProgramSourceChange()
+        protected virtual void OnProgramSourceChange()
         {
             long programId;
 
             firstMixEffectBlock.GetProgramInput(out programId);
 
-            EventHandler<SourceArgs> handler = ProgramSourceChanged;
-            SourceArgs args = new SourceArgs();
-            args.CurrentInputName = GetInputNameById(programId);
-            handler?.Invoke(this, args);
+            AtemSourceArgs args = new AtemSourceArgs();
+            args.PreviousInputName = m_CurrentProgramName;
+            m_CurrentProgramName = GetInputNameById(programId);
+            args.CurrentInputName = m_CurrentProgramName;
+            Messenger.Default.Send<NotificationMessage<AtemSourceArgs>>(new NotificationMessage<AtemSourceArgs>(args, ConstMessages.ProgramSourceChanged));
         }
 
         public void setPreviewSource(Source previewSource)
@@ -381,7 +387,7 @@ namespace PTZPadController.BusinessLayer
             //    {
             //        _BMDSwitcherPortType type;
             //        i.GetPortType(out type);
-                    
+
             //        return type == _BMDSwitcherPortType.bmdSwitcherPortTypeExternal;
             //    }).ToList();
             //// Register callbacks for state changes on Inputs
@@ -390,6 +396,11 @@ namespace PTZPadController.BusinessLayer
             //    var input = inputs[i];
             //    input.AddCallback(this);
             //}
+
+
+            //Read current Preview and Program input
+            m_CurrentProgramName = GetCameraProgramName();
+            m_CurrentPreviewName = GetCameraPreviewName();
         }
 
         private void OnInputLongNameChanged(object sender, object args)

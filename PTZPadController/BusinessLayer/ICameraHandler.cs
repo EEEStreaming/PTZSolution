@@ -1,14 +1,16 @@
 ﻿using PTZPadController.DataAccessLayer;
+using System.ComponentModel;
 
 namespace PTZPadController.BusinessLayer
 {
     public interface ICameraHandler
     {
+        public ICameraParserModel Parser { get; }
         public string CameraName { get;  }
 
         public bool PanTileWorking { get; }
         public bool ZoomWorking { get; }
-        void Initialize(ICameraParser camParser, string name);
+        void Initialize(ICameraParser camParser);
         void Tally(bool ledRed, bool ledGreen);
         void Connect();
 

@@ -1,4 +1,5 @@
 ﻿using PTZPadController.DataAccessLayer;
+using System.Windows.Documents;
 
 namespace PTZPadController.BusinessLayer
 {
@@ -8,6 +9,8 @@ namespace PTZPadController.BusinessLayer
         public ICameraHandler CameraPreview { get; }
 
         public ICameraHandler CameraProgram { get; }
+
+        public System.Collections.Generic.List<ICameraHandler> Cameras { get; }
 
         void StartUp();
 

@@ -99,8 +99,8 @@ namespace UnitTestPTZPadController.BusinessLayer
         int iCamProgram;
         public ConfigurationModel Configuration { get; internal set; }
 
-        public event EventHandler<SourceArgs> PreviewSourceChanged;
-        public event EventHandler<SourceArgs> ProgramSourceChanged;
+        public event EventHandler<AtemSourceArgs> PreviewSourceChanged;
+        public event EventHandler<AtemSourceArgs> ProgramSourceChanged;
 
         public void connect()
         {
@@ -148,10 +148,10 @@ namespace UnitTestPTZPadController.BusinessLayer
         {
             var i = iCamPreview;
             iCamPreview = iCamProgram;
-            PreviewSourceChanged?.Invoke(this, new SourceArgs { CurrentInputName = Configuration.Cameras[iCamPreview].CameraName });
+            PreviewSourceChanged?.Invoke(this, new AtemSourceArgs { CurrentInputName = Configuration.Cameras[iCamPreview].CameraName });
             
             iCamProgram = i;
-            ProgramSourceChanged?.Invoke(this, new SourceArgs { CurrentInputName = Configuration.Cameras[iCamProgram].CameraName });
+            ProgramSourceChanged?.Invoke(this, new AtemSourceArgs { CurrentInputName = Configuration.Cameras[iCamProgram].CameraName });
         }
     }
 

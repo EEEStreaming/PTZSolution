@@ -1,9 +1,10 @@
-﻿namespace PTZPadController.DataAccessLayer
+﻿using System.ComponentModel;
+
+namespace PTZPadController.DataAccessLayer
 {
-    public interface ICameraParser
+    public interface ICameraParser : ICameraParserModel
     {
 
-        bool Connected { get;}
         void Connect();
         void Disconnect();
         void Tally(bool ledRed, bool ledGreen);
@@ -22,5 +23,11 @@
         public void ZoomWide();
         public void ZoomStop();
 
+    }
+
+    public interface ICameraParserModel
+    {
+        public string CameraName { get; }
+        public bool Connected { get; }
     }
 }

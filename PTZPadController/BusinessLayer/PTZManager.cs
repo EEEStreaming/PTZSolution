@@ -1,4 +1,6 @@
-﻿using PTZPadController.DataAccessLayer;
+﻿using GalaSoft.MvvmLight.Messaging;
+using PTZPadController.Common;
+using PTZPadController.DataAccessLayer;
 using PTZPadController.PresentationLayer;
 using System;
 using System.Collections.Generic;
@@ -18,11 +20,12 @@ namespace PTZPadController.BusinessLayer
         private IAtemSwitcherHandler m_AtemHandler;
         private bool m_UseTallyGreen;
         private bool m_Initialized;
-        
 
         public ICameraHandler CameraPreview { get; private set; }
 
         public ICameraHandler CameraProgram { get; private set; }
+
+        public List<ICameraHandler> Cameras { get { return m_CameraList; } }
 
         #region Constructor
         /// <summary>
@@ -53,12 +56,19 @@ namespace PTZPadController.BusinessLayer
         public void SetAtemHandler(IAtemSwitcherHandler atemHandler)
         {
             m_AtemHandler = atemHandler;
-            m_AtemHandler.ProgramSourceChanged += AtemProgramSourceChange;
-            m_AtemHandler.PreviewSourceChanged += AtemPreviewSourceChange;
+            Messenger.Default.Register<NotificationMessage<AtemSourceArgs>>(this, AtemSourceChange);
+        }
+
+        private void AtemSourceChange(NotificationMessage<AtemSourceArgs> msg)
+        {
+            if (msg.Notification == ConstMessages.ProgramSourceChanged)
+                AtemProgramSourceChange(msg.Sender, msg.Content);
+            else if (msg.Notification == ConstMessages.PreviewSourceChanged)
+                AtemPreviewSourceChange(msg.Sender, msg.Content);
         }
         #endregion
 
-        private void AtemPreviewSourceChange(object sender, SourceArgs e)
+        private void AtemPreviewSourceChange(object sender, AtemSourceArgs e)
         {
             if (CameraPreview != null)
                 CameraPreview.Tally(CameraPreview == CameraProgram, false);
@@ -76,7 +86,7 @@ namespace PTZPadController.BusinessLayer
             
         }
 
-        private void AtemProgramSourceChange(object sender, SourceArgs e)
+        private void AtemProgramSourceChange(object sender, AtemSourceArgs e)
         {
             if (CameraProgram != null)
                 CameraProgram.Tally(false, m_UseTallyGreen?CameraPreview == CameraProgram:false);
@@ -125,9 +135,9 @@ namespace PTZPadController.BusinessLayer
             m_AtemHandler.connect();
             if (m_AtemHandler.waitForConnection() )
             {
-                var prgName = m_AtemHandler.GetCameraProgramName();
+                var programName = m_AtemHandler.GetCameraProgramName();
                 var previewName = m_AtemHandler.GetCameraPreviewName();
-                CameraProgram = m_CameraList.FirstOrDefault(x => x.CameraName == prgName);
+                CameraProgram = m_CameraList.FirstOrDefault(x => x.CameraName == programName);
                 if (CameraProgram != null)
                     CameraProgram.Tally(true, false);
                 CameraPreview = m_CameraList.FirstOrDefault(x => x.CameraName == previewName);

@@ -53,10 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModel\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Images\Icons\32\Arrowhead-Left.png" />
     <Resource Include="Images\Icons\32\Arrowhead-Left45.png" />
     <Resource Include="Images\Icons\32\Arrowhead-Right.png" />

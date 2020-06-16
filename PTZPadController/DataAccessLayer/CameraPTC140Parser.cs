@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace PTZPadController.DataAccessLayer
@@ -8,7 +9,11 @@ namespace PTZPadController.DataAccessLayer
     {
         private ISocketParser m_SocketClient;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public bool Connected { get { return (m_SocketClient != null) && (m_SocketClient.Connected); } }
+
+        public string CameraName { get { return m_SocketClient?.SocketName; } }
 
         public void CompletionMessage(string message)
         {
@@ -215,6 +220,12 @@ namespace PTZPadController.DataAccessLayer
                 PTZLogger.Log.Debug("data:{0}", data);
                 m_SocketClient.SendData(data);
             }
+        }
+
+
+        protected void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

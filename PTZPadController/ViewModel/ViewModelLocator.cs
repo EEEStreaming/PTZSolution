@@ -87,7 +87,7 @@ namespace PTZPadController.ViewModel
                 var socket = new SocketAutoConnectParser();
                 socket.Initialize(camcfg.CameraName, camcfg.CameraHost, camcfg.CameraPort, camParser);
                 camParser.Initialize(socket);
-                cam.Initialize(camParser, camcfg.CameraName);
+                cam.Initialize(camParser);
                 ptzManager.AddCameraHandler(cam);
 
             }

@@ -25,8 +25,7 @@ namespace PTZPadController.BusinessLayer
         /// <returns></returns>
         bool waitForConnection();
         void disconnect();
-        public event EventHandler<SourceArgs> PreviewSourceChanged;
-        public event EventHandler<SourceArgs> ProgramSourceChanged;
+
         /// <summary>
         /// 
         /// </summary>

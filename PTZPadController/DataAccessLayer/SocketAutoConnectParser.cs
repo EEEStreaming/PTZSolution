@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using GalaSoft.MvvmLight.Messaging;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace PTZPadController.DataAccessLayer
         private string m_Host;
         private int m_Port;
         private string m_Name;
+        private bool? m_OldConnectionStatus;
         private bool m_Initialized = false;
         private Socket m_Socket;
         private IClientCallback m_ClientCallback;
@@ -27,6 +29,7 @@ namespace PTZPadController.DataAccessLayer
 
         public bool Connected { get { return (m_Socket != null) && (m_Socket.Connected); } }
 
+        public string SocketName { get { return m_Name; } }
         public void Initialize(string name, string host, int port, IClientCallback callback)
         {
             if (!m_Initialized)
@@ -52,13 +55,24 @@ namespace PTZPadController.DataAccessLayer
                     m_Socket.NoDelay = true;
                     //m_Socket.Blocking = false; // This needs to be done after Connect or it will error out.
 
+                    if (m_OldConnectionStatus != m_Socket.Connected)
+                    {
+                        Messenger.Default.Send<NotificationMessage<ISocketParser>>(new NotificationMessage<ISocketParser>(this, "Connected"));
+                        m_OldConnectionStatus = m_Socket.Connected;
+                    }
                     PTZLogger.Log.Debug("{0}, {1}, Connected : {2}", m_Name, m_Host, m_Socket.Connected);
 
                 }
                 catch (Exception ex)
                 {
+                    if (m_OldConnectionStatus != m_Socket.Connected)
+                    {
+                        Messenger.Default.Send<NotificationMessage<ISocketParser>>(new NotificationMessage<ISocketParser>(this, "Exception"));
+                        m_OldConnectionStatus = m_Socket.Connected;
+                    }
                     PTZLogger.Log.Error(ex, "{0}, Connection error to {1}", m_Name, m_Host);
                 }
+                
                 if (m_Socket.Connected)
                 {
                     PTZLogger.Log.Debug("Socket for {0}, {1}, Start new Task to recieved data.", m_Name, m_Host);
@@ -121,12 +135,18 @@ namespace PTZPadController.DataAccessLayer
         {
             if (!task.Result)
             {
+                if (m_OldConnectionStatus != m_Socket.Connected)
+                {
+                    Messenger.Default.Send<NotificationMessage<ISocketParser>>(new NotificationMessage<ISocketParser>(this, "Socket connection failed"));
+                    m_OldConnectionStatus = m_Socket.Connected;
+                }
                 PTZLogger.Log.Error("{0},{1}, Socket connection failed, task.Result=fasle", m_Name, m_Host);
                 ShutDown();
                 Connect();
             }
             else
             {
+                Messenger.Default.Send<NotificationMessage<ISocketParser>>(new NotificationMessage<ISocketParser>(this, "Socket connection ended"));
                 PTZLogger.Log.Info("{0},{1}, Socket connection ended.", m_Name, m_Host);
             }
         }

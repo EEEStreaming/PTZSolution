@@ -29,16 +29,24 @@
             </Grid>
         </GroupBox>
         <GroupBox Header="Cameras" Grid.Row="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <pl:CameraItemView Grid.Column="0"></pl:CameraItemView>
-                <pl:CameraItemView Grid.Column="1"></pl:CameraItemView>
-                <pl:CameraItemView Grid.Column="2"></pl:CameraItemView>
-            </Grid>
+
+            <ItemsControl ItemsSource="{Binding Path=Cameras}" Name="CameraControl">
+                <!-- ItemsPanelTemplate -->
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <!-- ItemTemplate -->
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <pl:CameraItemView Margin="2" DataContext="{Binding }" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+
         </GroupBox>
 
         <Grid Grid.Row="2">
