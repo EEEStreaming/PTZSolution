@@ -25,7 +25,7 @@ namespace PTZPadController.BusinessLayer
         void CameraZoomTele();
 
 
-        void AddCcameraHandler(ICameraHandler camHandler);
+        void AddCameraHandler(ICameraHandler camHandler);
 
         void SetAtemHandler(IAtemSwitcherHandler atemHandler);
 

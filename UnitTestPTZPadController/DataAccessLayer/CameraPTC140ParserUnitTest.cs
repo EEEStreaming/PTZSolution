@@ -2,7 +2,7 @@ using NSubstitute;
 using NUnit.Framework;
 using PTZPadController.DataAccessLayer;
 
-namespace UnitTestPTZPadController
+namespace UnitTestPTZPadController.DataAccessLayer
 {
     public class CameraPTC140ParserUnitTest
     {

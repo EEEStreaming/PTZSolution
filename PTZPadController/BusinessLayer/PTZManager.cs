@@ -17,6 +17,8 @@ namespace PTZPadController.BusinessLayer
         private List<ICameraHandler> m_CameraList;
         private IAtemSwitcherHandler m_AtemHandler;
         private bool m_UseTallyGreen;
+        private bool m_Initialized;
+        
 
         public ICameraHandler CameraPreview { get; private set; }
 
@@ -30,7 +32,7 @@ namespace PTZPadController.BusinessLayer
         {
             m_CameraList = new List<ICameraHandler>();
             m_UseTallyGreen = false;
-
+            m_Initialized = false;
 
         }
         #endregion
@@ -40,9 +42,10 @@ namespace PTZPadController.BusinessLayer
         public void InitSeetings(ConfigurationModel cfg)
         {
             m_UseTallyGreen = cfg.UseTallyGreen;
+            m_Initialized = true;
         }
        
-        public void AddCcameraHandler(ICameraHandler camHandler)
+        public void AddCameraHandler(ICameraHandler camHandler)
         {
             m_CameraList.Add(camHandler);
         }

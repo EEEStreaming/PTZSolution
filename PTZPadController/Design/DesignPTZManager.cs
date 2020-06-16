@@ -14,7 +14,7 @@ namespace PTZPadController.Design
 
         public ICameraHandler CameraProgram { get; set; }
 
-        public void AddCcameraHandler(ICameraHandler camHandler)
+        public void AddCameraHandler(ICameraHandler camHandler)
         {
         }
 
