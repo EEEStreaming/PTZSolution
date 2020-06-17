@@ -56,7 +56,7 @@ jobs:
 
     env:
       Solution_Name: PTZSolution.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
-      #Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      Test_Project_Path: UnitTestPTZPadController/UnitTestPTZPadController.csproj                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
       #Wap_Project_Directory: your-wap-project-directory-name    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
       #Wap_Project_Path: your-wap-project-path                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
 
@@ -84,8 +84,8 @@ jobs:
       run: nuget restore $env:Solution_Name
 
     # Execute all unit tests in the solution
-    # - name: Execute unit tests
-    #  run: dotnet test
+    - name: Execute unit tests
+      run: dotnet test
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Build the application
@@ -93,8 +93,8 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    - name: dir folders
-      run: dir -s
+    #- name: dir folders
+     # run: dir -s
 
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-artifact
     - name: Upload build artifacts
