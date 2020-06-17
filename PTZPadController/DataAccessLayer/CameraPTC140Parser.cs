@@ -190,22 +190,12 @@ namespace PTZPadController.DataAccessLayer
             }
         }
 
-        public void ZoomTele()
+        public void PanTiltHome()
         {
-            PTZLogger.Log.Info("ZoomTele()");
+            PTZLogger.Log.Info("PanTiltHome()");
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
-                byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x07, 0x02, 0xFF };
-                PTZLogger.Log.Debug("data:{0}", data);
-                m_SocketClient.SendData(data);
-            }
-        }
-        public void ZoomWide()
-        {
-            PTZLogger.Log.Info("ZoomWide()");
-            if (m_SocketClient != null && m_SocketClient.Connected)
-            {
-                byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x07, 0x03, 0xFF };
+                byte[] data = new byte[] { 0x00, 0x07, 0x81, 0x01, 0x06, 0x04, 0xFF };
                 PTZLogger.Log.Debug("data:{0}", data);
                 m_SocketClient.SendData(data);
             }
@@ -217,6 +207,70 @@ namespace PTZPadController.DataAccessLayer
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
                 byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x07, 0x00, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
+            }
+        }
+
+        public void ZoomTele()
+        {
+            PTZLogger.Log.Info("ZoomTele()");
+            if (m_SocketClient != null && m_SocketClient.Connected)
+            {
+                byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x07, 0x02, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
+            }
+        }
+
+        public void ZoomWide()
+        {
+            PTZLogger.Log.Info("ZoomWide()");
+            if (m_SocketClient != null && m_SocketClient.Connected)
+            {
+                byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x07, 0x03, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
+            }
+        }
+
+        private byte ConvertMemory(short memory)
+        {
+            byte byteMemory = (byte)(memory > 15 ? 15 : memory < 0 ? 0 : memory);
+            return byteMemory;
+        }
+
+        public void CameraMemoryReset(short memory)
+        {
+            byte byteMemory = ConvertMemory(memory);
+            PTZLogger.Log.Info("CameraMemoryReset()");
+            if (m_SocketClient != null && m_SocketClient.Connected)
+            {
+                byte[] data = new byte[] { 0x00, 0x09, 0x81, 0x01, 0x04, 0x3F, 0x00, byteMemory,0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
+            }
+        }
+
+        public void CameraMemorySet(short memory)
+        {
+            byte byteMemory = ConvertMemory(memory);
+            PTZLogger.Log.Info("CameraMemorySet()");
+            if (m_SocketClient != null && m_SocketClient.Connected)
+            {
+                byte[] data = new byte[] { 0x00, 0x09, 0x81, 0x01, 0x04, 0x3F, 0x01, byteMemory, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
+            }
+        }
+
+        public void CameraMemoryRecall(short memory)
+        {
+            byte byteMemory = ConvertMemory(memory);
+            PTZLogger.Log.Info("CameraMemoryRecall()");
+            if (m_SocketClient != null && m_SocketClient.Connected)
+            {
+                byte[] data = new byte[] { 0x00, 0x09, 0x81, 0x01, 0x04, 0x3F, 0x02, byteMemory, 0xFF };
                 PTZLogger.Log.Debug("data:{0}", data);
                 m_SocketClient.SendData(data);
             }

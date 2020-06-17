@@ -81,7 +81,19 @@ namespace PTZPadController.BusinessLayer
             m_CamParser.PanTiltStop();
             PanTileWorking = false;
         }
+        public void PanTiltHome()
+        {
+            //TODO, gerer PanTiltWorking (comment s'arrête ?)
+            throw new NotImplementedException();
+            //m_CamParser.PanTiltHome();
+            //PanTileWorking = true;
+        }
 
+        public void ZoomStop()
+        {
+            m_CamParser.ZoomStop();
+            ZoomWorking = false;
+        }
 
         public void ZoomTele()
         {
@@ -94,33 +106,31 @@ namespace PTZPadController.BusinessLayer
             m_CamParser.ZoomWide();
             ZoomWorking = true;
         }
-        public void ZoomStop()
+
+        public void CameraMemoryReset(short memory)
         {
-            m_CamParser.ZoomStop();
-            ZoomWorking = false;
+            //TODO, gerer recall et Set
+            throw new NotImplementedException();
+            //m_CamParser.CameraMemoryReset(memory);
         }
 
-
-        public void PanTiltHome()
+        public void CameraMemorySet(short memory)
         {
-            //TODO
-        }
-        public void CameraMemoryReset()
-        {
-            //TODO
+            //TODO, gerer reset et recall
+            throw new NotImplementedException();
+            //m_CamParser.CameraMemorySet(memory);
         }
 
-        public void CameraMemorySet()
+        public void CameraMemoryRecall(short memory)
         {
-            //TODO
-        }
-
-        public void CameraMemoryRecall()
-        {
-            //TODO
+            //TODO, gerer PanTiltWorking (comment s'arrête ?)
+            throw new NotImplementedException();
+            //m_CamParser.CameraMemoryRecall(memory);
+            //PanTileWorking = true;
         }
         public void CompletionMessage()
         {
+            //TODO ????
             PTZLogger.Log.Debug("message OK");
         }
 

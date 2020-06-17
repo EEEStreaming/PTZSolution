@@ -23,8 +23,12 @@ namespace PTZPadController.BusinessLayer
         public void PanTiltDownLeft(short panSpeed, short tiltSpeed);
         public void PanTiltDownRight(short panSpeed, short tiltSpeed);
         public void PanTiltStop();
+        public void ZoomStop();
         public void ZoomTele();
         public void ZoomWide();
-        public void ZoomStop();
+        public void PanTiltHome();
+        public void CameraMemoryReset(short memory);
+        public void CameraMemorySet(short memory);
+        public void CameraMemoryRecall(short memory);
     }
 }
