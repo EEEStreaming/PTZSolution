@@ -122,7 +122,7 @@ namespace PTZPadController.BusinessLayer
 
     class AtemSwitcherHandler : IAtemSwitcherHandler
     {
-        private volatile IBMDSwitcher atem_switcher;
+        private IBMDSwitcher atem_switcher;
         //private IBMDSwitcherCallback atem_callback;
         //private volatile List<IBMDSwitcherInput> inputs;
         private List<InputMonitor> m_inputHDMIMonitors = new List<InputMonitor>();

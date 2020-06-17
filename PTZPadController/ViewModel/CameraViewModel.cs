@@ -50,7 +50,7 @@ namespace PTZPadController.ViewModel
             }
         }
 
-        internal SourceEnum SourceStatus { get; set; }
+        internal CameraStatusEnum SourceStatus { get; set; }
 
         #endregion
 
