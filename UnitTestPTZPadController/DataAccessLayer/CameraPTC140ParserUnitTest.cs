@@ -39,6 +39,8 @@ namespace UnitTestPTZPadController.DataAccessLayer
     {
         public bool Connected { get; set; }
 
+        public string SocketName { get; set; }
+
         private byte ledRed;
         private byte ledGreen;
 

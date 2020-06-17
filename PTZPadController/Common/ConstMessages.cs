@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PTZPadController.Common
 {
-    class ConstMessages
+    public class ConstMessages
     {
         public const string ProgramSourceChanged = "ProgramSourceChanged";
         public const string PreviewSourceChanged = "PreviewSourceChanged";

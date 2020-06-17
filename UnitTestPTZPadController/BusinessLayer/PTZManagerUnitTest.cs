@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using GalaSoft.MvvmLight.Messaging;
 using NSubstitute;
 using NUnit.Framework;
 using PTZPadController.BusinessLayer;
+using PTZPadController.Common;
 using PTZPadController.DataAccessLayer;
 
 namespace UnitTestPTZPadController.BusinessLayer
@@ -98,6 +100,7 @@ namespace UnitTestPTZPadController.BusinessLayer
         int iCamPreview;
         int iCamProgram;
         public ConfigurationModel Configuration { get; internal set; }
+      
 
         public event EventHandler<AtemSourceArgs> PreviewSourceChanged;
         public event EventHandler<AtemSourceArgs> ProgramSourceChanged;
@@ -148,10 +151,18 @@ namespace UnitTestPTZPadController.BusinessLayer
         {
             var i = iCamPreview;
             iCamPreview = iCamProgram;
-            PreviewSourceChanged?.Invoke(this, new AtemSourceArgs { CurrentInputName = Configuration.Cameras[iCamPreview].CameraName });
-            
             iCamProgram = i;
-            ProgramSourceChanged?.Invoke(this, new AtemSourceArgs { CurrentInputName = Configuration.Cameras[iCamProgram].CameraName });
+
+
+            AtemSourceArgs args = new AtemSourceArgs();
+            args.PreviousInputName = Configuration.Cameras[iCamProgram].CameraName;
+            args.CurrentInputName = Configuration.Cameras[iCamPreview].CameraName;
+            Messenger.Default.Send<NotificationMessage<AtemSourceArgs>>(new NotificationMessage<AtemSourceArgs>(args, ConstMessages.PreviewSourceChanged));
+
+            
+            args.PreviousInputName = Configuration.Cameras[iCamPreview].CameraName;
+            args.CurrentInputName = Configuration.Cameras[iCamProgram].CameraName;
+            Messenger.Default.Send<NotificationMessage<AtemSourceArgs>>(new NotificationMessage<AtemSourceArgs>(args, ConstMessages.ProgramSourceChanged));
         }
     }
 
@@ -176,13 +187,15 @@ namespace UnitTestPTZPadController.BusinessLayer
 
         public MockTallyStatus TallyStatus{ get; internal set; }
 
+        public ICameraParserModel Parser { get; internal set; }
+
         public void Connect()
         {
             PanTileWorking = false;
             ZoomWorking = false;
         }
 
-        public void Initialize(ICameraParser camParser, string name)
+        public void Initialize(ICameraParser camParser)
         {
             PanTileWorking = false;
             ZoomWorking = false;
