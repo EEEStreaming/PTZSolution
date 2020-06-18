@@ -1,11 +1,12 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using PTZPadController.BusinessLayer;
-using PTZPadController.Common;
 using PTZPadController.DataAccessLayer;
+using PTZPadController.Messages;
 using System;
 using System.Dynamic;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace PTZPadController.ViewModel
 {
@@ -15,10 +16,13 @@ namespace PTZPadController.ViewModel
         private string _Name = "";
         private int _InputIndex = 0;
         private bool _Connected = false;
-        private ICameraParserModel _Camera;
+        //private ICameraParserModel _Camera;
         private CameraStatusEnum _SourceStatus;
         #endregion
 
+        #region Commands
+        public ICommand AtemPreview { get; private set; }
+        #endregion
         #region Properties
         public string Name
         {
@@ -68,22 +72,25 @@ namespace PTZPadController.ViewModel
         #region Construction/Destruction/Initialization
         public CameraViewModel(ICameraParserModel cam, int index)
         {
-            _Camera = cam;
+            //_Camera = cam;
             _Name = cam.CameraName;
             _InputIndex = index;
             _SourceStatus = CameraStatusEnum.Off;
-            Connected = _Camera.Connected;
+            Connected = cam.Connected;
+            AtemPreview = new RelayCommand(AtemSetPreviewExecute);
             MessengerInstance.Register<NotificationMessage<ISocketParser>>(this, SocketNotification);
-            MessengerInstance.Register<NotificationMessage<CameraEventArgs>>(this, CameraNotification);
-
-            Task.Delay(500).ContinueWith((t) => 
-            SourceStatus = CameraStatusEnum.Program
-            );
+            MessengerInstance.Register<NotificationMessage<CameraMessageArgs>>(this, CameraNotification);
         }
 
-        private void CameraNotification(NotificationMessage<CameraEventArgs> obj)
+        private void AtemSetPreviewExecute()
         {
-            if (obj.Notification == ConstMessages.CameraStatusChanged)
+            var msg = new NotificationMessage<CameraInputMessageArgs>(new CameraInputMessageArgs { CameraName = _Name }, NotificationSource.SetPreviewInput);
+            MessengerInstance.Send<NotificationMessage<CameraInputMessageArgs>>(msg);
+        }
+
+        private void CameraNotification(NotificationMessage<CameraMessageArgs> obj)
+        {
+            if (obj.Notification == NotificationSource.CameraStatusChanged)
             {
                 if (obj.Content.CameraName == _Name)
                 {

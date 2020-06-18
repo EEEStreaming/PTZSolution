@@ -3,51 +3,55 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:PTZPadController.PresentationLayer" 
              xmlns:converters="clr-namespace:PTZPadController.Converter"
-             xmlns:datalayer="clr-namespace:PTZPadController.DataAccessLayer"
+             xmlns:message="clr-namespace:PTZPadController.Messages"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="770">
     <UserControl.Resources>
         <converters:ParametrizedBooleanToVisibilityConverter x:Key="ParametrizedBooleanToVisibilityConverter"/>
     </UserControl.Resources>
-    <Border BorderBrush="Wheat"
-            BorderThickness="5"
-            VerticalAlignment="Center"
-            CornerRadius="5"
-            Margin="5">
-        <Border.Style>
-            <Style TargetType="Border">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Path=SourceStatus}" Value="{x:Static datalayer:CameraStatusEnum.Off}">
-                        <Setter Property="BorderBrush" Value="AliceBlue"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding Path=SourceStatus}" Value="{x:Static datalayer:CameraStatusEnum.Preview}">
-                        <Setter Property="BorderBrush" Value="Green"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding Path=SourceStatus}" Value="{x:Static datalayer:CameraStatusEnum.Program}">
-                        <Setter Property="BorderBrush" Value="Red"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Border.Style>
-        <Button>
-            <Grid>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition SharedSizeGroup="ATEM"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Command="{Binding AtemPreview}" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=SourceStatus}" Value="{x:Static message:CameraStatusEnum.Off}">
+                            <Setter Property="Background" Value="AliceBlue"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=SourceStatus}" Value="{x:Static message:CameraStatusEnum.Preview}">
+                            <Setter Property="Background" Value="#FF8CFF8C"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=SourceStatus}" Value="{x:Static message:CameraStatusEnum.Program}">
+                            <Setter Property="Background" Value="#FFF79490"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+
+            <Grid Margin="8">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition />
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
                 <!--Grid Disconected-->
                 <Grid Grid.Column="0" Visibility="{Binding Converter={StaticResource ParametrizedBooleanToVisibilityConverter},ConverterParameter=false, Path=Connected}">
-                    <Path Stretch="Uniform" Fill="#FFFC0011" Width="22" Height="22" Margin="4" RenderTransformOrigin="0.5,0.5" Data="M19.522852,25.255011L20.920847,25.256994 20.920847,29.729012 19.522852,29.729012z M22.826874,21.952002L25.989905,25.113989 25.001887,26.101996 21.838856,22.941015z M25.269894,19.506992L29.742937,19.509007 29.742937,20.906012 25.269894,20.907995z M10.519729,14.945011C11.300744,14.954991,12.079745,15.103001,12.818766,15.386997L10.878742,17.327C9.6457264,17.200016,8.368704,17.592014,7.4257004,18.532993L3.597655,22.359015C1.9326275,24.025 1.9316508,26.734991 3.597655,28.40299 5.2636887,30.068001 7.9747178,30.066017 9.6397144,28.40299L13.468767,24.575018C14.410794,23.633001,14.800783,22.355993,14.674774,21.122015L16.615807,19.181004C17.523806,21.547003,17.034817,24.325995,15.126776,26.233008L11.298761,30.061012C8.713709,32.644997 4.5236599,32.644997 1.9396465,30.061012 -0.64638097,27.475012 -0.64638097,23.286017 1.9386395,20.702002L5.7666852,16.875004C7.0777046,15.562992,8.8017227,14.922001,10.519729,14.945011z M2.1536381,10.959994L6.6257035,10.959994 6.6266801,12.359988 2.1536381,12.359988z M6.7686803,5.894014L9.9307338,9.0549947 8.9427158,10.044008 5.7806932,6.8819901z M10.976735,2.1390082L12.374761,2.1390082 12.375768,6.6130081 10.975728,6.6130081z M25.382902,0C27.076922,-1.8170738E-08 28.770941,0.6470033 30.063955,1.9389956 32.646992,4.5220043 32.646992,8.7130147 30.061941,11.297L26.234902,15.126011C24.326891,17.032993,21.546862,17.521,19.181845,16.614994L21.121868,14.674015C22.35586,14.798008,23.63389,14.407992,24.575886,13.467013L28.403933,9.6390096C30.067953,7.972994 30.069967,5.2619945 28.403933,3.5960094 26.738905,1.9310002 24.0269,1.9320073 22.361872,3.5960094L18.533827,7.4249893C17.591829,8.3659993,17.201811,9.6440145,17.32782,10.87601L15.385781,12.817996C14.477781,10.453005,14.968784,7.6730062,16.875818,5.7659928L20.702858,1.9379885C21.994864,0.64599622,23.688883,-1.8170738E-08,25.382902,0z"/>
+                    <Path Stretch="Uniform" Fill="#FF840606"  Margin="4" RenderTransformOrigin="0.5,0.5" Data="M5.0999756,10.699998C4.1999512,10.699998 3.3999634,11.400003 3.3999634,12.400003 3.3999634,13.299997 4.0999756,14.1 5.0999756,14.1L8.0999756,14.1C9,14.1 9.7999878,13.400003 9.7999878,12.400003 9.7999878,11.500002 9.0999756,10.699998 8.0999756,10.699998z M20.699951,6.9000024C23.699951,6.9000024 26.199951,9.4000024 26.199951,12.400003 26.199951,15.400003 23.699951,17.900004 20.699951,17.900004 17.699951,17.900004 15.199951,15.400003 15.199951,12.400003 15.199951,9.4000024 17.699951,6.9000024 20.699951,6.9000024z M20.899963,4.8999986C16.799988,4.8999986 13.5,8.1999978 13.5,12.299997 13.5,16.400004 16.799988,19.7 20.899963,19.7 25,19.7 28.299988,16.400004 28.299988,12.299997 28.299988,8.2999963 25,4.8999986 20.899963,4.8999986z M3.6999512,0L9.6999512,0 9.6999512,2.0999989 30.399963,2.0999989C31.299988,2.0999989,32,2.7999996,32,3.6999974L32,21.000003C32,21.900004,31.299988,22.600001,30.399963,22.600001L1.5999756,22.600001C0.69995117,22.600001,0,21.900004,0,21.000003L0,3.6999974C0,2.7999996,0.69995117,2.0999989,1.5999756,2.0999989L3.6999512,2.0999989z"/>
                 </Grid>
                 <!--Grid Connected-->
                 <Grid Grid.Column="0" Visibility="{Binding Converter={StaticResource ParametrizedBooleanToVisibilityConverter},ConverterParameter=true, Path=Connected}">
-                    <Path Stretch="Uniform" Fill="#FF11C808" Width="22" Height="22" Margin="4" RenderTransformOrigin="0.5,0.5" Data="M10.519881,14.945064C11.300896,14.955074,12.079896,15.102078,12.819896,15.386075L10.878893,17.326085C9.6458764,17.201085,8.3688531,17.591071,7.4258485,18.533091L3.5977991,22.360102C1.9327704,24.026093 1.9317786,26.736124 3.5977991,28.402117 5.2638197,30.068108 7.9748359,30.068108 9.6398644,28.402117L13.467914,24.575106C14.410919,23.632109,14.800938,22.355097,14.675937,21.121083L16.615963,19.180096C17.523962,21.546103,17.034943,24.325104,15.126931,26.234108L11.298882,30.061119C8.7138591,32.64612 4.5238051,32.64612 1.9387672,30.062127 -0.64625573,27.477126 -0.64625573,23.287106 1.9387672,20.701098L5.7668166,16.875065C7.077837,15.564055,8.8018727,14.923061,10.519881,14.945064z M19.825993,10.418039L21.580012,12.17305 12.089907,21.665091 10.333873,19.911087z M25.383069,0C27.077088,3.0538786E-08 28.771109,0.64599859 30.063117,1.9390028 32.647133,4.5230274 32.647133,8.7120385 30.062109,11.298047L26.235068,15.125058C24.327055,17.033085,21.547022,17.52207,19.181973,16.614077L21.121998,14.674067C22.356022,14.799068,23.633046,14.409051,24.57605,13.466054L28.403094,9.6400513C30.068121,7.9740295 30.069129,5.2630205 28.403094,3.5980362 26.738064,1.9320143 24.027033,1.9320143 22.362034,3.5980362L18.533986,7.4240398C17.591958,8.3670363,17.201968,9.643042,17.32697,10.877056L15.385937,12.817066C14.478913,10.452035,14.968939,7.6730337,16.875945,5.7660436L20.703019,1.9390028C21.995026,0.64599859,23.689047,3.0538786E-08,25.383069,0z"/>
+                    <Path Stretch="Uniform" Fill="#FF087C34"  Margin="4" RenderTransformOrigin="0.5,0.5" Data="M5.0999756,10.699998C4.1999512,10.699998 3.3999634,11.400003 3.3999634,12.400003 3.3999634,13.299997 4.0999756,14.1 5.0999756,14.1L8.0999756,14.1C9,14.1 9.7999878,13.400003 9.7999878,12.400003 9.7999878,11.500002 9.0999756,10.699998 8.0999756,10.699998z M20.699951,6.9000024C23.699951,6.9000024 26.199951,9.4000024 26.199951,12.400003 26.199951,15.400003 23.699951,17.900004 20.699951,17.900004 17.699951,17.900004 15.199951,15.400003 15.199951,12.400003 15.199951,9.4000024 17.699951,6.9000024 20.699951,6.9000024z M20.899963,4.8999986C16.799988,4.8999986 13.5,8.1999978 13.5,12.299997 13.5,16.400004 16.799988,19.7 20.899963,19.7 25,19.7 28.299988,16.400004 28.299988,12.299997 28.299988,8.2999963 25,4.8999986 20.899963,4.8999986z M3.6999512,0L9.6999512,0 9.6999512,2.0999989 30.399963,2.0999989C31.299988,2.0999989,32,2.7999996,32,3.6999974L32,21.000003C32,21.900004,31.299988,22.600001,30.399963,22.600001L1.5999756,22.600001C0.69995117,22.600001,0,21.900004,0,21.000003L0,3.6999974C0,2.7999996,0.69995117,2.0999989,1.5999756,2.0999989L3.6999512,2.0999989z"/>
                 </Grid>
-                <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="2" Text="{Binding InputIndex, FallbackValue=1}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <Viewbox Stretch="Uniform" Grid.Column="1" >
+                    <TextBlock VerticalAlignment="Stretch" Margin="2" Text="{Binding InputIndex, FallbackValue=1}" FontWeight="Bold" HorizontalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+
+                    </TextBlock>
+                </Viewbox>
             </Grid>
         </Button>
-    </Border>
+    </Grid>
 </UserControl>

@@ -7,13 +7,13 @@
         xmlns:local="clr-namespace:PTZPadController"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="PTZ Pad Controler" Height="615.789" Width="286.427"
+        Title="PTZ Pad Controler" Height="700" Width="448"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="40*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <GroupBox Header="Devices" Grid.Row="0">
@@ -28,38 +28,53 @@
                 <pl:DeviceItemView Grid.Column="2"></pl:DeviceItemView>
             </Grid>
         </GroupBox>
-        <GroupBox Header="Cameras" Grid.Row="1">
+        <GroupBox Header="Cameras" Grid.Row="1" Grid.IsSharedSizeScope="False">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="ATEM"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="ATEM"/>
+                </Grid.ColumnDefinitions>
+                <ItemsControl ItemsSource="{Binding Path=Cameras}" Name="CameraControl">
+                    <!-- ItemsPanelTemplate -->
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid  Rows="1" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-            <ItemsControl ItemsSource="{Binding Path=Cameras}" Name="CameraControl">
-                <!-- ItemsPanelTemplate -->
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+                    <!-- ItemTemplate -->
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <pl:CameraItemView Margin="5" DataContext="{Binding }" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
 
-                <!-- ItemTemplate -->
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <pl:CameraItemView Margin="2" DataContext="{Binding }" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-
-            </ItemsControl>
-
+                </ItemsControl>
+                <Button Command="{Binding Path=AtemCut}" Grid.Column="1" Margin="5">
+                    <Viewbox Stretch="Uniform">
+                        <TextBlock Margin="2" FontWeight="Bold">CUT</TextBlock>
+                    </Viewbox>
+                </Button>
+                <Button Command="{Binding Path=AtemMix}" Grid.Column="2" Margin="5">
+                    <Viewbox Stretch="Uniform">
+                        <TextBlock Margin="2" FontWeight="Bold">MIX</TextBlock>
+                    </Viewbox>
+                </Button>
+            </Grid>
         </GroupBox>
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="80*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button Width="32" Height="32">
+                <Button Margin="5" >
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                             <i:InvokeCommandAction Command="{Binding Path=CameraZoomTele}"/>
@@ -70,7 +85,7 @@
                     </i:Interaction.Triggers>
                     <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-UP.png"/>
                 </Button>
-                <Button Width="32" Height="32" Grid.Row="1">
+                <Button Margin="5" Grid.Row="1">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                             <i:InvokeCommandAction Command="{Binding Path=CameraZoomWidde}"/>

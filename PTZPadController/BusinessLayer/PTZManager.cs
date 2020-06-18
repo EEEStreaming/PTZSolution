@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using PTZPadController.Common;
 using PTZPadController.DataAccessLayer;
+using PTZPadController.Messages;
 using PTZPadController.PresentationLayer;
 using System;
 using System.Collections.Generic;
@@ -12,12 +12,6 @@ using static PTZPadController.BusinessLayer.AtemSwitcherHandler;
 
 namespace PTZPadController.BusinessLayer
 {
-    public class CameraEventArgs : EventArgs
-    {
-        public CameraStatusEnum Status { get; set; }
-        public string CameraName { get; set; }
-    }
-
     public class PTZManager : IPTZManager
     {
         const short SPEED_MEDIUM = 15;
@@ -53,7 +47,7 @@ namespace PTZPadController.BusinessLayer
             m_UseTallyGreen = cfg.UseTallyGreen;
             m_Initialized = true;
         }
-       
+
         public void AddCameraHandler(ICameraHandler camHandler)
         {
             m_CameraList.Add(camHandler);
@@ -61,34 +55,60 @@ namespace PTZPadController.BusinessLayer
 
         public void SetAtemHandler(IAtemSwitcherHandler atemHandler)
         {
-            m_AtemHandler = atemHandler;
-            Messenger.Default.Register<NotificationMessage<AtemSourceArgs>>(this, AtemSourceChange);
+            if (m_AtemHandler == null)
+            {
+                m_AtemHandler = atemHandler;
+                Messenger.Default.Register<NotificationMessage<AtemSourceMessageArgs>>(this, AtemSourceChange);
+
+                //Register notification message to listen when UI set a new Preview Input
+                Messenger.Default.Register<NotificationMessage<CameraInputMessageArgs>>(this, SetAtemPreviewExecute);
+
+                Messenger.Default.Register<NotificationMessage<TransitionMessageArgs>>(this, TransitionExecute);
+            }
         }
 
-        private void AtemSourceChange(NotificationMessage<AtemSourceArgs> msg)
+        private void TransitionExecute(NotificationMessage<TransitionMessageArgs> obj)
         {
-            if (msg.Notification == ConstMessages.ProgramSourceChanged)
+            if (m_AtemHandler == null)
+                if (obj.Notification == NotificationSource.SendTransition)
+                {
+                    m_AtemHandler.StartTransition(obj.Content.Transition);
+                }
+        }
+
+        private void SetAtemPreviewExecute(NotificationMessage<CameraInputMessageArgs> obj)
+        {
+            if (m_AtemHandler == null)
+                if (obj.Notification == NotificationSource.SetPreviewInput)
+                {
+                    m_AtemHandler.SetPreviewSource(obj.Content.CameraName);
+                }
+        }
+
+        private void AtemSourceChange(NotificationMessage<AtemSourceMessageArgs> msg)
+        {
+            if (msg.Notification == NotificationSource.ProgramSourceChanged)
                 AtemProgramSourceChange(msg.Sender, msg.Content);
-            else if (msg.Notification == ConstMessages.PreviewSourceChanged)
+            else if (msg.Notification == NotificationSource.PreviewSourceChanged)
                 AtemPreviewSourceChange(msg.Sender, msg.Content);
         }
         #endregion
 
-        private void AtemPreviewSourceChange(object sender, AtemSourceArgs e)
+        private void AtemPreviewSourceChange(object sender, AtemSourceMessageArgs e)
         {
-            CameraEventArgs args;
+            CameraMessageArgs args;
             if (CameraPreview != null)
             {
                 var lRed = CameraPreview == CameraProgram;
                 CameraPreview.Tally(lRed, false);
 
-                args = new CameraEventArgs { CameraName = CameraPreview.CameraName };
+                args = new CameraMessageArgs { CameraName = CameraPreview.CameraName };
                 if (lRed)
                     args.Status = CameraStatusEnum.Program;
                 else
                     args.Status = CameraStatusEnum.Off;
 
-                Messenger.Default.Send<NotificationMessage<CameraEventArgs>>(new NotificationMessage<CameraEventArgs>(args, ConstMessages.CameraStatusChanged));
+                Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
             }
             CameraPreview = null;
             foreach (var cam in m_CameraList)
@@ -99,29 +119,29 @@ namespace PTZPadController.BusinessLayer
                     CameraPreview = cam;
                     CameraPreview.Tally(false, m_UseTallyGreen);
 
-                    args = new CameraEventArgs { CameraName = CameraPreview.CameraName, Status = CameraStatusEnum.Preview };
-                    Messenger.Default.Send<NotificationMessage<CameraEventArgs>>(new NotificationMessage<CameraEventArgs>(args, ConstMessages.CameraStatusChanged));
+                    args = new CameraMessageArgs { CameraName = CameraPreview.CameraName, Status = CameraStatusEnum.Preview };
+                    Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
 
                 }
 
             }
-            
+
         }
 
-        private void AtemProgramSourceChange(object sender, AtemSourceArgs e)
+        private void AtemProgramSourceChange(object sender, AtemSourceMessageArgs e)
         {
-            CameraEventArgs args;
+            CameraMessageArgs args;
             if (CameraProgram != null)
             {
                 var lGreen = CameraPreview == CameraProgram;
                 CameraProgram.Tally(false, m_UseTallyGreen ? lGreen : false);
-                args = new CameraEventArgs { CameraName = CameraProgram.CameraName };
+                args = new CameraMessageArgs { CameraName = CameraProgram.CameraName };
                 if (lGreen)
                     args.Status = CameraStatusEnum.Preview;
                 else
                     args.Status = CameraStatusEnum.Off;
 
-                Messenger.Default.Send<NotificationMessage<CameraEventArgs>>(new NotificationMessage<CameraEventArgs>(args, ConstMessages.CameraStatusChanged));
+                Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
 
             }
             CameraProgram = null;
@@ -140,8 +160,8 @@ namespace PTZPadController.BusinessLayer
                     if (CameraProgram.ZoomWorking)
                         CameraProgram.ZoomStop();
 
-                    args = new CameraEventArgs { CameraName = CameraProgram.CameraName, Status = CameraStatusEnum.Program };
-                    Messenger.Default.Send<NotificationMessage<CameraEventArgs>>(new NotificationMessage<CameraEventArgs>(args, ConstMessages.CameraStatusChanged));
+                    args = new CameraMessageArgs { CameraName = CameraProgram.CameraName, Status = CameraStatusEnum.Program };
+                    Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
 
                 }
 
@@ -169,8 +189,8 @@ namespace PTZPadController.BusinessLayer
             }
 
             //Connect ATEM
-            m_AtemHandler.connect();
-            if (m_AtemHandler.waitForConnection() )
+            m_AtemHandler.Connect();
+            if (m_AtemHandler.WaitForConnection())
             {
                 var programName = m_AtemHandler.GetCameraProgramName();
                 var previewName = m_AtemHandler.GetCameraPreviewName();
@@ -247,7 +267,7 @@ namespace PTZPadController.BusinessLayer
                 CameraPreview.PanTiltRight(SPEED_MEDIUM, SPEED_MEDIUM);
             }
         }
-        
+
         void IPTZManager.CameraPanTiltStop()
         {
             if (CameraPreview != null)

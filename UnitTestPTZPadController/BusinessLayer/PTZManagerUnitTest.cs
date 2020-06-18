@@ -7,8 +7,8 @@ using GalaSoft.MvvmLight.Messaging;
 using NSubstitute;
 using NUnit.Framework;
 using PTZPadController.BusinessLayer;
-using PTZPadController.Common;
 using PTZPadController.DataAccessLayer;
+using PTZPadController.Messages;
 
 namespace UnitTestPTZPadController.BusinessLayer
 {
@@ -100,19 +100,20 @@ namespace UnitTestPTZPadController.BusinessLayer
         int iCamPreview;
         int iCamProgram;
         public ConfigurationModel Configuration { get; internal set; }
-      
 
-        public event EventHandler<AtemSourceArgs> PreviewSourceChanged;
-        public event EventHandler<AtemSourceArgs> ProgramSourceChanged;
+        public bool IsConnected { get { return bConnected; } }
 
-        public void connect()
+        public event EventHandler<AtemSourceMessageArgs> PreviewSourceChanged;
+        public event EventHandler<AtemSourceMessageArgs> ProgramSourceChanged;
+
+        public void Connect()
         {
             bConnected = true;
             iCamPreview = 0;
             iCamProgram = 1;
         }
 
-        public void disconnect()
+        public void Disconnect()
         {
             bConnected = false;
         }
@@ -127,22 +128,17 @@ namespace UnitTestPTZPadController.BusinessLayer
             return Configuration.Cameras[iCamProgram].CameraName;
         }
 
-        public bool isConnected()
-        {
-            return bConnected;
-        }
-
-        public void setPreviewSource(Source previewCamera)
+        public void SetPreviewSource(string cameraName)
         {
             throw new NotImplementedException();
         }
 
-        public void setProgramSource(Source programCamera)
+        public void StartTransition(TransitionEnum transition)
         {
             throw new NotImplementedException();
         }
 
-        public bool waitForConnection()
+        public bool WaitForConnection()
         {
             return bConnected;
         }
@@ -154,15 +150,15 @@ namespace UnitTestPTZPadController.BusinessLayer
             iCamProgram = i;
 
 
-            AtemSourceArgs args = new AtemSourceArgs();
+            AtemSourceMessageArgs args = new AtemSourceMessageArgs();
             args.PreviousInputName = Configuration.Cameras[iCamProgram].CameraName;
             args.CurrentInputName = Configuration.Cameras[iCamPreview].CameraName;
-            Messenger.Default.Send<NotificationMessage<AtemSourceArgs>>(new NotificationMessage<AtemSourceArgs>(args, ConstMessages.PreviewSourceChanged));
+            Messenger.Default.Send<NotificationMessage<AtemSourceMessageArgs>>(new NotificationMessage<AtemSourceMessageArgs>(args, NotificationSource.PreviewSourceChanged));
 
             
             args.PreviousInputName = Configuration.Cameras[iCamPreview].CameraName;
             args.CurrentInputName = Configuration.Cameras[iCamProgram].CameraName;
-            Messenger.Default.Send<NotificationMessage<AtemSourceArgs>>(new NotificationMessage<AtemSourceArgs>(args, ConstMessages.ProgramSourceChanged));
+            Messenger.Default.Send<NotificationMessage<AtemSourceMessageArgs>>(new NotificationMessage<AtemSourceMessageArgs>(args, NotificationSource.ProgramSourceChanged));
         }
     }
 

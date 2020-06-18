@@ -2,8 +2,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using PTZPadController.BusinessLayer;
-using PTZPadController.Common;
 using PTZPadController.DataAccessLayer;
+using PTZPadController.Messages;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -40,6 +40,8 @@ namespace PTZPadController.ViewModel
         public ICommand CameraZoomTele { get; private set; }
         public ICommand CameraZoomWidde { get; private set; }
         public ICommand CameraZoomStop { get; private set; }
+        public ICommand AtemCut { get; private set; }
+        public ICommand AtemMix { get; private set; }
 
         #endregion
 
@@ -71,6 +73,8 @@ namespace PTZPadController.ViewModel
             CameraZoomTele = new RelayCommand(CameraZoomTeleExecute);
             CameraZoomWidde = new RelayCommand(CameraZoomWiddeExecute);
             CameraZoomStop = new RelayCommand(CameraZoomStopExecute);
+            AtemCut = new RelayCommand(AtemCutExecute);
+            AtemMix = new RelayCommand(AtemMixExecute);
             Cameras = new ObservableCollection<CameraViewModel>();
 
             //Initialize viewModel
@@ -85,12 +89,24 @@ namespace PTZPadController.ViewModel
             }
 
             //Messenger.Default.Register<NotificationMessage<AtemSourceArgs>>(this, AtemSourceChange);
-            Messenger.Default.Register<NotificationMessage<CameraEventArgs>>(this, CameraStatusChange);
+            Messenger.Default.Register<NotificationMessage<CameraMessageArgs>>(this, CameraStatusChange);
         }
 
-        private void CameraStatusChange(NotificationMessage<CameraEventArgs> obj)
+        private void AtemMixExecute()
         {
-            if (obj.Notification == ConstMessages.CameraStatusChanged)
+            var msg = new NotificationMessage<TransitionMessageArgs>(new TransitionMessageArgs { Transition = TransitionEnum.Mix}, NotificationSource.SendTransition);
+            MessengerInstance.Send(msg);
+        }
+
+        private void AtemCutExecute()
+        {
+            var msg = new NotificationMessage<TransitionMessageArgs>(new TransitionMessageArgs { Transition = TransitionEnum.Cut }, NotificationSource.SendTransition);
+            MessengerInstance.Send(msg);
+        }
+
+        private void CameraStatusChange(NotificationMessage<CameraMessageArgs> obj)
+        {
+            if (obj.Notification == NotificationSource.CameraStatusChanged)
             {
                 var camera = Cameras.FirstOrDefault(x => x.Name == obj.Content.CameraName);
                 if (camera != null)

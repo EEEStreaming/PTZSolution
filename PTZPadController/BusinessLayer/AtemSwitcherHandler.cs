@@ -1,8 +1,8 @@
 ﻿using BMDSwitcherAPI;
 using GalaSoft.MvvmLight.Messaging;
 using NLog.Fluent;
-using PTZPadController.Common;
 using PTZPadController.DataAccessLayer;
+using PTZPadController.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +17,6 @@ using System.Windows.Media.Animation;
 namespace PTZPadController.BusinessLayer
 {
     public delegate void SwitcherEventHandler(object sender, object args);
-    public class AtemSourceArgs : EventArgs
-    {
-        public string PreviousInputName { get; set; }
-        public string CurrentInputName { get; set; }
-    }
-
     class SwitcherMonitor : IBMDSwitcherCallback
     {
         // Events:
@@ -138,12 +132,13 @@ namespace PTZPadController.BusinessLayer
         volatile private bool is_connecting;
         volatile private bool is_connected;
 
+        public bool IsConnected { get { return is_connected; } }
 
         public AtemSwitcherHandler(string ip)
         {
-            this.atem_ip = ip;
-            this.is_connecting = false;
-            this.is_connected = false;
+            atem_ip = ip;
+            is_connecting = false;
+            is_connected = false;
             m_switcherMonitor = new SwitcherMonitor();
 
             // note: this invoke pattern ensures our callback is called in the main thread. We are making double
@@ -151,11 +146,11 @@ namespace PTZPadController.BusinessLayer
             // Essentially, the events will arrive at the callback class (implemented by our monitor classes)
             // on a separate thread. We must marshal these to the main thread, and we're doing this by calling
             // invoke on the Windows Forms object. The lambda expression is just a simplification.
-            m_switcherMonitor.SwitcherDisconnected += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => SwitcherDisconnected())));
+            m_switcherMonitor.SwitcherDisconnected += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke(() => SwitcherDisconnected()));
 
             m_mixEffectBlockMonitor = new MixEffectBlockMonitor();
-            m_mixEffectBlockMonitor.ProgramInputChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => OnProgramSourceChange())));
-            m_mixEffectBlockMonitor.PreviewInputChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => OnPreviewSourceChange())));
+            m_mixEffectBlockMonitor.ProgramInputChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke(() => OnProgramSourceChange()));
+            m_mixEffectBlockMonitor.PreviewInputChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke(() => OnPreviewSourceChange()));
             //m_mixEffectBlockMonitor.TransitionFramesRemainingChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => UpdateTransitionFramesRemaining())));
             //m_mixEffectBlockMonitor.TransitionPositionChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => UpdateSliderPosition())));
             //m_mixEffectBlockMonitor.InTransitionChanged += new SwitcherEventHandler((s, a) => App.Win.Dispatcher.Invoke((Action)(() => OnInTransitionChanged())));
@@ -208,62 +203,74 @@ namespace PTZPadController.BusinessLayer
 
         }
 
-        public AtemSwitcherHandler() : this("192.168.1.135") { } // TODO : read ip from config.
-        public bool isConnected() {
-            return is_connected;
-        }
-        public void connect()
+        public void Connect()
         {
             if (is_connecting || is_connected)
             {
                 return;
             }
-            
+
             // Connect to switcher
             _BMDSwitcherConnectToFailure failureReason = 0;
             is_connecting = true;
             try
+            {
+                CBMDSwitcherDiscovery atem_discovery = new CBMDSwitcherDiscovery();
+                atem_discovery.ConnectTo(atem_ip, out atem_switcher, out failureReason);
+                PTZLogger.Log.Debug("Connected to ATEM");
+            }
+            catch (COMException comEx)
+            {
+                PTZLogger.Log.Error(comEx,"Failed to connect to ATME");
+                // An exception will be thrown if ConnectTo fails. For more information, see failReason.
+                switch (failureReason)
                 {
-                    CBMDSwitcherDiscovery atem_discovery = new CBMDSwitcherDiscovery();
-                    atem_discovery.ConnectTo(atem_ip, out atem_switcher, out failureReason);
-                    Log.Debug("Connected to ATEM");
+                    case _BMDSwitcherConnectToFailure.bmdSwitcherConnectToFailureNoResponse:
+                        PTZLogger.Log.Error("No response from Switcher");
+                        break;
+                    case _BMDSwitcherConnectToFailure.bmdSwitcherConnectToFailureIncompatibleFirmware:
+                        PTZLogger.Log.Error("Switcher has incompatible firmware");
+                        break;
+                    default:
+                        PTZLogger.Log.Error("Connection failed for unknown reason");
+                        break;
                 }
-                catch (COMException comEx)
-                {
-                    Log.Error("Failed to connect to ATM, got error: " + comEx.Message);
-                    atem_switcher = null;
-                }
-                finally
-                {
-                    if (failureReason == 0 && atem_switcher != null)
-                    {
-                        switcherConnected();
-                        if (m_inputHDMIMonitors.Count >=4 )
-                        {
-                            is_connected = true;
-                        }
-                        else
-                        {
-                            is_connected = false;
 
-                        }
+                atem_switcher = null;
+            }
+            finally
+            {
+                if (failureReason == 0 && atem_switcher != null)
+                {
+                    SwitcherConnected();
+                    if (m_inputHDMIMonitors.Count >= 4)
+                    {
+                        is_connected = true;
                     }
                     else
                     {
                         is_connected = false;
+
                     }
-                    is_connecting = false;
                 }
+                else
+                {
+                    is_connected = false;
+                }
+                is_connecting = false;
+            }
         }
-        public bool waitForConnection() {
-            while (is_connecting) {
+        public bool WaitForConnection()
+        {
+            while (is_connecting)
+            {
                 Console.WriteLine("sleeping for connexion");
                 Thread.Sleep(10);
             }
             return is_connected;
         }
 
-        public void disconnect()
+        public void Disconnect()
         {
             //if (this.atem_switcher != null) {
             //    atem_switcher.RemoveCallback(atem_callback);
@@ -278,12 +285,12 @@ namespace PTZPadController.BusinessLayer
 
             firstMixEffectBlock.GetPreviewInput(out previewId);
 
-            AtemSourceArgs args = new AtemSourceArgs();
+            AtemSourceMessageArgs args = new AtemSourceMessageArgs();
             args.PreviousInputName = m_CurrentPreviewName;
             m_CurrentPreviewName = GetInputNameById(previewId);
             args.CurrentInputName = m_CurrentPreviewName;
 
-            Messenger.Default.Send<NotificationMessage<AtemSourceArgs>>(new NotificationMessage<AtemSourceArgs>(args, ConstMessages.PreviewSourceChanged));
+            Messenger.Default.Send(new NotificationMessage<AtemSourceMessageArgs>(args, NotificationSource.PreviewSourceChanged));
         }
 
         protected virtual void OnProgramSourceChange()
@@ -292,26 +299,35 @@ namespace PTZPadController.BusinessLayer
 
             firstMixEffectBlock.GetProgramInput(out programId);
 
-            AtemSourceArgs args = new AtemSourceArgs();
+            AtemSourceMessageArgs args = new AtemSourceMessageArgs();
             args.PreviousInputName = m_CurrentProgramName;
             m_CurrentProgramName = GetInputNameById(programId);
             args.CurrentInputName = m_CurrentProgramName;
-            Messenger.Default.Send<NotificationMessage<AtemSourceArgs>>(new NotificationMessage<AtemSourceArgs>(args, ConstMessages.ProgramSourceChanged));
+            Messenger.Default.Send(new NotificationMessage<AtemSourceMessageArgs>(args, NotificationSource.ProgramSourceChanged));
         }
 
-        public void setPreviewSource(Source previewSource)
+        public void SetPreviewSource(string cameraName)
         {
-            connect();
-            
-            //firstMixEffectBlock.SetPreviewInput(inputId);
+            if (is_connected)
+            {
+                var input = m_inputHDMIMonitors.FirstOrDefault(x => x.InputName == cameraName);
+                if (input != null)
+                    firstMixEffectBlock.SetPreviewInput(input.InputId);
+            }
         }
 
-        public void setProgramSource(Source programCamera)
+        public void StartTransition(TransitionEnum transition)
         {
-            throw new NotImplementedException();
+            if (is_connected)
+            {
+                if (transition == TransitionEnum.Cut)
+                    firstMixEffectBlock.PerformCut();
+                else if (transition == TransitionEnum.Mix)
+                    firstMixEffectBlock.PerformAutoTransition();
+            }
         }
 
-        private void switcherConnected()
+        private void SwitcherConnected()
         {
             // Install SwitcherMonitor callbacks:
             atem_switcher.AddCallback(m_switcherMonitor);
@@ -455,7 +471,7 @@ namespace PTZPadController.BusinessLayer
             var input = m_inputHDMIMonitors.FirstOrDefault(x => x.InputId == programId);
             if (input != null)
                 return input.InputName;
-            return String.Empty;
+            return string.Empty;
         }
 
         public string GetCameraPreviewName()
@@ -466,7 +482,7 @@ namespace PTZPadController.BusinessLayer
             var input = m_inputHDMIMonitors.FirstOrDefault(x => x.InputId == previewId);
             if (input != null)
                 return input.InputName;
-            return String.Empty;
+            return string.Empty;
         }
     }
 }
