@@ -33,6 +33,13 @@ namespace UnitTestPTZPadController.DataAccessLayer
             (socket as MockISocketParser).SetTestValue(0x02, 0x03);
             camera.Tally(true, true);
         }
+
+        [Test]
+        public void TestConvertSpeed()
+        {
+            //Assert. ConvertSpeed(0, 0);
+
+        }
     }
 
     public class MockISocketParser : ISocketParser

@@ -273,6 +273,26 @@ namespace UnitTestPTZPadController.BusinessLayer
         {
             throw new NotImplementedException();
         }
+
+        void ICameraHandler.CameraMemoryRecall(short memory)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICameraHandler.CameraMemoryReset(short memory)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICameraHandler.CameraMemorySet(short memory)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICameraHandler.PanTiltHome()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
