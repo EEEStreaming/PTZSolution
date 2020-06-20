@@ -107,14 +107,11 @@ namespace UnitTestPTZPadController.BusinessLayer
         public event EventHandler<AtemSourceMessageArgs> PreviewSourceChanged;
         public event EventHandler<AtemSourceMessageArgs> ProgramSourceChanged;
 
-        public Task ConnectTo()
+        public void ConnectTo()
         {
-            return Task.Run(() =>
-            {
-                bConnected = true;
-                iCamPreview = 0;
-                iCamProgram = 1;
-            });
+            bConnected = true;
+            iCamPreview = 0;
+            iCamProgram = 1;
         }
 
 
@@ -164,11 +161,6 @@ namespace UnitTestPTZPadController.BusinessLayer
             args.PreviousInputName = Configuration.Cameras[iCamPreview].CameraName;
             args.CurrentInputName = Configuration.Cameras[iCamProgram].CameraName;
             Messenger.Default.Send<NotificationMessage<AtemSourceMessageArgs>>(new NotificationMessage<AtemSourceMessageArgs>(args, NotificationSource.ProgramSourceChanged));
-        }
-
-        void ISwitcherHandler.ConnectTo()
-        {
-            throw new NotImplementedException();
         }
     }
 
