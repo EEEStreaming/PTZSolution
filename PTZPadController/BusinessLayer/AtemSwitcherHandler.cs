@@ -37,13 +37,15 @@ namespace PTZPadController.BusinessLayer
             m_Initialized = true;
         }
 
-        public Task ConnectTo()
+        public void ConnectTo()
         {
-            var t = Task.Run(() =>
-            {
-                m_SwitcherParser.Connect();
-            });
-            return t;
+            m_SwitcherParser.Connect();
+
+            //var t = Task.Run(() =>
+            //{
+            //    //m_SwitcherParser.Connect();
+            //});
+            //return t;
         }
 
         public bool WaitForConnection()

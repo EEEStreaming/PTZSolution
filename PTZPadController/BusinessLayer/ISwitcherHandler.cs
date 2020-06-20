@@ -8,7 +8,7 @@ namespace PTZPadController.BusinessLayer
     public interface ISwitcherHandler
     {
 
-        Task ConnectTo();
+        void ConnectTo();
         /// <summary>
         /// Checks if the switcher is actually connected. Will not wait the completion of a connection if it is in progress.
         /// </summary>

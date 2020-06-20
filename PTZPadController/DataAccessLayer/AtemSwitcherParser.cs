@@ -184,20 +184,21 @@ namespace PTZPadController.DataAccessLayer
                         if (m_Cancellation == null)
                             m_Cancellation = new CancellationTokenSource();
                         // Create the task to re-connect.
-                        var task = Task.Factory.StartNew(() =>
-                        {
-                            if (!m_Cancellation.IsCancellationRequested)
-                            {
-                                Thread.Sleep(500);
-                                PTZLogger.Log.Info("Atem, {0}, try to re-connect ", atem_ip);
-                                Connect();
-                            }
-                        }, m_Cancellation.Token, TaskCreationOptions.None, TaskScheduler.Default);
-                        if (m_Cancellation.Token.IsCancellationRequested)
-                        {
-                            m_Cancellation = null;
-                            atem_switcher = null;
-                        }
+                        //Multi-thread get issue with ATEM SDK.
+                        //var task = Task.Factory.StartNew(() =>
+                        //{
+                        //    if (!m_Cancellation.IsCancellationRequested)
+                        //    {
+                        //        Thread.Sleep(1000);
+                        //        PTZLogger.Log.Info("Atem, {0}, try to re-connect ", atem_ip);
+                        //        Connect();
+                        //    }
+                        //}, m_Cancellation.Token, TaskCreationOptions.None, TaskScheduler.Default);
+                        //if (m_Cancellation.Token.IsCancellationRequested)
+                        //{
+                        //    m_Cancellation = null;
+                        //    atem_switcher = null;
+                        //}
 
                         break;
                     case _BMDSwitcherConnectToFailure.bmdSwitcherConnectToFailureIncompatibleFirmware:
@@ -214,7 +215,10 @@ namespace PTZPadController.DataAccessLayer
             {
                 if (failureReason == 0 && atem_switcher != null)
                 {
-                    SwitcherConnected();
+                    if (App.Win != null)
+                        App.Win.Dispatcher.Invoke(() => SwitcherConnected());
+                    else
+                        SwitcherConnected();
                     if (m_inputHDMIMonitors.Count >= 4)
                     {
                         is_connected = true;

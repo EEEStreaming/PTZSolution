@@ -190,20 +190,49 @@ namespace PTZPadController.BusinessLayer
             }
 
             //Connect ATEM
-            t = m_AtemHandler.ConnectTo().ContinueWith((t) => {
-                if (m_AtemHandler.WaitForConnection())
+            m_AtemHandler.ConnectTo();
+            if (m_AtemHandler.WaitForConnection())
+            {
+                CameraMessageArgs args;
+                var programName = m_AtemHandler.GetCameraProgramName();
+                var previewName = m_AtemHandler.GetCameraPreviewName();
+                CameraProgram = m_CameraList.FirstOrDefault(x => x.CameraName == programName);
+                if (CameraProgram != null)
                 {
-                    var programName = m_AtemHandler.GetCameraProgramName();
-                    var previewName = m_AtemHandler.GetCameraPreviewName();
-                    CameraProgram = m_CameraList.FirstOrDefault(x => x.CameraName == programName);
-                    if (CameraProgram != null)
-                        CameraProgram.Tally(true, false);
-                    CameraPreview = m_CameraList.FirstOrDefault(x => x.CameraName == previewName);
-                    if (CameraPreview != null)
-                        CameraPreview.Tally(false, m_UseTallyGreen);
+                    CameraProgram.Tally(true, false);
+                    args = new CameraMessageArgs
+                    {
+                        CameraName = programName,
+                        Status = CameraStatusEnum.Program
+                    };
+                    Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
                 }
-            });
-            tasks.Add(t);
+                CameraPreview = m_CameraList.FirstOrDefault(x => x.CameraName == previewName);
+                if (CameraPreview != null)
+                {
+                    CameraPreview.Tally(false, m_UseTallyGreen);
+                    args = new CameraMessageArgs
+                    {
+                        CameraName = previewName,
+                        Status = CameraStatusEnum.Preview
+                    };
+                    Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
+                }
+            }
+            //t = m_AtemHandler.ConnectTo().ContinueWith((t) => {
+            //    if (m_AtemHandler.WaitForConnection())
+            //    {
+            //        var programName = m_AtemHandler.GetCameraProgramName();
+            //        var previewName = m_AtemHandler.GetCameraPreviewName();
+            //        CameraProgram = m_CameraList.FirstOrDefault(x => x.CameraName == programName);
+            //        if (CameraProgram != null)
+            //            CameraProgram.Tally(true, false);
+            //        CameraPreview = m_CameraList.FirstOrDefault(x => x.CameraName == previewName);
+            //        if (CameraPreview != null)
+            //            CameraPreview.Tally(false, m_UseTallyGreen);
+            //    }
+            //});
+            //tasks.Add(t);
 
             //Connect PAD
 

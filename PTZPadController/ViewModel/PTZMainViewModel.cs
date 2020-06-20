@@ -105,6 +105,13 @@ namespace PTZPadController.ViewModel
             
             MessengerInstance.Register<NotificationMessage<CameraMessageArgs>>(this, CameraStatusChange);
             MessengerInstance.Register<NotificationMessage<ISwitcherParser>>(this, SwitcherNotification);
+
+
+            //Startup the whole system 
+            //Multi-thread get issue with ATEM SDK.
+            m_PtzManager.StartUp();
+            //Task.Factory.StartNew(()=>ptzManager.StartUp());
+
         }
 
 

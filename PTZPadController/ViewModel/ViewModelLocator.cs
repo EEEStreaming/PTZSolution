@@ -98,9 +98,6 @@ namespace PTZPadController.ViewModel
             //Create pad
 
 
-            //Startup the whole system
-            Task.Factory.StartNew(()=>ptzManager.StartUp());
-
         }
     }
 }
