@@ -156,7 +156,8 @@
                     </Grid>
                 </Button>
             </Grid>
-            <Grid Grid.Column="1">
+            <pl:PadControlView Grid.Column="1" Visibility="Collapsed"></pl:PadControlView>
+            <Grid Grid.Column="1" Visibility="Visible">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
