@@ -224,6 +224,7 @@ namespace PTZPadController.DataAccessLayer
                         is_connected = false;
 
                     }
+                    Messenger.Default.Send(new NotificationMessage<ISwitcherParser>(this, NotificationSource.SwictcherConnected));
                 }
                 else
                 {
@@ -369,7 +370,8 @@ namespace PTZPadController.DataAccessLayer
                 // release reference:
                 atem_switcher = null;
             }
-
+            is_connected = false;
+            Messenger.Default.Send(new NotificationMessage<ISwitcherParser>(this, NotificationSource.SwictcherConnected));
         }
 
 

@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using NLog;
+using PTZPadController.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +58,7 @@ namespace PTZPadController.DataAccessLayer
 
                     if (m_OldConnectionStatus != m_Socket.Connected)
                     {
-                        Messenger.Default.Send<NotificationMessage<ISocketParser>>(new NotificationMessage<ISocketParser>(this, "Connected"));
+                        Messenger.Default.Send(new NotificationMessage<ISocketParser>(this, NotificationSource.SocketConnected));
                         m_OldConnectionStatus = m_Socket.Connected;
                     }
                     PTZLogger.Log.Debug("{0}, {1}, Connected : {2}", m_Name, m_Host, m_Socket.Connected);
@@ -67,7 +68,7 @@ namespace PTZPadController.DataAccessLayer
                 {
                     if (m_OldConnectionStatus != m_Socket.Connected)
                     {
-                        Messenger.Default.Send<NotificationMessage<ISocketParser>>(new NotificationMessage<ISocketParser>(this, "Exception"));
+                        Messenger.Default.Send(new NotificationMessage<ISocketParser>(this, NotificationSource.SocketConnected));
                         m_OldConnectionStatus = m_Socket.Connected;
                     }
                     PTZLogger.Log.Error(ex, "{0}, Connection error to {1}", m_Name, m_Host);

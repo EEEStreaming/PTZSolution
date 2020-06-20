@@ -17,16 +17,12 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <GroupBox Header="Devices" Grid.Row="0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <pl:DeviceItemView Grid.Column="0"></pl:DeviceItemView>
+            <UniformGrid Rows="1">
+                
+                <pl:DeviceItemView Grid.Column="0" DataContext="{Binding Switcher}"></pl:DeviceItemView>
                 <pl:DeviceItemView Grid.Column="1"></pl:DeviceItemView>
                 <pl:DeviceItemView Grid.Column="2"></pl:DeviceItemView>
-            </Grid>
+            </UniformGrid>
         </GroupBox>
         <GroupBox Header="Cameras" Grid.Row="1" Grid.IsSharedSizeScope="False">
             <Grid>
@@ -301,28 +297,18 @@
         </Grid>
 
         <GroupBox Header="Presets" Grid.Row="3">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="69*"/>
-                    <ColumnDefinition Width="69*"/>
-                    <ColumnDefinition Width="13*"/>
-                    <ColumnDefinition Width="56*"/>
-                    <ColumnDefinition Width="69*"/>
-                </Grid.ColumnDefinitions>
+            <UniformGrid Rows="2">
+
                 <Button Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">1</Button>
                 <Button Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">2</Button>
-                <Button Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold" Grid.ColumnSpan="2">3</Button>
+                <Button Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">3</Button>
                 <Button Grid.Row="0" Grid.Column="4" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">4</Button>
                 <Button Grid.Row="1" Grid.Column="0" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">5</Button>
                 <Button Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">6</Button>
-                <Button Grid.Row="1" Grid.Column="2" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold" Grid.ColumnSpan="2">7</Button>
+                <Button Grid.Row="1" Grid.Column="2" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">7</Button>
                 <Button Grid.Row="1" Grid.Column="4" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold">8</Button>
 
-            </Grid>
+            </UniformGrid>
         </GroupBox>
 
     </Grid>

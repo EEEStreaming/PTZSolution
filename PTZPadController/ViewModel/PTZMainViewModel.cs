@@ -26,6 +26,19 @@ namespace PTZPadController.ViewModel
     public class PTZMainViewModel : ViewModelBase
     {
         private readonly IPTZManager m_PtzManager;
+        private string _SwitcherName;
+        private bool _SwitcherConnected;
+        private DeviceItemViewModel _Switcher;
+
+        public DeviceItemViewModel Switcher {
+            get { return _Switcher; }
+            set
+            {
+                if (_Switcher == value) return;
+                _Switcher = value;
+                RaisePropertyChanged("Switcher");
+            }
+        }
 
         #region Commands
         public ICommand CameraUp { get; private set; }
@@ -88,9 +101,13 @@ namespace PTZPadController.ViewModel
                 cameraInput++;
             }
 
-            //Messenger.Default.Register<NotificationMessage<AtemSourceArgs>>(this, AtemSourceChange);
-            Messenger.Default.Register<NotificationMessage<CameraMessageArgs>>(this, CameraStatusChange);
+            Switcher = new DeviceItemViewModel("ATEM");
+            
+            MessengerInstance.Register<NotificationMessage<CameraMessageArgs>>(this, CameraStatusChange);
+            MessengerInstance.Register<NotificationMessage<ISwitcherParser>>(this, SwitcherNotification);
         }
+
+
 
         private void AtemMixExecute()
         {
@@ -114,6 +131,15 @@ namespace PTZPadController.ViewModel
                 if (camera != null)
                     camera.SourceStatus = obj.Content.Status;
             }
+        }
+
+        private void SwitcherNotification(NotificationMessage<ISwitcherParser> obj)
+        {
+            if (obj != null && obj.Content != null)
+                if (obj.Notification == NotificationSource.SwictcherConnected)
+                {
+                    Switcher.Connected = obj.Content.Connected;
+                }
         }
 
         //private void AtemSourceChange(NotificationMessage<AtemSourceArgs> msg)
