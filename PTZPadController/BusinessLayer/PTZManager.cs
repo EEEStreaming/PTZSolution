@@ -68,16 +68,14 @@ namespace PTZPadController.BusinessLayer
 
         public void SendSwitcherTransition(TransitionEnum transition)
         {
-            if (m_AtemHandler == null)
+            if (m_AtemHandler != null)
                 m_AtemHandler.StartTransition(transition);
         }
 
         public void SetSwitcherPreview(string cameraName)
         {
-            if (m_AtemHandler == null)
-                {
-                    m_AtemHandler.SetPreviewSource(cameraName);
-                }
+            if (m_AtemHandler != null)
+                m_AtemHandler.SetPreviewSource(cameraName);
         }
 
         private void AtemSourceChange(NotificationMessage<AtemSourceMessageArgs> msg)
