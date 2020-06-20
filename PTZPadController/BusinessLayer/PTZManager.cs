@@ -217,26 +217,15 @@ namespace PTZPadController.BusinessLayer
                     Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
                 }
             }
-            //t = m_AtemHandler.ConnectTo().ContinueWith((t) => {
-            //    if (m_AtemHandler.WaitForConnection())
-            //    {
-            //        var programName = m_AtemHandler.GetCameraProgramName();
-            //        var previewName = m_AtemHandler.GetCameraPreviewName();
-            //        CameraProgram = m_CameraList.FirstOrDefault(x => x.CameraName == programName);
-            //        if (CameraProgram != null)
-            //            CameraProgram.Tally(true, false);
-            //        CameraPreview = m_CameraList.FirstOrDefault(x => x.CameraName == previewName);
-            //        if (CameraPreview != null)
-            //            CameraPreview.Tally(false, m_UseTallyGreen);
-            //    }
-            //});
-            //tasks.Add(t);
+
 
             //Connect PAD
 
 
-            Task.WaitAll(tasks.ToArray());
-            PTZLogger.Log.Info("System started, ready to use");
+            if (Task.WaitAll(tasks.ToArray(),1000))
+                PTZLogger.Log.Info("System started, ready to use");
+            else
+                PTZLogger.Log.Info("System started, But some devices are not connected.");
             m_IsStarted = true;
         }
 

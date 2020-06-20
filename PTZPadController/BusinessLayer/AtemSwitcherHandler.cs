@@ -50,10 +50,10 @@ namespace PTZPadController.BusinessLayer
 
         public bool WaitForConnection()
         {
-            while (!m_SwitcherParser.Connected)
+            while (m_SwitcherParser.IsConnecting)
             {
                 PTZLogger.Log.Info("Atem Switcher Handler Sleeping for connexion");
-                Thread.Sleep(800);
+                Thread.Sleep(20);
             }
             return m_SwitcherParser.Connected;
         }

@@ -128,6 +128,7 @@ namespace PTZPadController.DataAccessLayer
         private CancellationTokenSource m_Cancellation;
 
         public bool Connected { get { return is_connected; } }
+        public bool IsConnecting { get { return is_connecting; } }
 
         #region Constructor/Initialisation/Connection
         public AtemSwitcherParser(string ip)
