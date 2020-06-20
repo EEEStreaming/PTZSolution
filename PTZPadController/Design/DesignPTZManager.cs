@@ -1,5 +1,6 @@
 ﻿using PTZPadController.BusinessLayer;
 using PTZPadController.DataAccessLayer;
+using PTZPadController.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,15 @@ namespace PTZPadController.Design
         {
         }
 
-        public void SetAtemHandler(IAtemSwitcherHandler atemHandler)
+        public void SendSwitcherTransition(TransitionEnum transition)
+        {
+        }
+
+        public void SetSwitcherHandler(ISwitcherHandler atemHandler)
+        {
+        }
+
+        public void SetSwitcherPreview(string cameraName)
         {
         }
 

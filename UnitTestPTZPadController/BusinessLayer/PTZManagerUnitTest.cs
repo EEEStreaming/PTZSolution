@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Messaging;
 using NSubstitute;
 using NUnit.Framework;
@@ -61,7 +62,7 @@ namespace UnitTestPTZPadController.BusinessLayer
 
 
             //initialize Program and Preview
-            manager.SetAtemHandler(atem);
+            manager.SetSwitcherHandler(atem);
 
 
             //startup
@@ -93,7 +94,7 @@ namespace UnitTestPTZPadController.BusinessLayer
         }
     }
 
-    class MockAtemHandler : IAtemSwitcherHandler
+    class MockAtemHandler : ISwitcherHandler
     {
         private bool bConnected = false;
 
@@ -101,17 +102,21 @@ namespace UnitTestPTZPadController.BusinessLayer
         int iCamProgram;
         public ConfigurationModel Configuration { get; internal set; }
 
-        public bool IsConnected { get { return bConnected; } }
+        //public bool IsConnected { get { return bConnected; } }
 
         public event EventHandler<AtemSourceMessageArgs> PreviewSourceChanged;
         public event EventHandler<AtemSourceMessageArgs> ProgramSourceChanged;
 
-        public void Connect()
+        public Task ConnectTo()
         {
-            bConnected = true;
-            iCamPreview = 0;
-            iCamProgram = 1;
+            return Task.Run(() =>
+            {
+                bConnected = true;
+                iCamPreview = 0;
+                iCamProgram = 1;
+            });
         }
+
 
         public void Disconnect()
         {
@@ -185,12 +190,18 @@ namespace UnitTestPTZPadController.BusinessLayer
 
         public ICameraParserModel Parser { get; internal set; }
 
-        public void Connect()
+        public Task ConnectTo()
         {
-            PanTileWorking = false;
-            ZoomWorking = false;
+            return Task.Run(() =>
+            {
+                PanTileWorking = false;
+                ZoomWorking = false;
+            });
         }
-
+        public bool WaitForConnection()
+        {
+            return true;
+        }
         public void Initialize(ICameraParser camParser)
         {
             PanTileWorking = false;
@@ -254,6 +265,8 @@ namespace UnitTestPTZPadController.BusinessLayer
             else
                 TallyStatus = MockTallyStatus.Off;
         }
+
+
 
         public void ZoomStop()
         {

@@ -10,8 +10,7 @@ namespace PTZPadController.Messages
         public const string ProgramSourceChanged = "ProgramSourceChanged";  // with AtemSourceMessageArgs
         public const string PreviewSourceChanged = "PreviewSourceChanged";  // with AtemSourceMessageArgs
         public const string CameraStatusChanged = "CameraStatusChanged";  // with CameraMessageArgs
-        public const string SetPreviewInput = "SetPreviewInput";   // with CameraInputMessageArgs
-        public const string SendTransition = "SendTransition";   // with TransitionMessageArgs
+        
     }
 
     public enum CameraStatusEnum
@@ -27,13 +26,6 @@ namespace PTZPadController.Messages
         Mix
     }
 
-    /// <summary>
-    /// Message used with notification SendTransition
-    /// </summary>
-    public class TransitionMessageArgs
-    {
-        public TransitionEnum Transition { get; set; }
-    }
     /// <summary>
     /// Message used with notification CameraStatusChanged
     /// </summary>    
@@ -52,11 +44,5 @@ namespace PTZPadController.Messages
         public string CurrentInputName { get; set; }
     }
 
-    /// <summary>
-    /// Message used with notification SetPreviewInput
-    /// </summary>
-    public class CameraInputMessageArgs
-    {
-        public string CameraName { get; internal set; }
-    }
+
 }

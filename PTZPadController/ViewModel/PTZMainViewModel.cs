@@ -83,7 +83,7 @@ namespace PTZPadController.ViewModel
             
             foreach (var cam in m_PtzManager.Cameras)
             {
-                camvm = new CameraViewModel(cam.Parser, cameraInput);
+                camvm = new CameraViewModel(m_PtzManager, cam.Parser, cameraInput);
                 Cameras.Add(camvm);
                 cameraInput++;
             }
@@ -94,14 +94,16 @@ namespace PTZPadController.ViewModel
 
         private void AtemMixExecute()
         {
-            var msg = new NotificationMessage<TransitionMessageArgs>(new TransitionMessageArgs { Transition = TransitionEnum.Mix}, NotificationSource.SendTransition);
-            MessengerInstance.Send(msg);
+            //var msg = new NotificationMessage<TransitionMessageArgs>(new TransitionMessageArgs { Transition = TransitionEnum.Mix}, NotificationSource.SendTransition);
+            //MessengerInstance.Send(msg);
+            m_PtzManager.SendSwitcherTransition(TransitionEnum.Mix);
         }
 
         private void AtemCutExecute()
         {
-            var msg = new NotificationMessage<TransitionMessageArgs>(new TransitionMessageArgs { Transition = TransitionEnum.Cut }, NotificationSource.SendTransition);
-            MessengerInstance.Send(msg);
+            //var msg = new NotificationMessage<TransitionMessageArgs>(new TransitionMessageArgs { Transition = TransitionEnum.Cut }, NotificationSource.SendTransition);
+            //MessengerInstance.Send(msg);
+            m_PtzManager.SendSwitcherTransition(TransitionEnum.Cut);
         }
 
         private void CameraStatusChange(NotificationMessage<CameraMessageArgs> obj)

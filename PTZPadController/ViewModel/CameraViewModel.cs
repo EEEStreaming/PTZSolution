@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using PTZPadController.BusinessLayer;
 using PTZPadController.DataAccessLayer;
 using PTZPadController.Messages;
 using System;
@@ -16,7 +17,7 @@ namespace PTZPadController.ViewModel
         private string _Name = "";
         private int _InputIndex = 0;
         private bool _Connected = false;
-        //private ICameraParserModel _Camera;
+        private IPTZManager _Manager;
         private CameraStatusEnum _SourceStatus;
         #endregion
 
@@ -70,9 +71,9 @@ namespace PTZPadController.ViewModel
         #endregion
 
         #region Construction/Destruction/Initialization
-        public CameraViewModel(ICameraParserModel cam, int index)
+        public CameraViewModel(IPTZManager manager, ICameraParserModel cam, int index)
         {
-            //_Camera = cam;
+            _Manager = manager;
             _Name = cam.CameraName;
             _InputIndex = index;
             _SourceStatus = CameraStatusEnum.Off;
@@ -84,8 +85,7 @@ namespace PTZPadController.ViewModel
 
         private void AtemSetPreviewExecute()
         {
-            var msg = new NotificationMessage<CameraInputMessageArgs>(new CameraInputMessageArgs { CameraName = _Name }, NotificationSource.SetPreviewInput);
-            MessengerInstance.Send<NotificationMessage<CameraInputMessageArgs>>(msg);
+            _Manager.SetSwitcherPreview(_Name);
         }
 
         private void CameraNotification(NotificationMessage<CameraMessageArgs> obj)

@@ -83,7 +83,10 @@
                             <i:InvokeCommandAction Command="{Binding Path=CameraZoomStop}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-UP.png"/>
+                    <Grid Margin="5">
+                        <Path Stretch="Uniform" Fill="#FFFFFFFF" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Data="M16.022003,0L21.291992,4.2460014 32,12.876004 32,21.368007 19.847992,11.574002 16.069,8.5310041 15.977997,8.6029951 12.153992,11.687009 0,21.478999 0,12.986997 10.709991,4.358001 10.799011,4.2839958 10.752991,4.2460014z">
+                        </Path>
+                    </Grid>
                 </Button>
                 <Button Margin="5" Grid.Row="1">
                     <i:Interaction.Triggers>
@@ -94,7 +97,10 @@
                             <i:InvokeCommandAction Command="{Binding Path=CameraZoomStop}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image Source="/PTZPadController;component/Images/Icons/32/Expander down.png"/>
+                    <Grid Margin="5">
+                        <Path Stretch="Uniform" Fill="#FFFFFFFF" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Data="M0.085998535,0L16.112,11.464981 32,0.118011 32,8.3990061 16.115005,19.745 0,8.2079966 0,0.072997569z">
+                        </Path>
+                    </Grid>
                 </Button>
             </Grid>
             <Grid Grid.Column="1">
@@ -117,7 +123,18 @@
                             <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Left45.png"/>
+                    <Grid Margin="5">
+                        <Path Stretch="Uniform" Fill="#FFFFFFFF" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Data="M16.022003,0L21.291992,4.2460014 32,12.876004 32,21.368007 19.847992,11.574002 16.069,8.5310041 15.977997,8.6029951 12.153992,11.687009 0,21.478999 0,12.986997 10.709991,4.358001 10.799011,4.2839958 10.752991,4.2460014z">
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <TransformGroup.Children>
+                                        <RotateTransform Angle="315" />
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </TransformGroup.Children>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
                 </Button>
                 <Button Grid.Column="1" Grid.Row="0" Margin="5">
                     <i:Interaction.Triggers>
@@ -128,7 +145,10 @@
                             <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Up.png"/>
+                    <Grid Margin="5">
+                        <Path Stretch="Uniform" Fill="#FFFFFFFF" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Data="M16.022003,0L21.291992,4.2460014 32,12.876004 32,21.368007 19.847992,11.574002 16.069,8.5310041 15.977997,8.6029951 12.153992,11.687009 0,21.478999 0,12.986997 10.709991,4.358001 10.799011,4.2839958 10.752991,4.2460014z" >
+                        </Path>
+                    </Grid>
                 </Button>
                 <Button Grid.Column="2" Grid.Row="0" Margin="5">
                     <i:Interaction.Triggers>
@@ -139,7 +159,18 @@
                             <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Up45.png"/>
+                    <Grid Margin="5">
+                        <Path Stretch="Uniform" Fill="#FFFFFFFF" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Data="M16.022003,0L21.291992,4.2460014 32,12.876004 32,21.368007 19.847992,11.574002 16.069,8.5310041 15.977997,8.6029951 12.153992,11.687009 0,21.478999 0,12.986997 10.709991,4.358001 10.799011,4.2839958 10.752991,4.2460014z">
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <TransformGroup.Children>
+                                        <RotateTransform Angle="45" />
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </TransformGroup.Children>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
                 </Button>
                 <Button Grid.Column="0" Grid.Row="1" Margin="5">
                     <i:Interaction.Triggers>
@@ -150,10 +181,32 @@
                             <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Left.png"/>
+                    <Grid Margin="5">
+                        <Path Stretch="Uniform" Fill="#FFFFFFFF" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Data="M16.022003,0L21.291992,4.2460014 32,12.876004 32,21.368007 19.847992,11.574002 16.069,8.5310041 15.977997,8.6029951 12.153992,11.687009 0,21.478999 0,12.986997 10.709991,4.358001 10.799011,4.2839958 10.752991,4.2460014z">
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <TransformGroup.Children>
+                                        <RotateTransform Angle="270" />
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </TransformGroup.Children>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
                 </Button>
                 <Button Grid.Column="1" Grid.Row="1" Margin="5">
-                    <Image Source="/PTZPadController;component/Images/Icons/32/Pointer-WF.png"/>
+                    <Grid Margin="5">
+                        <Path Data="M10.702359,21.916019L7.7683921,22.85902 10.497361,25.163021z M11.846346,19.446018L12.355341,19.785019C12.641337,20.00602,12.800336,20.354019,12.780335,20.716019L12.38234,27.073023C12.35834,27.488022 12.103343,27.850021 11.718348,28.015022 11.578349,28.076023 11.429351,28.105022 11.283353,28.105022 11.029355,28.105022 10.778358,28.016022 10.576361,27.845022L8.5420561,26.128271 4.1700563,31.36503C3.972049,31.602024 3.6880379,31.72402 3.4010267,31.72402 3.1750181,31.72402 2.9480093,31.648022 2.7610016,31.492027 2.3379855,31.138035 2.2799833,30.507051 2.633997,30.083061L7.0135226,24.838341 5.2404203,23.34202C4.9324241,23.084021 4.7894254,22.67902 4.8684244,22.285021 4.9464235,21.89102 5.2324204,21.57202 5.615416,21.452021z M15.999992,14.000031C14.896993,14.000031 13.999992,14.89703 13.999992,16.000031 13.999992,17.103029 14.896993,18.000031 15.999992,18.000031 17.102993,18.000031 17.999992,17.103029 17.999992,16.000031 17.999992,14.89703 17.102993,14.000031 15.999992,14.000031z M15.999992,12.000031C18.205994,12.000031 19.999992,13.79403 19.999992,16.000031 19.999992,18.20603 18.205994,20.000031 15.999992,20.000031 13.793993,20.000031 11.999992,18.20603 11.999992,16.000031 11.999992,13.79403 13.793993,12.000031 15.999992,12.000031z M15.999992,6.00003C21.513992,6.00003 25.999992,10.48603 25.999992,16.000031 25.999992,21.51403 21.513992,26.000031 15.999992,26.000031 15.509993,26.000031 15.015993,25.964029 14.530993,25.89303 13.983993,25.81303 13.606993,25.305031 13.686993,24.75803 13.767993,24.21203 14.265993,23.825029 14.821993,23.91403 15.210993,23.971029 15.605992,24.000031 15.999992,24.000031 20.410994,24.000031 23.999992,20.41103 23.999992,16.000031 23.999992,11.58903 20.410994,8.0000305 15.999992,8.0000305 11.588993,8.0000305 7.9999928,11.58903 7.9999928,16.000031 7.9999928,16.808029 8.1199932,17.604031 8.3559923,18.36903 8.5199928,18.89703 8.2249928,19.457029 7.6969929,19.620029 7.1679926,19.784031 6.6089926,19.488029 6.4459929,18.961031 6.1499929,18.00403 5.9999928,17.00803 5.9999928,16.000031 5.9999928,10.48603 10.485992,6.00003 15.999992,6.00003z M16,0C24.821991,0 32,7.1780396 32,16 32,24.822021 24.821991,32 16,32 13.320007,32 10.669983,31.325012 8.3339844,30.047058 7.848999,29.782043 7.67099,29.175049 7.9369812,28.690002 8.2009888,28.204041 8.8089905,28.025024 9.2929993,28.29303 11.335999,29.409058 13.654999,30 16,30 23.720001,30 30,23.720032 30,16 30,8.2800293 23.720001,2 16,2 8.2799988,2 2,8.2800293 2,16 2,19.057007 2.96698,21.960022 4.7969971,24.396057 5.1279907,24.838013 5.0390015,25.465027 4.5979919,25.797058 4.1569824,26.129028 3.5279846,26.040039 3.196991,25.598022 1.1049805,22.812012 0,19.493042 0,16 0,7.1780396 7.1779785,0 16,0z" Stretch="Uniform" Fill="#FFFFFFFF"  Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <TransformGroup.Children>
+                                        <RotateTransform Angle="0" />
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </TransformGroup.Children>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
                 </Button>
                 <Button Grid.Column="2" Grid.Row="1" Margin="5">
                     <i:Interaction.Triggers>
@@ -164,7 +217,18 @@
                             <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Right.png"/>
+                    <Grid Margin="5">
+                        <Path Stretch="Uniform" Fill="#FFFFFFFF" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Data="M16.022003,0L21.291992,4.2460014 32,12.876004 32,21.368007 19.847992,11.574002 16.069,8.5310041 15.977997,8.6029951 12.153992,11.687009 0,21.478999 0,12.986997 10.709991,4.358001 10.799011,4.2839958 10.752991,4.2460014z">
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <TransformGroup.Children>
+                                        <RotateTransform Angle="90" />
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </TransformGroup.Children>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
                 </Button>
                 <Button Grid.Column="0" Grid.Row="2" Margin="5">
                     <i:Interaction.Triggers>
@@ -175,7 +239,18 @@
                             <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image Source="/PTZPadController;component/Images/Icons/32/Expander down45.png"/>
+                    <Grid Margin="5">
+                        <Path Stretch="Uniform" Fill="#FFFFFFFF" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Data="M16.022003,0L21.291992,4.2460014 32,12.876004 32,21.368007 19.847992,11.574002 16.069,8.5310041 15.977997,8.6029951 12.153992,11.687009 0,21.478999 0,12.986997 10.709991,4.358001 10.799011,4.2839958 10.752991,4.2460014z">
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <TransformGroup.Children>
+                                        <RotateTransform Angle="225" />
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </TransformGroup.Children>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
                 </Button>
                 <Button Grid.Column="1" Grid.Row="2" Margin="5">
                     <i:Interaction.Triggers>
@@ -186,7 +261,18 @@
                             <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image Source="/PTZPadController;component/Images/Icons/32/Expander down.png"/>
+                    <Grid Margin="5">
+                        <Path Stretch="Uniform" Fill="#FFFFFFFF" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Data="M16.022003,0L21.291992,4.2460014 32,12.876004 32,21.368007 19.847992,11.574002 16.069,8.5310041 15.977997,8.6029951 12.153992,11.687009 0,21.478999 0,12.986997 10.709991,4.358001 10.799011,4.2839958 10.752991,4.2460014z">
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <TransformGroup.Children>
+                                        <RotateTransform Angle="180" />
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </TransformGroup.Children>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
                 </Button>
                 <Button Grid.Column="2" Grid.Row="2" Margin="5">
                     <i:Interaction.Triggers>
@@ -197,7 +283,18 @@
                             <i:InvokeCommandAction Command="{Binding Path=CameraPanStop}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                    <Image Source="/PTZPadController;component/Images/Icons/32/Arrowhead-Right45.png"/>
+                    <Grid Margin="5">
+                        <Path Stretch="Uniform" Fill="#FFFFFFFF" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" Data="M16.022003,0L21.291992,4.2460014 32,12.876004 32,21.368007 19.847992,11.574002 16.069,8.5310041 15.977997,8.6029951 12.153992,11.687009 0,21.478999 0,12.986997 10.709991,4.358001 10.799011,4.2839958 10.752991,4.2460014z">
+                            <Path.RenderTransform>
+                                <TransformGroup>
+                                    <TransformGroup.Children>
+                                        <RotateTransform Angle="135" />
+                                        <ScaleTransform ScaleX="1" ScaleY="1" />
+                                    </TransformGroup.Children>
+                                </TransformGroup>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
                 </Button>
 
             </Grid>

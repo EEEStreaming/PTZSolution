@@ -1,4 +1,5 @@
 ﻿using PTZPadController.DataAccessLayer;
+using PTZPadController.Messages;
 using System.Windows.Documents;
 
 namespace PTZPadController.BusinessLayer
@@ -30,9 +31,10 @@ namespace PTZPadController.BusinessLayer
 
         void AddCameraHandler(ICameraHandler camHandler);
 
-        void SetAtemHandler(IAtemSwitcherHandler atemHandler);
+        void SetSwitcherHandler(ISwitcherHandler atemHandler);
 
         void InitSeetings(ConfigurationModel cfg);
-
+        void SendSwitcherTransition(TransitionEnum transition);
+        void SetSwitcherPreview(string cameraName);
     }
 }

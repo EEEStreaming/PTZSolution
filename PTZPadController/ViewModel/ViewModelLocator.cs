@@ -18,6 +18,7 @@ using PTZPadController.BusinessLayer;
 using PTZPadController.DataAccessLayer;
 using PTZPadController.Design;
 using System;
+using System.Threading.Tasks;
 
 namespace PTZPadController.ViewModel
 {
@@ -76,8 +77,10 @@ namespace PTZPadController.ViewModel
             ptzManager.InitSeetings(cfg);
 
             //Create and connect connection to ATEM
-            var atemHandler = new AtemSwitcherHandler(cfg.AtemHost);
-            ptzManager.SetAtemHandler(atemHandler);
+            var atemHandler = new AtemSwitcherHandler();
+            var atemParser = new AtemSwitcherParser(cfg.AtemHost);
+            atemHandler.Initialize(atemParser);
+            ptzManager.SetSwitcherHandler(atemHandler);
 
             //Create How many Camera
             foreach (var camcfg in cfg.Cameras)
@@ -92,11 +95,11 @@ namespace PTZPadController.ViewModel
 
             }
 
-            //Create and connect to pad
+            //Create pad
 
 
             //Startup the whole system
-            ptzManager.StartUp();
+            Task.Factory.StartNew(()=>ptzManager.StartUp());
 
         }
     }

@@ -88,7 +88,7 @@ namespace PTZPadController.DataAccessLayer
                     {
                         if (!m_Cancellation.IsCancellationRequested)
                         {
-                            Thread.Sleep(1000);
+                            Thread.Sleep(500);
                             PTZLogger.Log.Info("{0},{1}, try to re-connect ", m_Name, m_Host);
                             Connect();
                         }

@@ -5,15 +5,15 @@ using static PTZPadController.BusinessLayer.AtemSwitcherHandler;
 
 namespace PTZPadController.BusinessLayer
 {
-    public interface IAtemSwitcherHandler
+    public interface ISwitcherHandler
     {
 
-        void Connect();
+        Task ConnectTo();
         /// <summary>
         /// Checks if the switcher is actually connected. Will not wait the completion of a connection if it is in progress.
         /// </summary>
         /// <returns></returns>
-        public bool IsConnected { get; }
+        //public bool IsConnected { get; }
 
         /// <summary>
         /// If a connection is in progress, waits it's completition and then returns the switcher connection status.

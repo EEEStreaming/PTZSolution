@@ -17,9 +17,10 @@ namespace PTZPadController.BusinessLayer
         const short SPEED_MEDIUM = 15;
 
         private List<ICameraHandler> m_CameraList;
-        private IAtemSwitcherHandler m_AtemHandler;
+        private ISwitcherHandler m_AtemHandler;
         private bool m_UseTallyGreen;
         private bool m_Initialized;
+        private bool m_IsStarted;
 
         public ICameraHandler CameraPreview { get; private set; }
 
@@ -36,6 +37,7 @@ namespace PTZPadController.BusinessLayer
             m_CameraList = new List<ICameraHandler>();
             m_UseTallyGreen = false;
             m_Initialized = false;
+            m_IsStarted = false;
 
         }
         #endregion
@@ -53,44 +55,40 @@ namespace PTZPadController.BusinessLayer
             m_CameraList.Add(camHandler);
         }
 
-        public void SetAtemHandler(IAtemSwitcherHandler atemHandler)
+        public void SetSwitcherHandler(ISwitcherHandler atemHandler)
         {
             if (m_AtemHandler == null)
             {
                 m_AtemHandler = atemHandler;
                 Messenger.Default.Register<NotificationMessage<AtemSourceMessageArgs>>(this, AtemSourceChange);
-
-                //Register notification message to listen when UI set a new Preview Input
-                Messenger.Default.Register<NotificationMessage<CameraInputMessageArgs>>(this, SetAtemPreviewExecute);
-
-                Messenger.Default.Register<NotificationMessage<TransitionMessageArgs>>(this, TransitionExecute);
             }
         }
 
-        private void TransitionExecute(NotificationMessage<TransitionMessageArgs> obj)
+
+
+        public void SendSwitcherTransition(TransitionEnum transition)
         {
             if (m_AtemHandler == null)
-                if (obj.Notification == NotificationSource.SendTransition)
-                {
-                    m_AtemHandler.StartTransition(obj.Content.Transition);
-                }
+                m_AtemHandler.StartTransition(transition);
         }
 
-        private void SetAtemPreviewExecute(NotificationMessage<CameraInputMessageArgs> obj)
+        public void SetSwitcherPreview(string cameraName)
         {
             if (m_AtemHandler == null)
-                if (obj.Notification == NotificationSource.SetPreviewInput)
                 {
-                    m_AtemHandler.SetPreviewSource(obj.Content.CameraName);
+                    m_AtemHandler.SetPreviewSource(cameraName);
                 }
         }
 
         private void AtemSourceChange(NotificationMessage<AtemSourceMessageArgs> msg)
         {
-            if (msg.Notification == NotificationSource.ProgramSourceChanged)
-                AtemProgramSourceChange(msg.Sender, msg.Content);
-            else if (msg.Notification == NotificationSource.PreviewSourceChanged)
-                AtemPreviewSourceChange(msg.Sender, msg.Content);
+            if (m_AtemHandler != null)
+            {
+                if (msg.Notification == NotificationSource.ProgramSourceChanged)
+                    AtemProgramSourceChange(msg.Sender, msg.Content);
+                else if (msg.Notification == NotificationSource.PreviewSourceChanged)
+                    AtemPreviewSourceChange(msg.Sender, msg.Content);
+            }
         }
         #endregion
 
@@ -176,32 +174,43 @@ namespace PTZPadController.BusinessLayer
 
         public void StartUp()
         {
+            List<Task> tasks = new List<Task>();
+            Task t;
             //Connect cameras
             foreach (var cam in m_CameraList)
             {
-                cam.Connect();
-            }
-
-            //Basic reset
-            foreach (var cam in m_CameraList)
-            {
-                cam.Tally(false, false);
+                t = cam.ConnectTo().ContinueWith((t) =>
+                {
+                    if (cam.WaitForConnection())
+                    {
+                        cam.Tally(false, false);
+                    }
+                });
+                tasks.Add(t);
             }
 
             //Connect ATEM
-            m_AtemHandler.Connect();
-            if (m_AtemHandler.WaitForConnection())
-            {
-                var programName = m_AtemHandler.GetCameraProgramName();
-                var previewName = m_AtemHandler.GetCameraPreviewName();
-                CameraProgram = m_CameraList.FirstOrDefault(x => x.CameraName == programName);
-                if (CameraProgram != null)
-                    CameraProgram.Tally(true, false);
-                CameraPreview = m_CameraList.FirstOrDefault(x => x.CameraName == previewName);
-                if (CameraPreview != null)
-                    CameraPreview.Tally(false, m_UseTallyGreen);
-            }
+            t = m_AtemHandler.ConnectTo().ContinueWith((t) => {
+                if (m_AtemHandler.WaitForConnection())
+                {
+                    var programName = m_AtemHandler.GetCameraProgramName();
+                    var previewName = m_AtemHandler.GetCameraPreviewName();
+                    CameraProgram = m_CameraList.FirstOrDefault(x => x.CameraName == programName);
+                    if (CameraProgram != null)
+                        CameraProgram.Tally(true, false);
+                    CameraPreview = m_CameraList.FirstOrDefault(x => x.CameraName == previewName);
+                    if (CameraPreview != null)
+                        CameraPreview.Tally(false, m_UseTallyGreen);
+                }
+            });
+            tasks.Add(t);
+
             //Connect PAD
+
+
+            Task.WaitAll(tasks.ToArray());
+            PTZLogger.Log.Info("System started, ready to use");
+            m_IsStarted = true;
         }
 
         public void CameraPanTiltUp()
@@ -299,5 +308,7 @@ namespace PTZPadController.BusinessLayer
                 CameraPreview.ZoomTele();
             }
         }
+
+
     }
 }
