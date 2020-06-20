@@ -36,5 +36,6 @@ namespace PTZPadController.BusinessLayer
         void InitSeetings(ConfigurationModel cfg);
         void SendSwitcherTransition(TransitionEnum transition);
         void SetSwitcherPreview(string cameraName);
+        void CameraCallPreset(int preset);
     }
 }

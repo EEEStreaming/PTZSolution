@@ -336,6 +336,12 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-
+        public void CameraCallPreset(int preset)
+        {
+            if (CameraPreview != null)
+            {
+                CameraPreview.CameraMemoryRecall((short)preset);
+            }
+        }
     }
 }

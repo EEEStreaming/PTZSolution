@@ -155,8 +155,7 @@ namespace PTZPadController.BusinessLayer
         public void CameraMemoryRecall(short memory)
         {
             //TODO, gerer PanTiltWorking (comment s'arrête ?)
-            throw new NotImplementedException();
-            //m_CamParser.CameraMemoryRecall(memory);
+            m_CamParser.CameraMemoryRecall(memory);
             //PanTileWorking = true;
         }
 

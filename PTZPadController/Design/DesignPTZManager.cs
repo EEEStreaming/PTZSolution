@@ -21,6 +21,11 @@ namespace PTZPadController.Design
         {
         }
 
+        public void CameraCallPreset(int preset)
+        {
+            throw new NotImplementedException();
+        }
+
         public void CameraPanTiltUp()
         {
             //

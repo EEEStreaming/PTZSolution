@@ -165,6 +165,11 @@ namespace UnitTestPTZPadController.BusinessLayer
             args.CurrentInputName = Configuration.Cameras[iCamProgram].CameraName;
             Messenger.Default.Send<NotificationMessage<AtemSourceMessageArgs>>(new NotificationMessage<AtemSourceMessageArgs>(args, NotificationSource.ProgramSourceChanged));
         }
+
+        void ISwitcherHandler.ConnectTo()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     enum MockTallyStatus

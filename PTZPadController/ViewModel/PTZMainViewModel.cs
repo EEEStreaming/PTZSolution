@@ -29,6 +29,7 @@ namespace PTZPadController.ViewModel
         private string _SwitcherName;
         private bool _SwitcherConnected;
         private DeviceItemViewModel _Switcher;
+        private DeviceItemViewModel _Pad;
 
         public DeviceItemViewModel Switcher {
             get { return _Switcher; }
@@ -37,6 +38,17 @@ namespace PTZPadController.ViewModel
                 if (_Switcher == value) return;
                 _Switcher = value;
                 RaisePropertyChanged("Switcher");
+            }
+        }
+
+        public DeviceItemViewModel Pad
+        {
+            get { return _Pad; }
+            set
+            {
+                if (_Pad == value) return;
+                _Pad = value;
+                RaisePropertyChanged("Pad");
             }
         }
 
@@ -53,9 +65,9 @@ namespace PTZPadController.ViewModel
         public ICommand CameraZoomTele { get; private set; }
         public ICommand CameraZoomWidde { get; private set; }
         public ICommand CameraZoomStop { get; private set; }
-        public ICommand AtemCut { get; private set; }
-        public ICommand AtemMix { get; private set; }
-
+        public ICommand SwitcherCut { get; private set; }
+        public ICommand SwitcherMix { get; private set; }
+        public ICommand SwitcherCallPreset { get; private set; }
         #endregion
 
         public ObservableCollection<CameraViewModel> Cameras { get; set; }
@@ -86,8 +98,9 @@ namespace PTZPadController.ViewModel
             CameraZoomTele = new RelayCommand(CameraZoomTeleExecute);
             CameraZoomWidde = new RelayCommand(CameraZoomWiddeExecute);
             CameraZoomStop = new RelayCommand(CameraZoomStopExecute);
-            AtemCut = new RelayCommand(AtemCutExecute);
-            AtemMix = new RelayCommand(AtemMixExecute);
+            SwitcherCut = new RelayCommand(SwitcherCutExecute);
+            SwitcherMix = new RelayCommand(SwitcherMixExecute);
+            SwitcherCallPreset = new RelayCommand<string>(SwitcherCallPresetExecute);
             Cameras = new ObservableCollection<CameraViewModel>();
 
             //Initialize viewModel
@@ -102,6 +115,7 @@ namespace PTZPadController.ViewModel
             }
 
             Switcher = new DeviceItemViewModel("ATEM");
+            Pad = new DeviceItemViewModel("Pad");
             
             MessengerInstance.Register<NotificationMessage<CameraMessageArgs>>(this, CameraStatusChange);
             MessengerInstance.Register<NotificationMessage<ISwitcherParser>>(this, SwitcherNotification);
@@ -114,16 +128,21 @@ namespace PTZPadController.ViewModel
 
         }
 
+        private void SwitcherCallPresetExecute(string preset)
+        {
+            int iPreset;
+            if (Int32.TryParse(preset, out  iPreset))
+                m_PtzManager.CameraCallPreset(iPreset);
+        }
 
-
-        private void AtemMixExecute()
+        private void SwitcherMixExecute()
         {
             //var msg = new NotificationMessage<TransitionMessageArgs>(new TransitionMessageArgs { Transition = TransitionEnum.Mix}, NotificationSource.SendTransition);
             //MessengerInstance.Send(msg);
             m_PtzManager.SendSwitcherTransition(TransitionEnum.Mix);
         }
 
-        private void AtemCutExecute()
+        private void SwitcherCutExecute()
         {
             //var msg = new NotificationMessage<TransitionMessageArgs>(new TransitionMessageArgs { Transition = TransitionEnum.Cut }, NotificationSource.SendTransition);
             //MessengerInstance.Send(msg);
