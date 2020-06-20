@@ -19,7 +19,7 @@
             <RowDefinition Height="40*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Devices" Grid.Row="0" Grid.IsSharedSizeScope="False">
+        <GroupBox Header="Devices" Grid.Row="0" Grid.IsSharedSizeScope="True">
             <UniformGrid Rows="1">
                 
                 
@@ -63,7 +63,7 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition SharedSizeGroup="DEVICE"/>
+                            <RowDefinition Height="Auto" SharedSizeGroup="DEVICE"/>
                         </Grid.RowDefinitions>
                         <!--Grid Disconected-->
                         <Grid Grid.Column="0" Visibility="{Binding Converter={StaticResource ParametrizedBooleanToVisibilityConverter},ConverterParameter=false, Path=Pad.Connected}">
