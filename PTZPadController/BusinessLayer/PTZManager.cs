@@ -222,7 +222,7 @@ namespace PTZPadController.BusinessLayer
             //Connect PAD
 
 
-            if (Task.WaitAll(tasks.ToArray(),1000))
+            if (Task.WaitAll(tasks.ToArray(),2000))//increase delay for unit test in GitHUB CI machine. 1 sec is to short.
                 PTZLogger.Log.Info("System started, ready to use");
             else
                 PTZLogger.Log.Info("System started, But some devices are not connected.");

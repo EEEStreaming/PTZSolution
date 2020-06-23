@@ -173,7 +173,7 @@ namespace UnitTestPTZPadController.BusinessLayer
 
     class MockCameraHandler : ICameraHandler
     {
-
+        Task tConnect;
         
         public string CameraName  { get { return Configuration.CameraName; } }
 
@@ -189,14 +189,17 @@ namespace UnitTestPTZPadController.BusinessLayer
 
         public Task ConnectTo()
         {
-            return Task.Run(() =>
+            tConnect =Task.Run(() =>
             {
                 PanTileWorking = false;
                 ZoomWorking = false;
             });
+
+            return tConnect;
         }
         public bool WaitForConnection()
         {
+            tConnect.Wait();
             return true;
         }
         public void Initialize(ICameraParser camParser)
