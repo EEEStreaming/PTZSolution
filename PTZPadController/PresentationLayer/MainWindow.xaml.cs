@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,10 +22,30 @@ namespace PTZPadController
     /// </summary>
     public partial class MainWindow : Window
     {
+        //private List<PresentationLayer.PresetIcon> _IconList;
+
         public MainWindow()
         {
             InitializeComponent();
             App.Win = this;
+
+            //var currentDir = System.IO.Path.GetDirectoryName(Application.ResourceAssembly.Location);
+            //currentDir = System.IO.Path.Combine(currentDir, "PresetIcons");
+
+            //string[] filePaths = Directory.GetFiles(currentDir, "*.png");
+            //PresentationLayer.PresetIcon icon;
+            //_IconList = new List<PresentationLayer.PresetIcon>();
+            //foreach (var file in filePaths)
+            //{
+            //    icon = new PresentationLayer.PresetIcon();
+            //    icon.FullPath = file;
+            //    icon.Key = System.IO.Path.GetFileNameWithoutExtension(file);
+            //    _IconList.Add(icon);
+            //}
+
+            //listviewTest.ItemsSource = _IconList;
         }
+
+
     }
 }

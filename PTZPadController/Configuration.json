@@ -1,21 +1,123 @@
 {
   "Cameras": [
     {
-      "CameraName": "Camera 1",
+      "CameraName": "CAM 1",
       "CameraHost": "192.168.1.131",
-      "CameraPort": 5002
+      "CameraPort": 5002,
+      "PresetIcons": [
+        {
+          "IconKey": "Unknown",
+          "PresetId": "1"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "2"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "3"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "4"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "5"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "6"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "7"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "8"
+        }
+      ]
     },
     {
-      "CameraName": "Camera 2",
+      "CameraName": "CAM 2",
       "CameraHost": "192.168.1.132",
-      "CameraPort": 5002
+      "CameraPort": 5002,
+      "PresetIcons": [
+        {
+          "IconKey": "Unknown",
+          "PresetId": "1"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "2"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "3"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "4"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "5"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "6"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "7"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "8"
+        }
+      ]
     },
     {
-      "CameraName": "Camera 3",
+      "CameraName": "CAM 3",
       "CameraHost": "192.168.1.133",
-      "CameraPort": 5002
+      "CameraPort": 5002,
+      "PresetIcons": [
+        {
+          "IconKey": "Unknown",
+          "PresetId": "1"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "2"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "3"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "4"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "5"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "6"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "7"
+        },
+        {
+          "IconKey": "Unknown",
+          "PresetId": "8"
+        }
+      ]
     }
   ],
-  "UseTallyGreen" : "false", 
+  "UseTallyGreen": false,
   "AtemHost": "192.168.1.135"
 }

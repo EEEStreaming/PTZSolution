@@ -18,19 +18,150 @@ namespace ConsolPTZPadTools
                     {
                         CameraHost = "192.168.1.131",
                         CameraName = "CAM 1",
-                        CameraPort = 5002
+                        CameraPort = 5002,
+                        PresetIcons =
+                        {
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "1"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "2"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "3"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "4"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "5"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "6"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "7"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "8"
+                            }
+                        }
                     },
                     new CameraConnexionModel
                     {
                         CameraHost = "192.168.1.132",
                         CameraName = "CAM 2",
-                        CameraPort = 5002
+                        CameraPort = 5002,
+                        PresetIcons =
+                        {
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "1"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "2"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "3"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "4"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "5"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "6"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "7"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "8"
+                            }
+                        }
+
                     },
                     new CameraConnexionModel
                     {
                         CameraHost = "192.168.1.133",
                         CameraName = "CAM 3",
-                        CameraPort = 5002
+                        CameraPort = 5002,
+                        PresetIcons =
+                        {
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "1"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "2"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "3"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "4"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "5"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "6"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "7"
+                            },
+                            new PresetIconSettingModel
+                            {
+                                IconKey = "Man-02",
+                                PresetId = "8"
+                            }
+                        }
+
                     }
 
                 }

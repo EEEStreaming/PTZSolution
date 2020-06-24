@@ -1,6 +1,7 @@
 ﻿using PTZPadController.BusinessLayer;
 using PTZPadController.DataAccessLayer;
 using PTZPadController.Messages;
+using PTZPadController.PresentationLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,11 @@ namespace PTZPadController.Design
             //
         }
 
+        public void CameraSetPreset(int preset)
+        {
+            throw new NotImplementedException();
+        }
+
         public void CameraZoomStop()
         {
         }
@@ -41,6 +47,11 @@ namespace PTZPadController.Design
 
         public void CameraZoomWide()
         {
+        }
+
+        public List<PresetIconSettingModel> GetPresetSettingFromPreview()
+        {
+            throw new NotImplementedException();
         }
 
         public void InitSeetings(ConfigurationModel cfg)
@@ -61,6 +72,11 @@ namespace PTZPadController.Design
 
         public void StartUp()
         {
+        }
+
+        public void UpdatePresetConfiguration(PresetEventArgs obj)
+        {
+            throw new NotImplementedException();
         }
 
         void IPTZManager.CameraPanTiltDown()

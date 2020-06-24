@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PTZPadController.PresentationLayer
 {
@@ -24,6 +17,7 @@ namespace PTZPadController.PresentationLayer
         private Popup m_Popup;
         private bool m_ButtonDown;
         private ListBox m_ListPresetIcon;
+        
 
         public string PresetId
         {
@@ -59,13 +53,42 @@ namespace PTZPadController.PresentationLayer
         public static readonly DependencyProperty PresetDownCommandProperty =
             DependencyProperty.Register("PresetDownCommand", typeof(ICommand), typeof(PresetItemView), new UIPropertyMetadata(null));
 
+        public ICommand PresetChangeImageCommand
+        {
+            get { return (ICommand)GetValue(PresetChangeImageCommandProperty); }
+            set { SetValue(PresetChangeImageCommandProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for PresetDownCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PresetChangeImageCommandProperty =
+            DependencyProperty.Register("PresetChangeImageCommand", typeof(ICommand), typeof(PresetItemView), new UIPropertyMetadata(null));
+
+
+
+        public ImageSource ImgSource
+        {
+            get { return (ImageSource)GetValue(ImgSourceProperty); }
+            set { SetValue(ImgSourceProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ImgSource.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ImgSourceProperty =
+            DependencyProperty.Register("ImgSource", typeof(ImageSource), typeof(PresetItemView), new UIPropertyMetadata(null));
+
+
+
+
+
         public PresetItemView()
         {
             InitializeComponent();
             m_Popup = new Popup();
             m_Popup.Placement = PlacementMode.MousePoint;
+            m_Popup.MaxHeight = 400;
+            m_Popup.MaxWidth = 500;
             m_Popup.StaysOpen = false;
             m_ListPresetIcon = FindResource("PopupView") as ListBox;
+            m_ListPresetIcon.ItemsSource = PresetIconList.Icons;
             m_ListPresetIcon.SelectionChanged += PopupSelectionChanged;
            
             m_Popup.Child = m_ListPresetIcon;
@@ -77,7 +100,18 @@ namespace PTZPadController.PresentationLayer
         private void PopupSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (m_Popup.IsOpen)
-                Debug.WriteLine("Preset {0}, Index {1}",PresetId, m_ListPresetIcon.SelectedIndex);
+            {
+                Debug.WriteLine("Preset {0}, Index {1}", PresetId, m_ListPresetIcon.SelectedIndex);
+                var cmd = GetValue(PresetChangeImageCommandProperty) as ICommand;
+                PresetEventArgs args = new PresetEventArgs();
+                args.PresetId = PresetId;
+                args.PresetIcon = m_ListPresetIcon.SelectedItem as PresetIcon;
+                if (cmd != null && cmd.CanExecute(args))
+                {
+                    cmd.Execute(args);
+                    e.Handled = true;
+                }
+            }
             m_Popup.IsOpen = false;
 
         }
@@ -124,5 +158,11 @@ namespace PTZPadController.PresentationLayer
                 }
             }
         }
+    }
+
+    public class PresetEventArgs
+    {
+        public string PresetId { get; internal set; }
+        public PresetIcon PresetIcon { get; internal set; }
     }
 }

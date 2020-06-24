@@ -7,7 +7,7 @@
         xmlns:converters="clr-namespace:PTZPadController.Converter"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="PTZ Pad Controler" Height="700" Width="448"
+        Title="PTZ Pad Controler" Height="755" Width="440"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <Window.Resources>
         <converters:ParametrizedBooleanToVisibilityConverter x:Key="ParametrizedBooleanToVisibilityConverter"/>
@@ -17,12 +17,13 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="40*"/>
+            <RowDefinition Height="22*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <GroupBox Header="Devices" Grid.Row="0" Grid.IsSharedSizeScope="True">
             <UniformGrid Rows="1">
-                
-                
+
+
                 <!--ATEM Device-->
                 <Border BorderBrush="Black"
                         BorderThickness="2"
@@ -355,19 +356,30 @@
         </Grid>
 
         <GroupBox Header="Presets" Grid.Row="3">
-            <UniformGrid Rows="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <pl:PresetItemView Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" FontSize="36" FontWeight="Bold" PresetUpCommand="{Binding CameraPresetButtonUp}" PresetDownCommand="{Binding CameraPresetButtonDown}" PresetId="1" ImgSource="{Binding Preset1Image}" PresetChangeImageCommand="{Binding Path=PresetImageChanged}"></pl:PresetItemView>
+                <pl:PresetItemView Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" FontSize="36" FontWeight="Bold" PresetUpCommand="{Binding CameraPresetButtonUp}" PresetDownCommand="{Binding CameraPresetButtonDown}" PresetId="2" ImgSource="{Binding Preset2Image}" PresetChangeImageCommand="{Binding Path=PresetImageChanged}"></pl:PresetItemView>
+                <pl:PresetItemView Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" FontSize="36" FontWeight="Bold" PresetUpCommand="{Binding CameraPresetButtonUp}" PresetDownCommand="{Binding CameraPresetButtonDown}" PresetId="3" ImgSource="{Binding Preset3Image}" PresetChangeImageCommand="{Binding Path=PresetImageChanged}"></pl:PresetItemView>
+                <pl:PresetItemView Grid.Row="0" Grid.Column="4" Margin="5,5,5,5" FontSize="36" FontWeight="Bold" PresetUpCommand="{Binding CameraPresetButtonUp}" PresetDownCommand="{Binding CameraPresetButtonDown}" PresetId="4" ImgSource="{Binding Preset4Image}" PresetChangeImageCommand="{Binding Path=PresetImageChanged}"></pl:PresetItemView>
+                <pl:PresetItemView Grid.Row="1" Grid.Column="0" Margin="5,5,5,5" FontSize="36" FontWeight="Bold" PresetUpCommand="{Binding CameraPresetButtonUp}" PresetDownCommand="{Binding CameraPresetButtonDown}" PresetId="5" ImgSource="{Binding Preset5Image}" PresetChangeImageCommand="{Binding Path=PresetImageChanged}"></pl:PresetItemView>
+                <pl:PresetItemView Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" FontSize="36" FontWeight="Bold" PresetUpCommand="{Binding CameraPresetButtonUp}" PresetDownCommand="{Binding CameraPresetButtonDown}" PresetId="6" ImgSource="{Binding Preset6Image}" PresetChangeImageCommand="{Binding Path=PresetImageChanged}"></pl:PresetItemView>
+                <pl:PresetItemView Grid.Row="1" Grid.Column="2" Margin="5,5,5,5" FontSize="36" FontWeight="Bold" PresetUpCommand="{Binding CameraPresetButtonUp}" PresetDownCommand="{Binding CameraPresetButtonDown}" PresetId="7" ImgSource="{Binding Preset7Image}" PresetChangeImageCommand="{Binding Path=PresetImageChanged}"></pl:PresetItemView>
+                <pl:PresetItemView Grid.Row="1" Grid.Column="4" Margin="5,5,5,5" FontSize="36" FontWeight="Bold" PresetUpCommand="{Binding CameraPresetButtonUp}" PresetDownCommand="{Binding CameraPresetButtonDown}" PresetId="8" ImgSource="{Binding Preset8Image}" PresetChangeImageCommand="{Binding Path=PresetImageChanged}"></pl:PresetItemView>
 
-                <Button Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold" Command="{Binding SwitcherCallPreset}" CommandParameter="1">1</Button>
-                <Button Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold" Command="{Binding SwitcherCallPreset}" CommandParameter="2">2</Button>
-                <Button Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold" Command="{Binding SwitcherCallPreset}" CommandParameter="3">3</Button>
-                <Button Grid.Row="0" Grid.Column="4" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold" Command="{Binding SwitcherCallPreset}" CommandParameter="4">4</Button>
-                <Button Grid.Row="1" Grid.Column="0" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold" Command="{Binding SwitcherCallPreset}" CommandParameter="5">5</Button>
-                <Button Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold" Command="{Binding SwitcherCallPreset}" CommandParameter="6">6</Button>
-                <Button Grid.Row="1" Grid.Column="2" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold" Command="{Binding SwitcherCallPreset}" CommandParameter="7">7</Button>
-                <Button Grid.Row="1" Grid.Column="4" Margin="5,5,5,5" Height="48" FontSize="36" FontWeight="Bold" Command="{Binding SwitcherCallPreset}" CommandParameter="8">8</Button>
-
-            </UniformGrid>
+            </Grid>
         </GroupBox>
-
+        <Grid Grid.Row="4">
+            <TextBox Text="{Binding PresetStatus,StringFormat={}{0} Mode}"/>
+        </Grid>
     </Grid>
 </Window>

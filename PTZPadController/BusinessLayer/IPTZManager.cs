@@ -1,5 +1,7 @@
 ﻿using PTZPadController.DataAccessLayer;
 using PTZPadController.Messages;
+using PTZPadController.PresentationLayer;
+using System.Collections.Generic;
 using System.Windows.Documents;
 
 namespace PTZPadController.BusinessLayer
@@ -27,6 +29,8 @@ namespace PTZPadController.BusinessLayer
         void CameraZoomStop();
         void CameraZoomWide();
         void CameraZoomTele();
+        void CameraCallPreset(int preset);
+        void CameraSetPreset(int preset);
 
 
         void AddCameraHandler(ICameraHandler camHandler);
@@ -36,6 +40,7 @@ namespace PTZPadController.BusinessLayer
         void InitSeetings(ConfigurationModel cfg);
         void SendSwitcherTransition(TransitionEnum transition);
         void SetSwitcherPreview(string cameraName);
-        void CameraCallPreset(int preset);
+        void UpdatePresetConfiguration(PresetEventArgs obj);
+        List<PresetIconSettingModel> GetPresetSettingFromPreview();
     }
 }

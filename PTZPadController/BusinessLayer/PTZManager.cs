@@ -20,6 +20,7 @@ namespace PTZPadController.BusinessLayer
         private ISwitcherHandler m_AtemHandler;
         private bool m_UseTallyGreen;
         private bool m_Initialized;
+        private ConfigurationModel m_Configuration;
         private bool m_IsStarted;
 
         public ICameraHandler CameraPreview { get; private set; }
@@ -48,6 +49,7 @@ namespace PTZPadController.BusinessLayer
         {
             m_UseTallyGreen = cfg.UseTallyGreen;
             m_Initialized = true;
+            m_Configuration = cfg;
         }
 
         public void AddCameraHandler(ICameraHandler camHandler)
@@ -89,6 +91,38 @@ namespace PTZPadController.BusinessLayer
             }
         }
         #endregion
+
+        public void UpdatePresetConfiguration(PresetEventArgs obj)
+        {
+            //CameraPreview = m_CameraList[0];//to test
+            if (CameraPreview != null)
+            {
+                var camcfg = m_Configuration.Cameras.FirstOrDefault(x => x.CameraName == CameraPreview.CameraName);
+                if (camcfg != null)
+                {
+                    var prestcfg = camcfg.PresetIcons.FirstOrDefault(x => x.PresetId == obj.PresetId);
+                    if (prestcfg != null)
+                    {
+                        prestcfg.IconKey = obj.PresetIcon.Key;
+                        ConfigurationFileParser.SaveConfiguration(m_Configuration, "Configuration.json");
+                    }
+                }
+            }
+        }
+
+        public List<PresetIconSettingModel> GetPresetSettingFromPreview()
+        {
+            //CameraPreview = m_CameraList[0];//to test
+            if (CameraPreview != null)
+            {
+                var camcfg = m_Configuration.Cameras.FirstOrDefault(x => x.CameraName == CameraPreview.CameraName);
+                if (camcfg != null)
+                {
+                    return camcfg.PresetIcons;
+                }
+            }
+            return null;
+        }
 
         private void AtemPreviewSourceChange(object sender, AtemSourceMessageArgs e)
         {
@@ -187,11 +221,22 @@ namespace PTZPadController.BusinessLayer
                 tasks.Add(t);
             }
 
-            //Connect ATEM
+            //set camera 0 to preview to initialize UI.
+            CameraPreview = m_CameraList[0];
+            CameraMessageArgs args = new CameraMessageArgs
+            {
+                CameraName = m_CameraList[0].CameraName,
+                Status = CameraStatusEnum.Preview
+            };
+            Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
+
+            //then Connect ATEM
             m_AtemHandler.ConnectTo();
+
+
             if (m_AtemHandler.WaitForConnection())
             {
-                CameraMessageArgs args;
+                
                 var programName = m_AtemHandler.GetCameraProgramName();
                 var previewName = m_AtemHandler.GetCameraPreviewName();
                 CameraProgram = m_CameraList.FirstOrDefault(x => x.CameraName == programName);
@@ -331,6 +376,12 @@ namespace PTZPadController.BusinessLayer
             {
                 CameraPreview.CameraMemoryRecall((short)preset);
             }
+        }
+
+        public void CameraSetPreset(int preset)
+        {
+            if (CameraPreview != null)
+                CameraPreview.CameraMemorySet((short)preset);
         }
     }
 }

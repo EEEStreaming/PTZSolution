@@ -32,6 +32,7 @@
     <None Remove="Images\Icons\32\Pointer-WF.png" />
     <None Remove="Images\Icons\32\Remote Control-WF.ico" />
     <None Remove="Images\Icons\32\Remote Control-WF.png" />
+    <None Remove="PresentationLayer\Help - 01.png" />
   </ItemGroup>
 
  
@@ -42,7 +43,6 @@
 </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="4.6.82" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="MvvmLightStd10" Version="5.4.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -67,11 +67,19 @@
 
   <ItemGroup>
     <None Update="Configuration.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Images\Icons\48\" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="del $(TargetDir)PresetIcons\*.* /Q/F&#xD;&#xA;xcopy $(SolutionDir)_Imports\PresetIcons\*.png $(TargetDir)PresetIcons\*.* /Y" />
+  </Target>
 
 </Project>

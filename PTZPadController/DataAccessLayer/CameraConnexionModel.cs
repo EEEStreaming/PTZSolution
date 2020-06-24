@@ -11,5 +11,12 @@ namespace PTZPadController.DataAccessLayer
         public string CameraName { get; set; }
         public string CameraHost { get; set; }
         public int CameraPort { get; set; }
+
+        public List<PresetIconSettingModel> PresetIcons { get; set; }
+
+        public CameraConnexionModel()
+        {
+            PresetIcons = new List<PresetIconSettingModel>();
+        }
     }
 }

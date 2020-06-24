@@ -9,6 +9,7 @@
     <Compile Include="..\PTZPadController\DataAccessLayer\CameraConnexionModel.cs" Link="CameraConnexionModel.cs" />
     <Compile Include="..\PTZPadController\DataAccessLayer\ConfigurationFileParser.cs" Link="ConfigurationFileParser.cs" />
     <Compile Include="..\PTZPadController\DataAccessLayer\ConfigurationModel.cs" Link="ConfigurationModel.cs" />
+    <Compile Include="..\PTZPadController\DataAccessLayer\PresetIconSettingModel.cs" Link="PresetIconSettingModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
