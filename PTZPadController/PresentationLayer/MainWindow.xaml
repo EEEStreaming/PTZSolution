@@ -15,8 +15,10 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5"/>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="40*"/>
+            <RowDefinition Height="5"/>
             <RowDefinition Height="22*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -82,7 +84,8 @@
 
             </UniformGrid>
         </GroupBox>
-        <GroupBox Header="Cameras" Grid.Row="1">
+        <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" />
+        <GroupBox Header="Cameras" Grid.Row="2">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -118,7 +121,7 @@
             </Grid>
         </GroupBox>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20*"/>
                 <ColumnDefinition Width="80*"/>
@@ -354,8 +357,9 @@
 
             </Grid>
         </Grid>
+        <GridSplitter Grid.Row="4" Height="5" HorizontalAlignment="Stretch" />
 
-        <GroupBox Header="Presets" Grid.Row="3">
+        <GroupBox Header="Presets" Grid.Row="5">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -378,7 +382,7 @@
 
             </Grid>
         </GroupBox>
-        <Grid Grid.Row="4">
+        <Grid Grid.Row="6">
             <TextBox Text="{Binding PresetStatus,StringFormat={}{0} Mode}"/>
         </Grid>
     </Grid>
