@@ -267,11 +267,26 @@ namespace PTZPadController.BusinessLayer
             //Connect PAD
 
 
-            if (Task.WaitAll(tasks.ToArray(),2000))//increase delay for unit test in GitHUB CI machine. 1 sec is to short.
+            if (Task.WaitAll(tasks.ToArray(), 2000))//increase delay for unit test in GitHUB CI machine. 1 sec is to short.
+            {
                 PTZLogger.Log.Info("System started, ready to use");
+                CheckAtemAndCameraSetting();
+            }
             else
                 PTZLogger.Log.Info("System started, But some devices are not connected.");
             m_IsStarted = true;
+        }
+
+        private void CheckAtemAndCameraSetting()
+        {
+            //verify that every camera names, match with Atem camera names
+            
+            foreach (var camcfg in m_CameraList)
+            {
+               if (!m_AtemHandler.FindCameraName(camcfg.CameraName))
+                  System.Windows.MessageBox.Show("Camera '"+camcfg.CameraName+"', not found on ATEM, please change your settings!", "PTZPad Error");
+
+            }
         }
 
         public void CameraPanTiltUp()

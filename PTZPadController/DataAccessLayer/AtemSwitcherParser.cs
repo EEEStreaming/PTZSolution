@@ -516,5 +516,10 @@ namespace PTZPadController.DataAccessLayer
             return string.Empty;
         }
 
+        public bool FindCameraName(string cameraName)
+        {
+            return m_inputHDMIMonitors.FirstOrDefault(x => x.InputName == cameraName) != null;
+            
+        }
     }
 }

@@ -13,5 +13,6 @@ namespace PTZPadController.DataAccessLayer
         void StartTransition(TransitionEnum transition);
         string GetCameraProgramName();
         string GetCameraPreviewName();
+        bool FindCameraName(string cameraName);
     }
 }

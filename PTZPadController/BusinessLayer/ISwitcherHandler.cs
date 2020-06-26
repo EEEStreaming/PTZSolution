@@ -32,5 +32,6 @@ namespace PTZPadController.BusinessLayer
 
         public string GetCameraProgramName();
         public string GetCameraPreviewName();
+        bool FindCameraName(string cameraName);
     }
 }

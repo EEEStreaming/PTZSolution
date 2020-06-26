@@ -84,6 +84,11 @@ namespace PTZPadController.BusinessLayer
         {
             return m_SwitcherParser.GetCameraPreviewName();
         }
+
+        public bool FindCameraName(string cameraName)
+        {
+            return m_SwitcherParser.FindCameraName(cameraName);
+        }
         #endregion
     }
 }
