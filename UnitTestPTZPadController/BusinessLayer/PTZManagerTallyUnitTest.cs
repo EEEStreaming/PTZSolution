@@ -13,7 +13,7 @@ using PTZPadController.Messages;
 
 namespace UnitTestPTZPadController.BusinessLayer
 {
-    public class PTZManagerUnitTest
+    public class PTZManagerTallyUnitTest
     {
         [SetUp]
         public void Setup()

@@ -17,6 +17,7 @@ using GalaSoft.MvvmLight.Ioc;
 using PTZPadController.BusinessLayer;
 using PTZPadController.DataAccessLayer;
 using PTZPadController.Design;
+using PTZPadController.PresentationLayer;
 using System;
 using System.Threading.Tasks;
 
@@ -45,6 +46,8 @@ namespace PTZPadController.ViewModel
 
                 //Load Configuration
             }
+
+            SimpleIoc.Default.Register<IDisplayMessage, DisplayMessage>();
 
             SimpleIoc.Default.Register<PTZMainViewModel>();
 

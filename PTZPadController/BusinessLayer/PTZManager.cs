@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Messaging;
 using PTZPadController.DataAccessLayer;
 using PTZPadController.Messages;
 using PTZPadController.PresentationLayer;
@@ -280,12 +281,21 @@ namespace PTZPadController.BusinessLayer
         private void CheckAtemAndCameraSetting()
         {
             //verify that every camera names, match with Atem camera names
-            
+            bool error = false;
+            StringBuilder errorMsg = new StringBuilder("Configruation doesn't match with ATEM settings.\n");
             foreach (var camcfg in m_CameraList)
             {
-               if (!m_AtemHandler.FindCameraName(camcfg.CameraName))
-                  System.Windows.MessageBox.Show("Camera '"+camcfg.CameraName+"', not found on ATEM, please change your settings!", "PTZPad Error");
-
+                if (!m_AtemHandler.FindCameraName(camcfg.CameraName))
+                {
+                    error = true;
+                    errorMsg.Append("Camera '").Append(camcfg.CameraName).AppendLine("', not found.");
+                }
+            }
+            if (error)
+            {
+                errorMsg.Append("please change your settings!");
+                PTZLogger.Log.Error(errorMsg);
+                SimpleIoc.Default.GetInstance<IDisplayMessage>().Show(errorMsg.ToString());
             }
         }
 
