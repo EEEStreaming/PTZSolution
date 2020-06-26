@@ -120,6 +120,11 @@ namespace UnitTestPTZPadController.BusinessLayer
             bConnected = false;
         }
 
+        public bool FindCameraName(string cameraName)
+        {
+            return true;
+        }
+
         public string GetCameraPreviewName()
         {
             return Configuration.Cameras[iCamPreview].CameraName;
