@@ -48,42 +48,71 @@ namespace PTZPadController.BusinessLayer
 
         public void InitSeetings(ConfigurationModel cfg)
         {
-            m_UseTallyGreen = cfg.UseTallyGreen;
-            m_Initialized = true;
-            m_Configuration = cfg;
+            if (!m_IsStarted)
+            {
+                m_UseTallyGreen = cfg.UseTallyGreen;
+                m_Initialized = true;
+                m_Configuration = cfg;
+            }
         }
 
         public void AddCameraHandler(ICameraHandler camHandler)
         {
-            m_CameraList.Add(camHandler);
+            if (!m_IsStarted)
+                m_CameraList.Add(camHandler);
         }
 
         public void SetSwitcherHandler(ISwitcherHandler atemHandler)
         {
-            if (m_AtemHandler == null)
+            if (!m_IsStarted && m_AtemHandler == null)
             {
                 m_AtemHandler = atemHandler;
                 Messenger.Default.Register<NotificationMessage<AtemSourceMessageArgs>>(this, AtemSourceChange);
             }
         }
 
+        public void ShutDown()
+        {
+            if (!m_IsStarted)
+                return;
+
+            if (m_AtemHandler != null)
+            {
+                Messenger.Default.Unregister<NotificationMessage<AtemSourceMessageArgs>>(this);
+
+                m_AtemHandler.Disconnect();
+
+                m_AtemHandler = null;
+            }
+
+            foreach (var cam in m_CameraList)
+            {
+                //cam.Disconnect();
+            }
+            m_CameraList.Clear();
+            m_UseTallyGreen = false;
+            m_Initialized = false;
+            m_IsStarted = false;
+        }
+        #endregion
+
 
 
         public void SendSwitcherTransition(TransitionEnum transition)
         {
-            if (m_AtemHandler != null)
+            if (m_IsStarted && m_AtemHandler != null)
                 m_AtemHandler.StartTransition(transition);
         }
 
         public void SetSwitcherPreview(string cameraName)
         {
-            if (m_AtemHandler != null)
+            if (m_IsStarted && m_AtemHandler != null)
                 m_AtemHandler.SetPreviewSource(cameraName);
         }
 
         private void AtemSourceChange(NotificationMessage<AtemSourceMessageArgs> msg)
         {
-            if (m_AtemHandler != null)
+            if (m_IsStarted && m_AtemHandler != null)
             {
                 if (msg.Notification == NotificationSource.ProgramSourceChanged)
                     AtemProgramSourceChange(msg.Sender, msg.Content);
@@ -91,12 +120,12 @@ namespace PTZPadController.BusinessLayer
                     AtemPreviewSourceChange(msg.Sender, msg.Content);
             }
         }
-        #endregion
+
 
         public void UpdatePresetConfiguration(PresetEventArgs obj)
         {
             //CameraPreview = m_CameraList[0];//to test
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 var camcfg = m_Configuration.Cameras.FirstOrDefault(x => x.CameraName == CameraPreview.CameraName);
                 if (camcfg != null)
@@ -113,6 +142,9 @@ namespace PTZPadController.BusinessLayer
 
         public List<PresetIconSettingModel> GetPresetSettingFromPreview()
         {
+            if (!m_IsStarted)
+                return null;
+
             //CameraPreview = m_CameraList[0];//to test
             if (CameraPreview != null)
             {
@@ -127,6 +159,9 @@ namespace PTZPadController.BusinessLayer
 
         private void AtemPreviewSourceChange(object sender, AtemSourceMessageArgs e)
         {
+            if (!m_IsStarted)
+                return;
+
             CameraMessageArgs args;
             if (CameraPreview != null)
             {
@@ -161,6 +196,9 @@ namespace PTZPadController.BusinessLayer
 
         private void AtemProgramSourceChange(object sender, AtemSourceMessageArgs e)
         {
+            if (!m_IsStarted)
+                return;
+
             CameraMessageArgs args;
             if (CameraProgram != null)
             {
@@ -200,13 +238,11 @@ namespace PTZPadController.BusinessLayer
 
         }
 
-        private void UpdateTally()
-        {
-            throw new NotImplementedException();
-        }
-
         public void StartUp()
         {
+            if (m_IsStarted)
+                return;
+
             List<Task> tasks = new List<Task>();
             Task t;
             //Connect cameras
@@ -293,15 +329,15 @@ namespace PTZPadController.BusinessLayer
             }
             if (error)
             {
-                errorMsg.Append("please change your settings!");
+                errorMsg.Append("Please change your settings!");
                 PTZLogger.Log.Error(errorMsg);
-                SimpleIoc.Default.GetInstance<IDisplayMessage>().Show(errorMsg.ToString());
+                SimpleIoc.Default.GetInstance<IDisplayMessage>().Show(errorMsg.ToString(),"PTZPad Controller - Error",System.Windows.MessageBoxButton.OK,System.Windows.MessageBoxImage.Error);
             }
         }
 
         public void CameraPanTiltUp()
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.PanTiltUp(SPEED_MEDIUM, SPEED_MEDIUM);
             }
@@ -309,7 +345,7 @@ namespace PTZPadController.BusinessLayer
 
         void IPTZManager.CameraPanTiltUpLeft()
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.PanTiltUpLeft(SPEED_MEDIUM, SPEED_MEDIUM);
             }
@@ -317,7 +353,7 @@ namespace PTZPadController.BusinessLayer
 
         void IPTZManager.CameraPanTiltUpRight()
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.PanTiltUpRight(SPEED_MEDIUM, SPEED_MEDIUM);
             }
@@ -325,7 +361,7 @@ namespace PTZPadController.BusinessLayer
 
         void IPTZManager.CameraPanTiltDown()
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.PanTiltDown(SPEED_MEDIUM, SPEED_MEDIUM);
             }
@@ -333,7 +369,7 @@ namespace PTZPadController.BusinessLayer
 
         void IPTZManager.CameraPanTiltDownLeft()
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.PanTiltDownLeft(SPEED_MEDIUM, SPEED_MEDIUM);
             }
@@ -341,7 +377,7 @@ namespace PTZPadController.BusinessLayer
 
         void IPTZManager.CameraPanTiltDownRight()
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.PanTiltDownRight(SPEED_MEDIUM, SPEED_MEDIUM);
             }
@@ -349,7 +385,7 @@ namespace PTZPadController.BusinessLayer
 
         void IPTZManager.CameraPanTiltLeft()
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.PanTiltLeft(SPEED_MEDIUM, SPEED_MEDIUM);
             }
@@ -357,7 +393,7 @@ namespace PTZPadController.BusinessLayer
 
         void IPTZManager.CameraPanTiltRight()
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.PanTiltRight(SPEED_MEDIUM, SPEED_MEDIUM);
             }
@@ -365,7 +401,7 @@ namespace PTZPadController.BusinessLayer
 
         void IPTZManager.CameraPanTiltStop()
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.PanTiltStop();
             }
@@ -373,7 +409,7 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraZoomStop()
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.ZoomStop();
             }
@@ -381,7 +417,7 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraZoomWide()
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.ZoomWide();
             }
@@ -389,7 +425,7 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraZoomTele()
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.ZoomTele();
             }
@@ -397,7 +433,7 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraCallPreset(int preset)
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.CameraMemoryRecall((short)preset);
             }
@@ -405,7 +441,7 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraSetPreset(int preset)
         {
-            if (CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null)
                 CameraPreview.CameraMemorySet((short)preset);
         }
     }

@@ -7,9 +7,15 @@ namespace PTZPadController.PresentationLayer
 {
     class DisplayMessage : IDisplayMessage
     {
-        public void Show(string message)
+        public MessageBoxResult Show(string message)
         {
-            MessageBox.Show(message, "PTZPad Controller");
+           return MessageBox.Show(message, "PTZPad Controller");
         }
+
+        public MessageBoxResult Show(string message, string caption, MessageBoxButton button, MessageBoxImage icon)
+        {
+            return MessageBox.Show(message,caption,button,icon);
+        }
+
     }
 }

@@ -91,6 +91,8 @@ namespace UnitTestPTZPadController.BusinessLayer
             Assert.IsTrue(cams[2].TallyStatus == MockTallyStatus.Off, "Tally camera is not off");
             Assert.IsTrue(cams[3].TallyStatus == MockTallyStatus.Off, "Tally camera is not off");
 
+            manager.ShutDown();
+            manager = null;
         }
     }
 

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace UnitTestPTZPadController.BusinessLayer
 {
@@ -73,16 +74,24 @@ namespace UnitTestPTZPadController.BusinessLayer
             Assert.IsTrue(AssertDisplayMessage.ShowError,"Message box wasnot called!");
 
             SimpleIoc.Default.Unregister<IDisplayMessage>();
+            manager.ShutDown();
+            manager = null;
         }
     }
 
     class AssertDisplayMessage : IDisplayMessage
     {
         public static bool ShowError = false;
-        public void Show(string message)
+        public MessageBoxResult Show(string message)
         {
             Assert.IsTrue(message.StartsWith("Configruation doesn't match with ATEM settings."), "It's not the right message");
             ShowError = true;
+            return MessageBoxResult.OK;
+        }
+
+        public MessageBoxResult Show(string message, string caption, MessageBoxButton button, MessageBoxImage icon)
+        {
+            return Show(message);
         }
     }
 
