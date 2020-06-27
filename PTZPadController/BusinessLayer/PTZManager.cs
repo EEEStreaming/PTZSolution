@@ -112,7 +112,7 @@ namespace PTZPadController.BusinessLayer
 
         private void AtemSourceChange(NotificationMessage<AtemSourceMessageArgs> msg)
         {
-            if (m_IsStarted && m_AtemHandler != null)
+            if (m_Initialized && m_AtemHandler != null)
             {
                 if (msg.Notification == NotificationSource.ProgramSourceChanged)
                     AtemProgramSourceChange(msg.Sender, msg.Content);
@@ -159,7 +159,7 @@ namespace PTZPadController.BusinessLayer
 
         private void AtemPreviewSourceChange(object sender, AtemSourceMessageArgs e)
         {
-            if (!m_IsStarted)
+            if (!m_Initialized)
                 return;
 
             CameraMessageArgs args;
@@ -196,7 +196,7 @@ namespace PTZPadController.BusinessLayer
 
         private void AtemProgramSourceChange(object sender, AtemSourceMessageArgs e)
         {
-            if (!m_IsStarted)
+            if (!m_Initialized)
                 return;
 
             CameraMessageArgs args;
