@@ -176,7 +176,7 @@ namespace PTZPadController.ViewModel
         public ICommand CameraRight { get; private set; }
         public ICommand CameraPanStop { get; private set; }
         public ICommand CameraZoomTele { get; private set; }
-        public ICommand CameraZoomWidde { get; private set; }
+        public ICommand CameraZoomWide { get; private set; }
         public ICommand CameraZoomStop { get; private set; }
         public ICommand SwitcherCut { get; private set; }
         public ICommand SwitcherMix { get; private set; }
@@ -212,7 +212,7 @@ namespace PTZPadController.ViewModel
             CameraRight = new RelayCommand(CameraRightExecute);
             CameraPanStop = new RelayCommand(CameraPanStopExecute);
             CameraZoomTele = new RelayCommand(CameraZoomTeleExecute);
-            CameraZoomWidde = new RelayCommand(CameraZoomWiddeExecute);
+            CameraZoomWide = new RelayCommand(CameraZoomWideExecute);
             CameraZoomStop = new RelayCommand(CameraZoomStopExecute);
             SwitcherCut = new RelayCommand(SwitcherCutExecute);
             SwitcherMix = new RelayCommand(SwitcherMixExecute);
@@ -481,7 +481,7 @@ namespace PTZPadController.ViewModel
             m_PtzManager.CameraZoomStop();
         }
 
-        private void CameraZoomWiddeExecute()
+        private void CameraZoomWideExecute()
         {
             m_PtzManager.CameraZoomWide();
         }

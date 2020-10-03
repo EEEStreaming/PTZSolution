@@ -148,7 +148,7 @@
                 <Button Margin="5" Grid.Row="1">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                            <i:InvokeCommandAction Command="{Binding Path=CameraZoomWidde}"/>
+                            <i:InvokeCommandAction Command="{Binding Path=CameraZoomWide}"/>
                         </i:EventTrigger>
                         <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
                             <i:InvokeCommandAction Command="{Binding Path=CameraZoomStop}"/>
