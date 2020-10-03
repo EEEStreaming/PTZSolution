@@ -36,5 +36,12 @@ namespace PTZPadController.BusinessLayer
         public void CameraMemoryReset(short memory);
         public void CameraMemorySet(short memory);
         public void CameraMemoryRecall(short memory);
+
+        //Focus
+        public void FocusModeAuto(); 
+        public void FocusModeManual();
+        public void FocusModeOnePush();
+        public void FocusOnePushTrigger();
+
     }
 }

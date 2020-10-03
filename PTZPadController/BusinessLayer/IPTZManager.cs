@@ -32,6 +32,11 @@ namespace PTZPadController.BusinessLayer
         void CameraCallPreset(int preset);
         void CameraSetPreset(int preset);
 
+        // Focus
+        public void CameraFocusModeAuto();
+        public void CameraFocusModeManual();
+        public void CameraFocusModeOnePush();
+        public void CameraFocusOnePushTrigger();
 
         void AddCameraHandler(ICameraHandler camHandler);
 

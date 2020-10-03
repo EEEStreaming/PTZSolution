@@ -279,6 +279,26 @@ namespace UnitTestPTZPadController.BusinessLayer
         {
             throw new NotImplementedException();
         }
+
+        void ICameraHandler.FocusModeAuto()
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICameraHandler.FocusModeManual()
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICameraHandler.FocusModeOnePush()
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICameraHandler.FocusOnePushTrigger()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

@@ -166,6 +166,31 @@ namespace PTZPadController.BusinessLayer
             if (m_CamParser != null)
                 m_CamParser.Tally(ledRed, ledGreen);
         }
+
+        public void FocusModeAuto()
+        {
+            if (m_CamParser != null)
+                m_CamParser.FocusModeAuto();
+        }
+
+        public void FocusModeManual()
+        {
+            if (m_CamParser != null)
+                m_CamParser.FocusModeManual();
+        }
+
+        public void FocusModeOnePush()
+        {
+            if (m_CamParser != null)
+                m_CamParser.FocusModeOnePush();
+        }
+
+        public void FocusOnePushTrigger()
+        {
+            if (m_CamParser != null)
+                m_CamParser.FocusOnePushTrigger();
+        }
+
         #endregion
 
         #region Methods

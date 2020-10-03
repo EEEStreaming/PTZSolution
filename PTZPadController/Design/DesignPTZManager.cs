@@ -110,5 +110,21 @@ namespace PTZPadController.Design
         void IPTZManager.CameraPanTiltUpRight()
         {
         }
+
+        public void CameraFocusModeAuto()
+        {
+        }
+
+        public void CameraFocusModeManual()
+        {
+        }
+
+        public void CameraFocusModeOnePush()
+        {
+        }
+
+        public void CameraFocusOnePushTrigger()
+        {
+        }
     }
 }

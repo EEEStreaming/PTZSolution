@@ -444,5 +444,28 @@ namespace PTZPadController.BusinessLayer
             if (m_IsStarted && CameraPreview != null)
                 CameraPreview.CameraMemorySet((short)preset);
         }
+
+        public void CameraFocusModeAuto()
+        {
+            if (m_IsStarted && CameraPreview != null)
+                CameraPreview.FocusModeAuto();
+        }
+        public void CameraFocusModeManual()
+        {
+            if (m_IsStarted && CameraPreview != null)
+                CameraPreview.FocusModeManual();
+        }
+
+        public void CameraFocusModeOnePush()
+        {
+            if (m_IsStarted && CameraPreview != null)
+                CameraPreview.FocusModeOnePush();
+        }
+
+        public void CameraFocusOnePushTrigger()
+        {
+            if (m_IsStarted && CameraPreview != null)
+                CameraPreview.FocusOnePushTrigger();
+        }
     }
 }
