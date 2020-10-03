@@ -14,11 +14,18 @@
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using HIDDevices;
+using HIDDevices.Controllers;
+using HidSharp;
+using HidSharp.Reports;
+using HidSharp.Utility;
 using PTZPadController.BusinessLayer;
 using PTZPadController.DataAccessLayer;
 using PTZPadController.Design;
 using PTZPadController.PresentationLayer;
 using System;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PTZPadController.ViewModel
@@ -61,7 +68,7 @@ namespace PTZPadController.ViewModel
                 return SimpleIoc.Default.GetInstance<PTZMainViewModel>();
             }
         }
-        
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels
@@ -99,8 +106,12 @@ namespace PTZPadController.ViewModel
             }
 
             //Create pad
-
+            var sample = new HIDManager();
+            sample.ExecuteAsync().ConfigureAwait(true);
 
         }
+
+
     }
+
 }
