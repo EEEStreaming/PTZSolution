@@ -120,16 +120,42 @@ namespace PTZPadController.DataAccessLayer
                                 logBuilder
                                     .Append("    ")
                                     .Append(change.Control.Name)
-                                    .Append(": ")
+                                    .Append(": Index :").Append(change.Control.Index).Append(" :")
                                     .Append(change.PreviousValue.ToString("F3"))
                                     .Append(" -> ")
                                     .Append(change.Value.ToString("F3"))
                                     .Append(" (")
                                     .Append(change.Elapsed.TotalMilliseconds.ToString("0.###"))
                                     .AppendLine("ms)");
+
+                                switch (change.Control.Name)
+                                {
+                                    case "Button 1" :
+                                        if (change.Value == 1)
+                                        {
+                                            _PadHandler.CameraSetPreview(1);
+                                        }
+                                        break;
+                                    case "Button 2":
+                                        if (change.Value == 1)
+                                        {
+                                            _PadHandler.CameraSetPreview(2);
+                                        }
+                                        break;
+                                    case "Button 3":
+                                        if (change.Value == 1)
+                                        {
+                                            _PadHandler.CameraSetPreview(3);
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
 
                             logger.Info(logBuilder.ToString());
+
+                            
 
                         }
                     }
