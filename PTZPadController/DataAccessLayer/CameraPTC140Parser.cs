@@ -2,9 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Threading;
 
 namespace PTZPadController.DataAccessLayer
 {
+
+    public enum EFocusMode : ushort
+    {
+        Unknown = 0,
+        Auto = 1,
+        Manual = 2,
+        OnePush = 3
+    }
+
     public class CameraPTC140Parser : ICameraParser, IClientCallback
     {
         private ISocketParser m_SocketClient;
@@ -15,12 +25,26 @@ namespace PTZPadController.DataAccessLayer
 
         public string CameraName { get { return m_SocketClient?.SocketName; } }
 
+        public EFocusMode FocusMode { get; private set; }
+
         public void CompletionMessage(string message)
         {
-            PTZLogger.Log.Info("Message reçu {0}", message);
+            PTZLogger.Log.Info("{0} Message reçu {1}", CameraName, message);
             if (message == "00-08-90-41-FF-90-51-FF")
             {
                 //TODO
+            }
+            else if (message == "00-06-90-50-02-FF")
+            {
+                FocusMode = EFocusMode.Auto;
+            }
+            else if (message == "00-06-90-50-03-FF")
+            {
+                FocusMode = EFocusMode.Manual;
+            }
+            else if (message == "00-06-90-50-04-FF")
+            {
+                FocusMode = EFocusMode.OnePush;
             }
 
             //TODO
@@ -37,6 +61,9 @@ namespace PTZPadController.DataAccessLayer
         public void Connect()
         {
             m_SocketClient.Connect();
+
+            //EFocusMode FocusMode = GetFocusMode();
+            //EFocusMode f= FocusMode;
         }
 
         public void Disconnect()
@@ -276,6 +303,26 @@ namespace PTZPadController.DataAccessLayer
                 PTZLogger.Log.Debug("data:{0}", data);
                 m_SocketClient.SendData(data);
             }
+        }
+
+        public EFocusMode GetFocusMode()
+        {
+            PTZLogger.Log.Info("GetFocusMode()");
+            if (m_SocketClient != null && m_SocketClient.Connected)
+            {
+                FocusMode = EFocusMode.Unknown;
+                byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x09, 0x04, 0x38, 0xFF };
+                PTZLogger.Log.Debug("data:{0}", data);
+                m_SocketClient.SendData(data);
+
+                short nCount = 0;
+                while(FocusMode==EFocusMode.Unknown && nCount<50)
+                {
+                    Thread.Sleep(20);
+                }
+                return FocusMode;
+            }
+            return EFocusMode.Unknown;
         }
 
         private byte ConvertMemory(short memory)
