@@ -183,6 +183,11 @@ namespace PTZPadController.ViewModel
         public ICommand CameraPresetButtonUp { get; private set; }
         public ICommand CameraPresetButtonDown { get; private set; }
         public ICommand PresetImageChanged { get; private set; }
+        public ICommand CameraFocusModeAuto { get; private set; }
+        public ICommand CameraFocusModeManual { get; private set; }
+        public ICommand CameraFocusModeOnePush { get; private set; }
+        public ICommand CameraFocusOnePushTrigger { get; private set; }
+
         #endregion
 
         public ObservableCollection<CameraViewModel> Cameras { get; set; }
@@ -214,6 +219,11 @@ namespace PTZPadController.ViewModel
             CameraZoomTele = new RelayCommand(CameraZoomTeleExecute);
             CameraZoomWide = new RelayCommand(CameraZoomWideExecute);
             CameraZoomStop = new RelayCommand(CameraZoomStopExecute);
+            CameraFocusModeAuto = new RelayCommand(CameraFocusModeAutoExecute);
+            CameraFocusModeManual = new RelayCommand(CameraFocusModeManualExecute);
+            CameraFocusModeOnePush = new RelayCommand(CameraFocusModeOnePushExecute);
+            CameraFocusOnePushTrigger = new RelayCommand(CameraFocusOnePushTriggerExecute);
+
             SwitcherCut = new RelayCommand(SwitcherCutExecute);
             SwitcherMix = new RelayCommand(SwitcherMixExecute);
             CameraPresetButtonUp = new RelayCommand<string>(CameraPresetButtonUpExecute);
@@ -526,6 +536,26 @@ namespace PTZPadController.ViewModel
         private void CameraPanStopExecute()
         {
             m_PtzManager.CameraPanTiltStop();
+        }
+
+        private void CameraFocusModeAutoExecute()
+        {
+            m_PtzManager.CameraFocusModeAuto();
+        }
+
+        private void CameraFocusModeManualExecute()
+        {
+            m_PtzManager.CameraFocusModeManual();
+        }
+
+        private void CameraFocusModeOnePushExecute()
+        {
+            m_PtzManager.CameraFocusModeOnePush();
+        }
+
+        private void CameraFocusOnePushTriggerExecute()
+        {
+            m_PtzManager.CameraFocusOnePushTrigger();
         }
     }
 
