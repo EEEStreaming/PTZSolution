@@ -118,6 +118,14 @@
       ]
     }
   ],
+  "GamePads": [
+  {
+	"HidDeviceName" : "Logitech Logitech RumblePad 2 USB"
+  },
+  {
+	"HidDeviceName" : "Thrustmaster T.16000M"
+  }
+  ],
   "UseTallyGreen": false,
   "AtemHost": "192.168.1.135"
 }

@@ -109,7 +109,8 @@ namespace PTZPadController.DataAccessLayer
                    
                     foreach (var group in changes.GroupBy(c => c.Control.Device))
                     {
-                        if (group.Key.Name == _ConfigGamePad[0].HidDeviceName)
+                        var padCfg = _ConfigGamePad.FirstOrDefault(g => g.HidDeviceName == group.Key.Name);
+                        if (padCfg!= null)
                         {
                             var logBuilder = new StringBuilder();
                             logBuilder.Append("Batch ").Append(++batch).AppendLine(":");
