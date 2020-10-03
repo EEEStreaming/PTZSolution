@@ -42,5 +42,6 @@ namespace PTZPadController.BusinessLayer
         void SetSwitcherPreview(string cameraName);
         void UpdatePresetConfiguration(PresetEventArgs obj);
         List<PresetIconSettingModel> GetPresetSettingFromPreview();
+        void AddGamePad(IGamePadHandler pad);
     }
 }

@@ -23,6 +23,7 @@ namespace PTZPadController.BusinessLayer
         private bool m_Initialized;
         private ConfigurationModel m_Configuration;
         private bool m_IsStarted;
+        private IGamePadHandler m_PadHandler;
 
         public ICameraHandler CameraPreview { get; private set; }
 
@@ -71,6 +72,12 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
+        public void AddGamePad(IGamePadHandler pad)
+        {
+            if (!m_IsStarted)
+                m_PadHandler = pad;
+        }
+
         public void ShutDown()
         {
             if (!m_IsStarted)
@@ -84,6 +91,8 @@ namespace PTZPadController.BusinessLayer
 
                 m_AtemHandler = null;
             }
+
+            m_PadHandler.Disconnect();
 
             foreach (var cam in m_CameraList)
             {
@@ -302,7 +311,7 @@ namespace PTZPadController.BusinessLayer
 
 
             //Connect PAD
-
+            m_PadHandler.ConnectTo();
 
             if (Task.WaitAll(tasks.ToArray(), 2000))//increase delay for unit test in GitHUB CI machine. 1 sec is to short.
             {

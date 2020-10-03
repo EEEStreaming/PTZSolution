@@ -106,9 +106,12 @@ namespace PTZPadController.ViewModel
             }
 
             //Create pad
-            var sample = new HIDManager();
-            sample.ExecuteAsync().ConfigureAwait(true);
-
+            var pad = new GamePadHandler();
+            var hidParser = new HIDParser();
+           
+            hidParser.Initialize(cfg.GamePads, pad);
+            pad.Initialize(hidParser, ptzManager);
+            ptzManager.AddGamePad(pad);
         }
 
 

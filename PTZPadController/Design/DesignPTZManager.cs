@@ -22,6 +22,11 @@ namespace PTZPadController.Design
         {
         }
 
+        public void AddGamePad(IGamePadHandler pad)
+        {
+            throw new NotImplementedException();
+        }
+
         public void CameraCallPreset(int preset)
         {
             throw new NotImplementedException();

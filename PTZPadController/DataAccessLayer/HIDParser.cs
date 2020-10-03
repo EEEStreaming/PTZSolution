@@ -2,6 +2,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
@@ -13,12 +14,17 @@ using HIDDevices.Controllers;
 using HIDDevices.Usages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PTZPadController.BusinessLayer;
 using PTZPadController.DataAccessLayer;
 
 namespace PTZPadController.DataAccessLayer
 {
-    public class HIDManager //: Sample
+    public class HIDParser : IHIDParser
     {
+        private IGamePadHandler _PadHandler;
+        private List<HIDGamePadModel> _ConfigGamePad;
+        private TaskCompletionSource<bool> _DisconnectTcs;
+
         /// <inheritdoc />
         public string Description =>
             "Demonstrates configuration of controllers in a dependency injection scenario.";
@@ -42,55 +48,55 @@ namespace PTZPadController.DataAccessLayer
             var controllers = serviceProvider.GetService<Devices>();
 
             // Subscribe to changes in controllers
-            using var subscription1 = controllers
-                .ControlUsagesAll(GenericDesktopPage.X, ButtonPage.Button10)
-                //.Connect()
-                .Subscribe(changeSet =>
-                {
-                    var logBuilder = new StringBuilder();
-                    logBuilder.AppendLine("Devices updated:");
-                    var first = true;
-                    foreach (var change in changeSet)
-                    {
-                        if (first)
-                        {
-                            first = false;
-                        }
-                        else
-                        {
-                            logBuilder.AppendLine(null);
-                        }
+            //using var subscription1 = controllers
+            //    .ControlUsagesAll(GenericDesktopPage.X, ButtonPage.Button10)
+            //    //.Connect()
+            //    .Subscribe(changeSet =>
+            //    {
+            //        var logBuilder = new StringBuilder();
+            //        logBuilder.AppendLine("Devices updated:");
+            //        var first = true;
+            //        foreach (var change in changeSet)
+            //        {
+            //            if (first)
+            //            {
+            //                first = false;
+            //            }
+            //            else
+            //            {
+            //                logBuilder.AppendLine(null);
+            //            }
 
-                        var device = change.Current;
-                        logBuilder.Append("  The ")
-                            .Append(device)
-                            .Append(" Device  was ");
-                        switch (change.Reason)
-                        {
-                            case ChangeReason.Add:
-                                logBuilder.AppendLine("added.");
+            //            var device = change.Current;
+            //            logBuilder.Append("  The ")
+            //                .Append(device)
+            //                .Append(" Device  was ");
+            //            switch (change.Reason)
+            //            {
+            //                case ChangeReason.Add:
+            //                    logBuilder.AppendLine("added.");
 
-                                break;
-                            case ChangeReason.Update:
-                                logBuilder.AppendLine("updated.");
-                                break;
-                            case ChangeReason.Remove:
-                                // Warning, the controller will be in the process of being disposed, so you should not access it's methods
-                                // (ToString() is safe though, and is all that is being accessed above).
-                                logBuilder.AppendLine("removed.");
-                                break;
-                        }
+            //                    break;
+            //                case ChangeReason.Update:
+            //                    logBuilder.AppendLine("updated.");
+            //                    break;
+            //                case ChangeReason.Remove:
+            //                    // Warning, the controller will be in the process of being disposed, so you should not access it's methods
+            //                    // (ToString() is safe though, and is all that is being accessed above).
+            //                    logBuilder.AppendLine("removed.");
+            //                    break;
+            //            }
 
-                        logBuilder.Append("    DevicePath: ")
-                            .AppendLine(device.DevicePath)
-                            .Append("    Usages: ")
-                            .AppendLine(string.Join(", ", device.Usages))
-                            .Append("    Controls: ")
-                            .AppendLine(string.Join(", ", device.Keys));
-                    }
+            //            logBuilder.Append("    DevicePath: ")
+            //                .AppendLine(device.DevicePath)
+            //                .Append("    Usages: ")
+            //                .AppendLine(string.Join(", ", device.Usages))
+            //                .Append("    Controls: ")
+            //                .AppendLine(string.Join(", ", device.Keys));
+            //        }
 
-                    logger.Info(logBuilder.ToString());
-                });
+            //        logger.Info(logBuilder.ToString());
+            //    });
 
             // Subscribe to all button control changes
             var batch = 0;
@@ -100,42 +106,49 @@ namespace PTZPadController.DataAccessLayer
                 .Subscribe(changes =>
                 {
                     // Log the changes and look for a press of Button 1 on any controller.
-                    var logBuilder = new StringBuilder();
-                    logBuilder.Append("Batch ").Append(++batch).AppendLine(":");
+                   
                     foreach (var group in changes.GroupBy(c => c.Control.Device))
                     {
-                        logBuilder.Append("  ").Append(group.Key).AppendLine(":");
-                        foreach (var change in group)
+                        if (group.Key.Name == _ConfigGamePad[0].HidDeviceName)
                         {
-                            logBuilder
-                                .Append("    ")
-                                .Append(change.Control.Name)
-                                .Append(": ")
-                                .Append(change.PreviousValue.ToString("F3"))
-                                .Append(" -> ")
-                                .Append(change.Value.ToString("F3"))
-                                .Append(" (")
-                                .Append(change.Elapsed.TotalMilliseconds.ToString("0.###"))
-                                .AppendLine("ms)");
+                            var logBuilder = new StringBuilder();
+                            logBuilder.Append("Batch ").Append(++batch).AppendLine(":");
+
+                            logBuilder.Append("  ").Append(group.Key).AppendLine(":");
+                            foreach (var change in group)
+                            {
+                                logBuilder
+                                    .Append("    ")
+                                    .Append(change.Control.Name)
+                                    .Append(": ")
+                                    .Append(change.PreviousValue.ToString("F3"))
+                                    .Append(" -> ")
+                                    .Append(change.Value.ToString("F3"))
+                                    .Append(" (")
+                                    .Append(change.Elapsed.TotalMilliseconds.ToString("0.###"))
+                                    .AppendLine("ms)");
+                            }
+
+                            logger.Info(logBuilder.ToString());
+
                         }
                     }
 
-                    logger.Info(logBuilder.ToString());
                 });
 
-            // Subscribe to just button 1 change events, and trigger a task completion source when any are pressed.
-            var button1PressedTcs = new TaskCompletionSource<bool>();
-            using var subscription3 = controllers
-                // Watch for button one changes only
-                .ControlChanges(c => c.ButtonNumber == 1)
-                //&& !c.Device.Usages.Contains(65538u))
-                .Subscribe(changes =>
-                {
-                    if (changes.Any(c => c.Value > 0.5))
-                    {
-                        button1PressedTcs.TrySetResult(true);
-                    }
-                });
+            
+            _DisconnectTcs = new TaskCompletionSource<bool>();
+            //using var subscription3 = controllers
+            //    // Watch for button one changes only
+            //    .ControlChanges(c => c.ButtonNumber == 1)
+            //    //&& !c.Device.Usages.Contains(65538u))
+            //    .Subscribe(changes =>
+            //    {
+            //        if (changes.Any(c => c.Value > 0.5))
+            //        {
+            //            DisconnectTcs.TrySetResult(true);
+            //        }
+            //    });
 
             // Subscribe to a specific controller type
             var gamepadBatch = 0;
@@ -186,12 +199,18 @@ namespace PTZPadController.DataAccessLayer
                     logger.Info(logBuilder.ToString());
                 });
 
-            logger.Info("Press Button 1 on any device to exit!");
+            logger.Info("HI Parser wait for disconnection");
 
             // Wait on signal that Button 1 has been pressed
-            await button1PressedTcs.Task.ConfigureAwait(false);
+            await _DisconnectTcs.Task.ConfigureAwait(false);
 
             logger.Info("Finished");
+        }
+
+        public void Initialize(List<HIDGamePadModel> gamePads, IGamePadHandler padHandler)
+        {
+            _PadHandler = padHandler;
+            _ConfigGamePad = gamePads;
         }
 
         private static void ConfigureServices(IServiceCollection services) =>
@@ -199,5 +218,12 @@ namespace PTZPadController.DataAccessLayer
             services
                 //.AddLogging(configure => configure.AddConsole())
                 .AddSingleton<Devices>();
+
+        public void StopAsync()
+        {
+            if (_DisconnectTcs != null)
+             _DisconnectTcs.TrySetResult(true);
+            _DisconnectTcs = null;
+        }
     }
 }
