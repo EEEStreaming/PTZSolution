@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using DynamicData;
+using GalaSoft.MvvmLight.Messaging;
 using HIDDevices;
 using HIDDevices.Controllers;
 using HIDDevices.Usages;
@@ -16,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PTZPadController.BusinessLayer;
 using PTZPadController.DataAccessLayer;
+using PTZPadController.Messages;
 
 namespace PTZPadController.DataAccessLayer
 {
@@ -24,10 +26,12 @@ namespace PTZPadController.DataAccessLayer
         private IGamePadHandler _PadHandler;
         private List<HIDGamePadModel> _ConfigGamePad;
         private TaskCompletionSource<bool> _DisconnectTcs;
-
+        private bool is_connected = false;
         /// <inheritdoc />
         public string Description =>
-            "Demonstrates configuration of controllers in a dependency injection scenario.";
+            "Configuration of controllers in a dependency injection scenario.";
+
+        public bool Connected { get { return is_connected; } }
 
         /// <inheritdoc />
         public async Task ExecuteAsync(CancellationToken token = default)
@@ -48,55 +52,64 @@ namespace PTZPadController.DataAccessLayer
             var controllers = serviceProvider.GetService<Devices>();
 
             // Subscribe to changes in controllers
-            //using var subscription1 = controllers
-            //    .ControlUsagesAll(GenericDesktopPage.X, ButtonPage.Button10)
-            //    //.Connect()
-            //    .Subscribe(changeSet =>
-            //    {
-            //        var logBuilder = new StringBuilder();
-            //        logBuilder.AppendLine("Devices updated:");
-            //        var first = true;
-            //        foreach (var change in changeSet)
-            //        {
-            //            if (first)
-            //            {
-            //                first = false;
-            //            }
-            //            else
-            //            {
-            //                logBuilder.AppendLine(null);
-            //            }
+            using var subscription1 = controllers
+                .ControlUsagesAll(GenericDesktopPage.X, ButtonPage.Button10)
+                .Subscribe(changes =>
+                {
+                    var logBuilder = new StringBuilder();
+                    var first = true;
+                    foreach (var change in changes)
+                    {
+                        if (first)
+                            first = false;
+                        else
+                            logBuilder.AppendLine();
 
-            //            var device = change.Current;
-            //            logBuilder.Append("  The ")
-            //                .Append(device)
-            //                .Append(" Device  was ");
-            //            switch (change.Reason)
-            //            {
-            //                case ChangeReason.Add:
-            //                    logBuilder.AppendLine("added.");
+                        var device = change.Current;
+                        var padCfg = _ConfigGamePad.FirstOrDefault(g => g.HidDeviceName == device.Name);
+                        if (padCfg != null)
+                        {
+                            logBuilder.Append("  Device :'").Append(device).Append("' was ");
+                            switch (change.Reason)
+                            {
+                                case ChangeReason.Add:
+                                    logBuilder.AppendLine("added.");
+                                    is_connected = true;
+                                    Messenger.Default.Send(new NotificationMessage<IHIDParser>(this, NotificationSource.GamePadConnected));
+                                    break;
+                                case ChangeReason.Update:
+                                    logBuilder.AppendLine("updated.");
+                                    break;
+                                case ChangeReason.Remove:
+                                    is_connected = false;
+                                    Messenger.Default.Send(new NotificationMessage<IHIDParser>(this, NotificationSource.GamePadConnected));
+                                    // Warning, the controller will be in the process of being disposed, so you should not access it's methods
+                                    // (ToString() is safe though, and is all that is being accessed above).
+                                    logBuilder.AppendLine("removed.");
+                                    break;
+                            }
 
-            //                    break;
-            //                case ChangeReason.Update:
-            //                    logBuilder.AppendLine("updated.");
-            //                    break;
-            //                case ChangeReason.Remove:
-            //                    // Warning, the controller will be in the process of being disposed, so you should not access it's methods
-            //                    // (ToString() is safe though, and is all that is being accessed above).
-            //                    logBuilder.AppendLine("removed.");
-            //                    break;
-            //            }
 
-            //            logBuilder.Append("    DevicePath: ")
-            //                .AppendLine(device.DevicePath)
-            //                .Append("    Usages: ")
-            //                .AppendLine(string.Join(", ", device.Usages))
-            //                .Append("    Controls: ")
-            //                .AppendLine(string.Join(", ", device.Keys));
-            //        }
-
-            //        logger.Info(logBuilder.ToString());
-            //    });
+                            logBuilder.Append("    DevicePath: ")
+                                .AppendLine(device.DevicePath)
+                                .Append("    Usages: ")
+                                .AppendLine(string.Join(", ", device.Usages))
+                                .Append("    Controls: ")
+                                .AppendLine(string.Join(", ", device.Keys));
+                        }
+                        else if (change.Reason == ChangeReason.Add)
+                        {
+                            logBuilder.Append("  Device :'").Append(device).AppendLine("' connected but not configurated for the application.");
+                            logBuilder.Append("    DevicePath: ")
+                                .AppendLine(device.DevicePath)
+                                .Append("    Usages: ")
+                                .AppendLine(string.Join(", ", device.Usages))
+                                .Append("    Controls: ")
+                                .AppendLine(string.Join(", ", device.Keys));
+                        }
+                    }
+                    logger.Info(logBuilder.ToString());
+                });
 
             // Subscribe to all button control changes
             var batch = 0;
@@ -164,74 +177,13 @@ namespace PTZPadController.DataAccessLayer
                 });
 
             
-            _DisconnectTcs = new TaskCompletionSource<bool>();
-            //using var subscription3 = controllers
-            //    // Watch for button one changes only
-            //    .ControlChanges(c => c.ButtonNumber == 1)
-            //    //&& !c.Device.Usages.Contains(65538u))
-            //    .Subscribe(changes =>
-            //    {
-            //        if (changes.Any(c => c.Value > 0.5))
-            //        {
-            //            DisconnectTcs.TrySetResult(true);
-            //        }
-            //    });
 
-            // Subscribe to a specific controller type
-            var gamepadBatch = 0;
-            using var gamepadSubscription = controllers
-                .Controllers<Gamepad>()
-                .Do(gamepad =>
-                {
-                    var logBuilder = new StringBuilder();
-                    logBuilder.Append(gamepad.Name)
-                        .AppendLine(" found!  Following controls were mapped:");
-                    foreach (var (control, infos) in gamepad.Mapping)
-                    {
-                        logBuilder.Append("  ")
-                            .Append(control.Name)
-                            .Append(" => ")
-                            .AppendLine(string.Join(", ", infos.Select(info => info.PropertyName)));
-                    }
+            logger.Info("HID Parser wait for disconnection");
 
-                    logger.Info(logBuilder.ToString());
-
-                    // Connect the gamepad, so we can start listening for changes.
-                    gamepad.Connect();
-                })
-                .SelectMany(gamepad => gamepad.Changes)
-                .Subscribe(changes =>
-                {
-                    var logBuilder = new StringBuilder();
-                    logBuilder.Append("Gamepad Batch ").Append(++gamepadBatch).AppendLine(":");
-                    foreach (var change in changes)
-                    {
-                        var valueStr = change.Value switch
-                        {
-                            bool b => b ? "Pressed" : "Not Pressed",
-                            double d => d.ToString("F3"),
-                            null => "<null>",
-                            _ => change.Value.ToString()
-                        };
-
-                        logBuilder.Append("  ")
-                            .Append(change.PropertyName)
-                            .Append(": ")
-                            .Append(valueStr)
-                            .Append(" (")
-                            .AppendFormat("{0:F3}", change.Elapsed.TotalMilliseconds)
-                            .AppendLine("ms)");
-                    }
-
-                    logger.Info(logBuilder.ToString());
-                });
-
-            logger.Info("HI Parser wait for disconnection");
-
-            // Wait on signal that Button 1 has been pressed
+            // Wait on signal from method StopAsync to stop HIDParser
             await _DisconnectTcs.Task.ConfigureAwait(false);
 
-            logger.Info("Finished");
+            logger.Info("HID Parser Finished");
         }
 
         public void Initialize(List<HIDGamePadModel> gamePads, IGamePadHandler padHandler)

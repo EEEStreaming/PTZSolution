@@ -237,6 +237,7 @@ namespace PTZPadController.ViewModel
             
             MessengerInstance.Register<NotificationMessage<CameraMessageArgs>>(this, CameraStatusChange);
             MessengerInstance.Register<NotificationMessage<ISwitcherParser>>(this, SwitcherNotification);
+            MessengerInstance.Register<NotificationMessage<IHIDParser>>(this, GamePadNotification);
 
 
             //Startup the whole system 
@@ -245,6 +246,8 @@ namespace PTZPadController.ViewModel
             //Task.Factory.StartNew(()=>ptzManager.StartUp());
 
         }
+
+
 
         private void CameraPresetButtonUpExecute(string preset)
         {
@@ -435,6 +438,15 @@ namespace PTZPadController.ViewModel
                 if (obj.Notification == NotificationSource.SwictcherConnected)
                 {
                     Switcher.Connected = obj.Content.Connected;
+                }
+        }
+
+        private void GamePadNotification(NotificationMessage<IHIDParser> obj)
+        {
+            if (obj != null && obj.Content != null)
+                if (obj.Notification == NotificationSource.GamePadConnected)
+                {
+                    Pad.Connected = obj.Content.Connected;
                 }
         }
 

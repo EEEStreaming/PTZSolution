@@ -13,6 +13,7 @@ namespace PTZPadController.Messages
 
         public const string SwictcherConnected = "SwictcherConnected"; //
         public const string SocketConnected = "SocketConnected"; //
+        public const string GamePadConnected = "GamePadConnected"; //
     }
 
     public enum CameraStatusEnum

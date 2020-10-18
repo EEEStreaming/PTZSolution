@@ -10,5 +10,7 @@ namespace PTZPadController
     {
         Task ExecuteAsync(CancellationToken token = default);
         void StopAsync();
+
+        bool Connected { get; }
     }
 }
