@@ -14,7 +14,7 @@ namespace PTZPadController.DataAccessLayer
         public static ConfigurationModel LoadConfigurationFile(string fileName)
         {
             var jsonString = File.ReadAllText(fileName);
-            return JsonConvert.DeserializeObject<ConfigurationModel>(jsonString);
+            return JsonConvert.DeserializeObject<ConfigurationModel>(jsonString, new Newtonsoft.Json.Converters.StringEnumConverter());
         }
 
 
@@ -23,7 +23,9 @@ namespace PTZPadController.DataAccessLayer
             // serialize JSON directly to a file
             using (StreamWriter file = File.CreateText(fileName))
             {
+
                 JsonSerializer serializer = new JsonSerializer();
+                serializer.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
                 serializer.Formatting = Formatting.Indented;
                 serializer.Serialize(file, cfg);
             }
