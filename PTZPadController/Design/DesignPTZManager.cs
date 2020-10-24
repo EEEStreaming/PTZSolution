@@ -49,11 +49,11 @@ namespace PTZPadController.Design
         {
         }
 
-        public void CameraZoomTele(decimal zoomSpeed)
+        public void CameraZoomTele(short zoomSpeed)
         {
         }
 
-        public void CameraZoomWide(decimal zoomSpeed)
+        public void CameraZoomWide(short zoomSpeed)
         {
         }
 

@@ -49,75 +49,75 @@ namespace PTZPadController.BusinessLayer
         #endregion
 
         #region Commands
-        public void PanTiltUp(short panSpeed, short tiltSpeed)
+        public void PanTiltUp(short moveSpeed)
         {
             if (m_CamParser != null)
             {
                 PanTileWorking = true;
-                m_CamParser.PanTiltUp(panSpeed, tiltSpeed);
+                m_CamParser.PanTiltUp(moveSpeed);
             }
         }
 
-        public void PanTiltDown(short panSpeed, short tiltSpeed)
+        public void PanTiltDown(short moveSpeed)
         {
             if (m_CamParser != null)
             {
                 PanTileWorking = true;
-                m_CamParser.PanTiltDown(panSpeed, tiltSpeed);
+                m_CamParser.PanTiltDown(moveSpeed);
             }
         }
 
-        public void PanTiltLeft(short panSpeed, short tiltSpeed)
+        public void PanTiltLeft(short moveSpeed)
         {
             if (m_CamParser != null)
             {
                 PanTileWorking = true;
-                m_CamParser.PanTiltLeft(panSpeed, tiltSpeed);
+                m_CamParser.PanTiltLeft(moveSpeed);
             }
         }
 
-        public void PanTiltRight(short panSpeed, short tiltSpeed)
+        public void PanTiltRight(short moveSpeed)
         {
             if (m_CamParser != null)
             {
                 PanTileWorking = true;
-                m_CamParser.PanTiltRight(panSpeed, tiltSpeed);
+                m_CamParser.PanTiltRight(moveSpeed);
             }
         }
 
-        public void PanTiltUpLeft(short panSpeed, short tiltSpeed)
+        public void PanTiltUpLeft(short moveSpeed)
         {
             if (m_CamParser != null)
             {
                 PanTileWorking = true;
-                m_CamParser.PanTiltUpLeft(panSpeed, tiltSpeed);
+                m_CamParser.PanTiltUpLeft(moveSpeed);
             }
         }
 
-        public void PanTiltUpRight(short panSpeed, short tiltSpeed)
+        public void PanTiltUpRight(short moveSpeed)
         {
             if (m_CamParser != null)
             {
                 PanTileWorking = true;
-                m_CamParser.PanTiltUpRight(panSpeed, tiltSpeed);
+                m_CamParser.PanTiltUpRight(moveSpeed);
             }
         }
 
-        public void PanTiltDownLeft(short panSpeed, short tiltSpeed)
+        public void PanTiltDownLeft(short moveSpeed)
         {
             if (m_CamParser != null)
             {
                 PanTileWorking = true;
-                m_CamParser.PanTiltDownLeft(panSpeed, tiltSpeed);
+                m_CamParser.PanTiltDownLeft(moveSpeed);
             }
         }
 
-        public void PanTiltDownRight(short panSpeed, short tiltSpeed)
+        public void PanTiltDownRight(short moveSpeed)
         {
             if (m_CamParser != null)
             {
                 PanTileWorking = true;
-                m_CamParser.PanTiltDownRight(panSpeed, tiltSpeed);
+                m_CamParser.PanTiltDownRight(moveSpeed);
             }
         }
 
@@ -164,7 +164,7 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-        public void ZoomTele(decimal zoomSpeed)
+        public void ZoomTele(short zoomSpeed)
         {
             if (m_CamParser != null)
             {
@@ -173,7 +173,7 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-        public void ZoomWide(decimal zoomSpeed)
+        public void ZoomWide(short zoomSpeed)
         {
             if (m_CamParser != null)
             {
