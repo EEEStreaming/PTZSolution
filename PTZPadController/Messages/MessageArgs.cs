@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xaml.Behaviors.Media;
+using PTZPadController.DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,8 @@ namespace PTZPadController.Messages
     {
         public const string ProgramSourceChanged = "ProgramSourceChanged";  // with AtemSourceMessageArgs
         public const string PreviewSourceChanged = "PreviewSourceChanged";  // with AtemSourceMessageArgs
-        public const string CameraStatusChanged = "CameraStatusChanged";  // with CameraMessageArgs
+        public const string CameraStatusChanged = "CameraStatusChanged";  // with CameraStatusMessageArgs
+        public const string CameraFocusModeChanged = "CameraFocusModeChanged";  // with CameraFocusModeMessageArgs
 
         public const string SwictcherConnected = "SwictcherConnected"; //
         public const string SocketConnected = "SocketConnected"; //
@@ -31,11 +33,21 @@ namespace PTZPadController.Messages
     /// <summary>
     /// Message used with notification CameraStatusChanged
     /// </summary>    
-    public class CameraMessageArgs
+    public class CameraStatusMessageArgs
     {
         public CameraStatusEnum Status { get; set; }
         public string CameraName { get; set; }
     }
+
+    /// <summary>
+    /// Message used with notification CameraStatusChanged
+    /// </summary>    
+    public class CameraFocusModeMessageArgs
+    {
+        public EFocusMode Focus { get; set; }
+        public string CameraName { get; set; }
+    }
+
 
     /// <summary>
     /// Message used with notification ProgramSourceChanged and PreviewSourceChanged
@@ -46,5 +58,5 @@ namespace PTZPadController.Messages
         public string CurrentInputName { get; set; }
     }
 
-
+   
 }

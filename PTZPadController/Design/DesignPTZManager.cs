@@ -49,6 +49,14 @@ namespace PTZPadController.Design
         {
         }
 
+        public void CameraZoomTele(decimal zoomSpeed)
+        {
+        }
+
+        public void CameraZoomWide(decimal zoomSpeed)
+        {
+        }
+
         public List<PresetIconSettingModel> GetPresetSettingFromPreview()
         {
             throw new NotImplementedException();

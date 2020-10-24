@@ -329,6 +329,26 @@ namespace UnitTestPTZPadController.BusinessLayer
         {
             throw new NotImplementedException();
         }
+
+        public EFocusMode FocusMode()
+        {
+            return EFocusMode.Unknown;
+        }
+
+        void ICameraHandler.GetFocusMode()
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICameraHandler.ZoomTele(decimal zoomSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICameraHandler.ZoomWide(decimal zoomSpeed)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

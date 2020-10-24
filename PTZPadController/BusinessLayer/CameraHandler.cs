@@ -1,4 +1,6 @@
-﻿using PTZPadController.DataAccessLayer;
+﻿using GalaSoft.MvvmLight.Messaging;
+using PTZPadController.DataAccessLayer;
+using PTZPadController.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,63 +52,81 @@ namespace PTZPadController.BusinessLayer
         public void PanTiltUp(short panSpeed, short tiltSpeed)
         {
             if (m_CamParser != null)
+            {
+                PanTileWorking = true;
                 m_CamParser.PanTiltUp(panSpeed, tiltSpeed);
-            PanTileWorking = true;
+            }
         }
 
         public void PanTiltDown(short panSpeed, short tiltSpeed)
         {
             if (m_CamParser != null)
+            {
+                PanTileWorking = true;
                 m_CamParser.PanTiltDown(panSpeed, tiltSpeed);
-            PanTileWorking = true;
+            }
         }
 
         public void PanTiltLeft(short panSpeed, short tiltSpeed)
         {
             if (m_CamParser != null)
+            {
+                PanTileWorking = true;
                 m_CamParser.PanTiltLeft(panSpeed, tiltSpeed);
-            PanTileWorking = true;
+            }
         }
 
         public void PanTiltRight(short panSpeed, short tiltSpeed)
         {
             if (m_CamParser != null)
+            {
+                PanTileWorking = true;
                 m_CamParser.PanTiltRight(panSpeed, tiltSpeed);
-            PanTileWorking = true;
+            }
         }
 
         public void PanTiltUpLeft(short panSpeed, short tiltSpeed)
         {
             if (m_CamParser != null)
+            {
+                PanTileWorking = true;
                 m_CamParser.PanTiltUpLeft(panSpeed, tiltSpeed);
-            PanTileWorking = true;
+            }
         }
 
         public void PanTiltUpRight(short panSpeed, short tiltSpeed)
         {
             if (m_CamParser != null)
+            {
+                PanTileWorking = true;
                 m_CamParser.PanTiltUpRight(panSpeed, tiltSpeed);
-            PanTileWorking = true;
+            }
         }
 
         public void PanTiltDownLeft(short panSpeed, short tiltSpeed)
         {
             if (m_CamParser != null)
+            {
+                PanTileWorking = true;
                 m_CamParser.PanTiltDownLeft(panSpeed, tiltSpeed);
-            PanTileWorking = true;
+            }
         }
 
         public void PanTiltDownRight(short panSpeed, short tiltSpeed)
         {
             if (m_CamParser != null)
+            {
+                PanTileWorking = true;
                 m_CamParser.PanTiltDownRight(panSpeed, tiltSpeed);
-            PanTileWorking = true;
+            }
         }
 
         public void PanTiltStop()
         {
             if (m_CamParser != null)
+            {
                 m_CamParser.PanTiltStop();
+            }
             PanTileWorking = false;
         }
         public void PanTiltHome()
@@ -120,22 +140,46 @@ namespace PTZPadController.BusinessLayer
         public void ZoomStop()
         {
             if (m_CamParser != null)
+            {
                 m_CamParser.ZoomStop();
+            }
             ZoomWorking = false;
         }
 
         public void ZoomTele()
         {
             if (m_CamParser != null)
+            {
+                ZoomWorking = true;
                 m_CamParser.ZoomTele();
-            ZoomWorking = true;
+            }
         }
 
         public void ZoomWide()
         {
             if (m_CamParser != null)
+            {
+                ZoomWorking = true;
                 m_CamParser.ZoomWide();
-            ZoomWorking = true;
+            }
+        }
+
+        public void ZoomTele(decimal zoomSpeed)
+        {
+            if (m_CamParser != null)
+            {
+                ZoomWorking = true;
+                m_CamParser.ZoomTele(zoomSpeed);
+            }
+        }
+
+        public void ZoomWide(decimal zoomSpeed)
+        {
+            if (m_CamParser != null)
+            {
+                ZoomWorking = true;
+                m_CamParser.ZoomWide(zoomSpeed);
+            }
         }
 
         public void CameraMemoryReset(short memory)
@@ -160,7 +204,6 @@ namespace PTZPadController.BusinessLayer
             //PanTileWorking = true;
         }
 
-
         public void Tally(bool ledRed, bool ledGreen)
         {
             if (m_CamParser != null)
@@ -170,25 +213,51 @@ namespace PTZPadController.BusinessLayer
         public void FocusModeAuto()
         {
             if (m_CamParser != null)
+            {
                 m_CamParser.FocusModeAuto();
+                GetFocusMode(); 
+            }
         }
 
         public void FocusModeManual()
         {
             if (m_CamParser != null)
+            { 
                 m_CamParser.FocusModeManual();
+                GetFocusMode();
+            }
         }
 
         public void FocusModeOnePush()
         {
             if (m_CamParser != null)
+            {
                 m_CamParser.FocusModeOnePush();
+                GetFocusMode();
+            }
         }
 
         public void FocusOnePushTrigger()
         {
             if (m_CamParser != null)
+            {
                 m_CamParser.FocusOnePushTrigger();
+                GetFocusMode();
+            }
+        }
+
+        public void GetFocusMode()
+        {
+            if (m_CamParser != null)
+            {
+                var efocusMode = m_CamParser.FocusMode();
+
+                CameraFocusModeMessageArgs args = new CameraFocusModeMessageArgs();
+                args.Focus = efocusMode;
+                args.CameraName = CameraName;
+                Messenger.Default.Send(new NotificationMessage<CameraFocusModeMessageArgs>(args, NotificationSource.CameraFocusModeChanged));
+            }
+            //return EFocusMode.Unknown;
         }
 
         #endregion

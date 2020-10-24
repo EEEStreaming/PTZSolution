@@ -245,7 +245,8 @@ namespace PTZPadController.ViewModel
             Switcher = new DeviceItemViewModel("ATEM");
             Pad = new DeviceItemViewModel("Pad");
             
-            MessengerInstance.Register<NotificationMessage<CameraMessageArgs>>(this, CameraStatusChange);
+            MessengerInstance.Register<NotificationMessage<CameraStatusMessageArgs>>(this, CameraStatusChange);
+            MessengerInstance.Register<NotificationMessage<CameraFocusModeMessageArgs>>(this, CameraFocusModeChange);
             MessengerInstance.Register<NotificationMessage<ISwitcherParser>>(this, SwitcherNotification);
 
 
@@ -255,6 +256,8 @@ namespace PTZPadController.ViewModel
             //Task.Factory.StartNew(()=>ptzManager.StartUp());
 
         }
+
+
 
         private void CameraPresetButtonUpExecute(string preset)
         {
@@ -359,7 +362,7 @@ namespace PTZPadController.ViewModel
             m_PtzManager.SendSwitcherTransition(TransitionEnum.Cut);
         }
 
-        private void CameraStatusChange(NotificationMessage<CameraMessageArgs> obj)
+        private void CameraStatusChange(NotificationMessage<CameraStatusMessageArgs> obj)
         {
             if (obj.Notification == NotificationSource.CameraStatusChanged)
             {
@@ -374,6 +377,21 @@ namespace PTZPadController.ViewModel
                         //Update preset icon list.
                         UpdatePresetIcons();
                     }
+                }
+            }
+        }
+
+        private void CameraFocusModeChange(NotificationMessage<CameraFocusModeMessageArgs> obj)
+        {
+            if (obj.Notification == NotificationSource.CameraFocusModeChanged)
+            {
+                PTZLogger.Log.Debug("Camera {0} focus mode has changed to {1}", obj.Content.CameraName, obj.Content.Focus);
+
+                var camera = Cameras.FirstOrDefault(x => x.Name == obj.Content.CameraName && x.SourceStatus == CameraStatusEnum.Preview);
+                if (camera != null)
+                {
+
+                    PTZLogger.Log.Debug("camera preview ({0}) focus mode changed ({1})!", obj.Content.CameraName, obj.Content.Focus);
                 }
             }
         }

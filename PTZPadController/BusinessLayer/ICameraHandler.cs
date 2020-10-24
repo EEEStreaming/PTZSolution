@@ -32,6 +32,8 @@ namespace PTZPadController.BusinessLayer
         public void ZoomStop();
         public void ZoomTele();
         public void ZoomWide();
+        public void ZoomTele(decimal zoomSpeed);
+        public void ZoomWide(decimal zoomSpeed);
         public void PanTiltHome();
         public void CameraMemoryReset(short memory);
         public void CameraMemorySet(short memory);
@@ -42,6 +44,7 @@ namespace PTZPadController.BusinessLayer
         public void FocusModeManual();
         public void FocusModeOnePush();
         public void FocusOnePushTrigger();
+        public void GetFocusMode();
 
     }
 }

@@ -2,9 +2,16 @@
 
 namespace PTZPadController.DataAccessLayer
 {
+    public enum EFocusMode
+    {
+        Unknown,
+        Auto,
+        Manual,
+        OnePush
+    }
+
     public interface ICameraParser : ICameraParserModel
     {
-
         void Connect();
         void Disconnect();
         void Tally(bool ledRed, bool ledGreen);
@@ -22,6 +29,8 @@ namespace PTZPadController.DataAccessLayer
         public void ZoomStop();
         public void ZoomTele();
         public void ZoomWide();
+        public void ZoomTele(decimal zoomSpeed);
+        public void ZoomWide(decimal zoomSpeed);
         public void CameraMemoryReset(short memory);
         public void CameraMemorySet(short memory);
         public void CameraMemoryRecall(short memory);
@@ -31,6 +40,7 @@ namespace PTZPadController.DataAccessLayer
         public void FocusModeManual();
         public void FocusModeOnePush();
         public void FocusOnePushTrigger();
+        public EFocusMode FocusMode();
     }
 
     public interface ICameraParserModel
