@@ -215,7 +215,7 @@ namespace PTZPadController.BusinessLayer
             if (m_CamParser != null)
             {
                 m_CamParser.FocusModeAuto();
-                GetFocusMode(); 
+                 
             }
         }
 
@@ -224,7 +224,7 @@ namespace PTZPadController.BusinessLayer
             if (m_CamParser != null)
             { 
                 m_CamParser.FocusModeManual();
-                GetFocusMode();
+                
             }
         }
 
@@ -233,7 +233,6 @@ namespace PTZPadController.BusinessLayer
             if (m_CamParser != null)
             {
                 m_CamParser.FocusModeOnePush();
-                GetFocusMode();
             }
         }
 
@@ -242,7 +241,6 @@ namespace PTZPadController.BusinessLayer
             if (m_CamParser != null)
             {
                 m_CamParser.FocusOnePushTrigger();
-                GetFocusMode();
             }
         }
 
@@ -250,12 +248,8 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_CamParser != null)
             {
-                var efocusMode = m_CamParser.FocusMode();
+                m_CamParser.FocusMode();
 
-                CameraFocusModeMessageArgs args = new CameraFocusModeMessageArgs();
-                args.Focus = efocusMode;
-                args.CameraName = CameraName;
-                Messenger.Default.Send(new NotificationMessage<CameraFocusModeMessageArgs>(args, NotificationSource.CameraFocusModeChanged));
             }
             //return EFocusMode.Unknown;
         }

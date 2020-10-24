@@ -40,6 +40,8 @@ namespace PTZPadController.BusinessLayer
         public void CameraFocusModeOnePush();
         public void CameraFocusOnePushTrigger();
 
+        public void CameraGetFocusMode();
+
         void AddCameraHandler(ICameraHandler camHandler);
 
         void SetSwitcherHandler(ISwitcherHandler atemHandler);

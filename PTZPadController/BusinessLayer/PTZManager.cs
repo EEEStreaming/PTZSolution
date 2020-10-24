@@ -484,5 +484,11 @@ namespace PTZPadController.BusinessLayer
             if (m_IsStarted && CameraPreview != null)
                 CameraPreview.FocusOnePushTrigger();
         }
+
+        public void CameraGetFocusMode()
+        {
+            if (m_IsStarted && CameraPreview != null)
+                CameraPreview.GetFocusMode();
+        }
     }
 }

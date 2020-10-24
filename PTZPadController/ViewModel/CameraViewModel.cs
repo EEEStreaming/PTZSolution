@@ -24,6 +24,7 @@ namespace PTZPadController.ViewModel
         #region Commands
         public ICommand AtemPreview { get; private set; }
         #endregion
+        
         #region Properties
         public string Name
         {

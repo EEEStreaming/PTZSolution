@@ -134,5 +134,10 @@ namespace PTZPadController.Design
         public void CameraFocusOnePushTrigger()
         {
         }
+
+        public void CameraGetFocusMode()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

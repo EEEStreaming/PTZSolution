@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using PTZPadController.Messages;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -17,7 +19,7 @@ namespace PTZPadController.DataAccessLayer
 
         public string CameraName { get { return m_SocketClient?.SocketName; } }
 
-        protected EFocusMode eFocusMode { get; private set; }
+        protected ECameraFocusMode eFocusMode { get; private set; }
 
 
         #region CompletionMessage and Gets
@@ -38,17 +40,17 @@ namespace PTZPadController.DataAccessLayer
             }
             else if (message == "00-06-90-50-02-FF")
             {
-                eFocusMode = EFocusMode.Auto;
+                eFocusMode = ECameraFocusMode.Auto;
                 PTZLogger.Log.Debug("CompletionMessage {0}  FocusMode:{1}", CameraName, eFocusMode);
             }
             else if (message == "00-06-90-50-03-FF")
             {
-                eFocusMode = EFocusMode.Manual;
+                eFocusMode = ECameraFocusMode.Manual;
                 PTZLogger.Log.Debug("CompletionMessage {0}  FocusMode:{1}", CameraName, eFocusMode);
             }
             else if (message == "00-06-90-50-04-FF")
             {
-                eFocusMode = EFocusMode.OnePush;
+                eFocusMode = ECameraFocusMode.OnePush;
                 PTZLogger.Log.Debug("CompletionMessage {0}  FocusMode:{1}", CameraName, eFocusMode);
             }
             else
@@ -58,27 +60,18 @@ namespace PTZPadController.DataAccessLayer
             //TODO
         }
 
-        public EFocusMode FocusMode()
+        public void FocusMode()
         {
             PTZLogger.Log.Info("FocusMode()");
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
-                eFocusMode = EFocusMode.Unknown;
+                eFocusMode = ECameraFocusMode.Unknown;
                 byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x09, 0x04, 0x38, 0xFF };
-                PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
+                //PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
                 m_SocketClient.SendData(data);
 
-                short nCount = 0;
-                while (eFocusMode == EFocusMode.Unknown && nCount < 50)
-                {
-                    Thread.Sleep(20);
-                    nCount++;
-                }
                 PTZLogger.Log.Info("FocusMode() {0} FocusMode:{1}", CameraName, eFocusMode);
-                return eFocusMode;
             }
-            PTZLogger.Log.Error("FocusMode() {0} pas de réponse pour FocusMode dans le temps imparti", CameraName);
-            return EFocusMode.Unknown;
         }
 
         #endregion
@@ -345,7 +338,7 @@ namespace PTZPadController.DataAccessLayer
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
                 byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x38, 0x02, 0xFF };
-                PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
+                //PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
                 m_SocketClient.SendData(data);
             }
         }
@@ -356,7 +349,7 @@ namespace PTZPadController.DataAccessLayer
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
                 byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x38, 0x03, 0xFF };
-                PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
+               // PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
                 m_SocketClient.SendData(data);
             }
         }
@@ -367,7 +360,7 @@ namespace PTZPadController.DataAccessLayer
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
                 byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x38, 0x04, 0xFF };
-                PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
+                //PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
                 m_SocketClient.SendData(data);
             }
         }
@@ -378,7 +371,7 @@ namespace PTZPadController.DataAccessLayer
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
                 byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x18, 0x01, 0xFF };
-                PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
+                //PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
                 m_SocketClient.SendData(data);
             }
         }
@@ -397,7 +390,7 @@ namespace PTZPadController.DataAccessLayer
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
                 byte[] data = new byte[] { 0x00, 0x09, 0x81, 0x01, 0x04, 0x3F, 0x00, byteMemory,0xFF };
-                PTZLogger.Log.Debug("data:{0}", data.ToString());
+                //PTZLogger.Log.Debug("data:{0}", data.ToString());
                 m_SocketClient.SendData(data);
             }
         }
@@ -409,7 +402,7 @@ namespace PTZPadController.DataAccessLayer
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
                 byte[] data = new byte[] { 0x00, 0x09, 0x81, 0x01, 0x04, 0x3F, 0x01, byteMemory, 0xFF };
-                PTZLogger.Log.Debug("data:{0}", data.ToString());
+                //PTZLogger.Log.Debug("data:{0}", data.ToString());
                 m_SocketClient.SendData(data);
             }
         }
@@ -421,7 +414,7 @@ namespace PTZPadController.DataAccessLayer
             if (m_SocketClient != null && m_SocketClient.Connected)
             {
                 byte[] data = new byte[] { 0x00, 0x09, 0x81, 0x01, 0x04, 0x3F, 0x02, byteMemory, 0xFF };
-                PTZLogger.Log.Debug("data:{0}", data.ToString());
+                //PTZLogger.Log.Debug("data:{0}", data.ToString());
                 m_SocketClient.SendData(data);
             }
         }

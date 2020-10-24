@@ -44,6 +44,7 @@ namespace PTZPadController.ViewModel
         private Object _PresetState;
         private CancellationTokenSource _PresetCancellationToken;
         private Task _currentWaitingTask;
+        private ECameraFocusMode _CameraFocusMode;
 
         public DeviceItemViewModel Switcher {
             get { return _Switcher; }
@@ -163,7 +164,18 @@ namespace PTZPadController.ViewModel
                 RaisePropertyChanged("PresetStatus");
             }
         }
+
         
+        public ECameraFocusMode CameraFocusMode
+        {
+            get { return _CameraFocusMode; }
+            set
+            {
+                if (_CameraFocusMode == value) return;
+                _CameraFocusMode = value;
+                RaisePropertyChanged("CameraFocusMode");
+            }
+        }
 
         #region Commands
         public ICommand CameraUp { get; private set; }
@@ -376,6 +388,9 @@ namespace PTZPadController.ViewModel
                     {
                         //Update preset icon list.
                         UpdatePresetIcons();
+
+                        //Get Focus Mode of the camera
+                        m_PtzManager.CameraGetFocusMode();
                     }
                 }
             }
@@ -390,7 +405,7 @@ namespace PTZPadController.ViewModel
                 var camera = Cameras.FirstOrDefault(x => x.Name == obj.Content.CameraName && x.SourceStatus == CameraStatusEnum.Preview);
                 if (camera != null)
                 {
-
+                    CameraFocusMode = obj.Content.Focus;
                     PTZLogger.Log.Debug("camera preview ({0}) focus mode changed ({1})!", obj.Content.CameraName, obj.Content.Focus);
                 }
             }

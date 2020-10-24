@@ -44,7 +44,7 @@ namespace PTZPadController.Messages
     /// </summary>    
     public class CameraFocusModeMessageArgs
     {
-        public EFocusMode Focus { get; set; }
+        public ECameraFocusMode Focus { get; set; }
         public string CameraName { get; set; }
     }
 

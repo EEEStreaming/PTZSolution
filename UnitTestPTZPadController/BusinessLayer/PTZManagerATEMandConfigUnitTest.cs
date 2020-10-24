@@ -300,9 +300,9 @@ namespace UnitTestPTZPadController.BusinessLayer
             throw new NotImplementedException();
         }
         
-        public EFocusMode FocusMode()
+        public ECameraFocusMode FocusMode()
         {
-            return EFocusMode.Unknown;
+            return ECameraFocusMode.Unknown;
         }
 
         void ICameraHandler.GetFocusMode()

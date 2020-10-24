@@ -2,7 +2,7 @@
 
 namespace PTZPadController.DataAccessLayer
 {
-    public enum EFocusMode
+    public enum ECameraFocusMode
     {
         Unknown,
         Auto,
@@ -40,7 +40,7 @@ namespace PTZPadController.DataAccessLayer
         public void FocusModeManual();
         public void FocusModeOnePush();
         public void FocusOnePushTrigger();
-        public EFocusMode FocusMode();
+        public void FocusMode();
     }
 
     public interface ICameraParserModel
