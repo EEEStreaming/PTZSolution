@@ -16,10 +16,10 @@ namespace PTZPadController.BusinessLayer
     class JoystickStateMachine
     {
         // Change these values if you like to change the detection zones (maybe these could be put in config)
-        const double POSITIVE_FAR = 1.0;
-        const double POSITIVE_MEDIUM = 0.9;
+        const double POSITIVE_FAR = 0.9;
+        const double POSITIVE_MEDIUM = 0.8;
         const double POSITIVE_CLOSE = 0.6;
-        const double CENTER = 0.5;
+        
         const double NEGATIVE_CLOSE = 0.4;
         const double NEGATIVE_MEDIUM = 0.2;
         const double NEGATIVE_FAR = 0.1;
@@ -34,7 +34,7 @@ namespace PTZPadController.BusinessLayer
         public (AxisPosition, AxisPosition) GetNext(double x, double y)
         {
             AxisPosition x_axis = ConvertValueToState(x);
-            AxisPosition y_axis = ConvertValueToState(y);
+            AxisPosition y_axis = ConvertValueToState(1-y);
             return (x_axis, y_axis);
         }
 
@@ -51,10 +51,10 @@ namespace PTZPadController.BusinessLayer
                 double v when v <= NEGATIVE_FAR => AxisPosition.NEGATIVE_FAR,
                 double v when v <= NEGATIVE_MEDIUM => AxisPosition.NEGATIVE_MEDIUM,
                 double v when v <= NEGATIVE_CLOSE => AxisPosition.NEGATIVE_CLOSE,
-                double v when v <= CENTER => AxisPosition.CENTER,
-                double v when v <= POSITIVE_CLOSE => AxisPosition.POSITIVE_CLOSE,
-                double v when v <= POSITIVE_MEDIUM => AxisPosition.POSITIVE_MEDIUM,
-                double v when v <= POSITIVE_FAR => AxisPosition.POSITIVE_FAR,
+                double v when v <= POSITIVE_CLOSE => AxisPosition.CENTER,
+                double v when v <= POSITIVE_MEDIUM => AxisPosition.POSITIVE_CLOSE,
+                double v when v <= POSITIVE_FAR => AxisPosition.POSITIVE_MEDIUM,
+                double v when v > POSITIVE_FAR => AxisPosition.POSITIVE_FAR,
                 _ => AxisPosition.CENTER,
             };
             return result;

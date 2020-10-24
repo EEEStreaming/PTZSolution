@@ -10,9 +10,6 @@ namespace PTZPadController.BusinessLayer
 
     public class GamePadHandler : IGamePadHandler
     {
-        // This holds the minimum difference value between two commands needed to trigger a state update
-        private readonly double CHANGE_THRESHOLD = 0.01;
-
         private IHIDParser m_HidParser;
         private IPTZManager m_PtzManager;
 
@@ -184,11 +181,11 @@ namespace PTZPadController.BusinessLayer
         }
 
 
-        public void CameraZoomAxe(double x)
+        public void CameraZoomAxe(double y)
         {
-            if (m_ZoomState.CurrentState != m_ZoomState.MoveNext(x, 0.5))
+            if (m_ZoomState.CurrentState != m_ZoomState.MoveNext(0.5, y))
             {
-                switch (m_ZoomState.CurrentState.Item1)
+                switch (m_ZoomState.CurrentState.Item2)
                 {
                     case AxisPosition.CENTER:
                         m_PtzManager.CameraZoomStop();
