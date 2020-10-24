@@ -57,18 +57,25 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraFocusAutoMode(ButtonCommand button)
         {
+            if (button == ButtonCommand.Down)
+                m_PtzManager.CameraFocusModeAuto();
         }
 
         public void CameraFocusAutoOnePushSwitchMode(ButtonCommand button)
         {
+            // TODO When focus status is read from cameras.
         }
 
         public void CameraFocusOnePushMode(ButtonCommand button)
         {
+            if (button == ButtonCommand.Down)
+                m_PtzManager.CameraFocusModeOnePush();
         }
 
         public void CameraFocusOnePushTriger(ButtonCommand button)
         {
+            if (button == ButtonCommand.Down)
+                m_PtzManager.CameraFocusOnePushTrigger();
         }
 
         public void CameraPanTiltAxes(double x, double y)

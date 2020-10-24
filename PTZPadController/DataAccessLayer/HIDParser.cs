@@ -240,7 +240,7 @@ namespace PTZPadController.DataAccessLayer
                                             break;
                                         case GamePadHandlerCommands.CameraFocusAutoOnePushSwitchMode:
                                             btnSatus = GetButtonStatus(change.Value);
-                                            //_PadHandler.CameraPreset2(btnSatus);
+                                            _PadHandler.CameraFocusAutoOnePushSwitchMode(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.Camera1SetPreview:
                                             btnSatus = GetButtonStatus(change.Value);
