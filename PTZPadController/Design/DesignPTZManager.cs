@@ -145,6 +145,46 @@ namespace PTZPadController.Design
             throw new NotImplementedException();
         }
 
+        public void CameraPanTiltUp(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPanTiltUpLeft(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPanTiltUpRight(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPanTiltDown(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPanTiltDownLeft(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPanTiltDownRight(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPanTiltLeft(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPanTiltRight(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
         public void CameraFocusAutoOnePushSwitchMode()
         {
             throw new NotImplementedException();

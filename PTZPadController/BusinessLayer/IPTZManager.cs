@@ -25,6 +25,14 @@ namespace PTZPadController.BusinessLayer
         void CameraPanTiltDownRight();
         void CameraPanTiltLeft();
         void CameraPanTiltRight();
+        void CameraPanTiltUp(short moveSpeed);
+        void CameraPanTiltUpLeft(short moveSpeed);
+        void CameraPanTiltUpRight(short moveSpeed);
+        void CameraPanTiltDown(short moveSpeed);
+        void CameraPanTiltDownLeft(short moveSpeed);
+        void CameraPanTiltDownRight(short moveSpeed);
+        void CameraPanTiltLeft(short moveSpeed);
+        void CameraPanTiltRight(short moveSpeed);
         void CameraPanTiltStop();
         void CameraZoomStop();
         void CameraZoomWide();
@@ -48,7 +56,6 @@ namespace PTZPadController.BusinessLayer
         void InitSeetings(ConfigurationModel cfg);
         void SendSwitcherTransition(TransitionEnum transition);
         void SetSwitcherPreview(string cameraName);
-
         void UpdatePresetConfiguration(PresetEventArgs obj);
         List<PresetIconSettingModel> GetPresetSettingFromPreview();
         void AddGamePad(IGamePadHandler pad);
