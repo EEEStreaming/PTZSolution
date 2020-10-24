@@ -10,81 +10,97 @@ namespace PTZPadController.BusinessLayer
         private IHIDParser m_HidParser;
         private IPTZManager m_PtzManager;
 
-        public void CameraCallPreset(int preset)
+        public void Camera1SetPreview(ButtonCommand button)
         {
-            throw new NotImplementedException();
-        }
-
-        public void CameraPanTiltDown()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CameraPanTiltDownLeft()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CameraPanTiltDownRight()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CameraPanTiltLeft()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CameraPanTiltRight()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CameraPanTiltStop()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CameraPanTiltUp()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CameraPanTiltUpLeft()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CameraPanTiltUpRight()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CameraSetPreset(int preset)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CameraSetPreview(int cameraid)
-        {
-            if (m_PtzManager.Cameras.Count >= cameraid)
+            if (m_PtzManager.Cameras.Count >= 1)
             {
-                if (App.Win != null) 
-                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SetSwitcherPreview(m_PtzManager.Cameras[cameraid - 1].CameraName));
+                if (App.Win != null)
+                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SetSwitcherPreview(m_PtzManager.Cameras[0].CameraName));
             }
         }
 
-        public void CameraZoomStop()
+        public void Camera2SetPreview(ButtonCommand button)
         {
             throw new NotImplementedException();
         }
 
-        public void CameraZoomTele()
+        public void Camera3SetPreview(ButtonCommand button)
         {
             throw new NotImplementedException();
         }
 
-        public void CameraZoomWide()
+        public void Camera4SetPreview(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraFocusAutoMode(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraFocusAutoOnePushSwitchMode(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraFocusOnePushMode(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraFocusOnePushTriger(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPanTiltAxes(int x, int y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPreset1(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPreset2(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPreset3(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPreset4(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPreset5(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPreset6(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPreset7(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPreset8(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void CameraZoomAxe(int x)
         {
             throw new NotImplementedException();
         }
@@ -103,6 +119,16 @@ namespace PTZPadController.BusinessLayer
         {
             m_HidParser = hidParser;
             m_PtzManager = manager;
+        }
+
+        public void SwitcherCut(ButtonCommand button)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SwitcherMix(ButtonCommand button)
+        {
+            throw new NotImplementedException();
         }
     }
 }

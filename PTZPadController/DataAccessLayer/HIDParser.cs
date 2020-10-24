@@ -147,19 +147,19 @@ namespace PTZPadController.DataAccessLayer
                                     case "Button 1" :
                                         if (change.Value == 1)
                                         {
-                                            _PadHandler.CameraSetPreview(1);
+                                            _PadHandler.Camera1SetPreview(ButtonCommand.Up);
                                         }
                                         break;
                                     case "Button 2":
                                         if (change.Value == 1)
                                         {
-                                            _PadHandler.CameraSetPreview(2);
+                                            _PadHandler.Camera2SetPreview(ButtonCommand.Up);
                                         }
                                         break;
                                     case "Button 3":
                                         if (change.Value == 1)
                                         {
-                                            _PadHandler.CameraSetPreview(3);
+                                            _PadHandler.Camera3SetPreview(ButtonCommand.Up);
                                         }
                                         break;
                                     default:
@@ -176,8 +176,8 @@ namespace PTZPadController.DataAccessLayer
 
                 });
 
-            
 
+            _DisconnectTcs = new TaskCompletionSource<bool>();
             logger.Info("HID Parser wait for disconnection");
 
             // Wait on signal from method StopAsync to stop HIDParser
