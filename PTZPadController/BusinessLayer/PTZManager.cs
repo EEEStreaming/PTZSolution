@@ -9,10 +9,18 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static PTZPadController.BusinessLayer.AtemSwitcherHandler;
 
 namespace PTZPadController.BusinessLayer
 {
+    public enum PresetStatusEnum
+    {
+        Idle,
+        WaitingForSetPreset,
+        SetPreset,
+        CallPreset,
+        PresetSaved
+    }
+
     public class PTZManager : IPTZManager
     {
         const short SPEED_MEDIUM = 15;
@@ -24,6 +32,12 @@ namespace PTZPadController.BusinessLayer
         private ConfigurationModel m_Configuration;
         private bool m_IsStarted;
         private IGamePadHandler m_PadHandler;
+
+        private Object _PresetState;
+        private PresetStatusEnum _PresetStatus;
+        private CancellationTokenSource _PresetCancellationToken;
+        private Task _currentWaitingTask;
+        
 
         public ICameraHandler CameraPreview { get; private set; }
 
@@ -41,7 +55,7 @@ namespace PTZPadController.BusinessLayer
             m_UseTallyGreen = false;
             m_Initialized = false;
             m_IsStarted = false;
-
+            _PresetState = new Object();
         }
         #endregion
 
@@ -440,7 +454,97 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-        public void CameraCallPreset(int preset)
+        public void CameraButtonPresetUp(int preset)
+        {
+            if (_PresetStatus == PresetStatusEnum.WaitingForSetPreset)
+            {
+                lock (_PresetState)
+                {
+                    _PresetStatus = PresetStatusEnum.CallPreset;
+                    Messenger.Default.Send<PresetStatusEnum>(_PresetStatus);
+                    if (_PresetCancellationToken != null)
+                    {
+                        _PresetCancellationToken.Cancel();
+                        _PresetCancellationToken = null;
+                    }
+                }
+                CameraCallPreset(preset);
+                PTZLogger.Log.Debug("Preset {0} called", preset);
+
+            }
+            lock (_PresetState)
+            {
+                _PresetStatus = PresetStatusEnum.Idle;
+                Messenger.Default.Send<PresetStatusEnum>(_PresetStatus);
+            }
+
+        }
+
+        public void CameraButtonPresetDown(int preset)
+        {
+            if (_PresetStatus == PresetStatusEnum.Idle)
+            {
+                lock (_PresetState)
+                {
+                    _PresetStatus = PresetStatusEnum.WaitingForSetPreset;
+                    Messenger.Default.Send<PresetStatusEnum>(_PresetStatus);
+
+                }
+                PTZLogger.Log.Debug("Preset {0} button down", preset);
+
+                if (_PresetCancellationToken == null)
+                    _PresetCancellationToken = new CancellationTokenSource();
+                Task.Factory.StartNew(() =>
+                {
+                    _currentWaitingTask = Task.Delay(2000, _PresetCancellationToken.Token).ContinueWith((t) =>
+                    {
+
+                        if (!t.IsCanceled)//!_PresetCancellationToken.IsCancellationRequested)
+                        {
+                            if (_PresetStatus == PresetStatusEnum.WaitingForSetPreset)
+                            {
+                                lock (_PresetState)
+                                {
+                                    _PresetStatus = PresetStatusEnum.SetPreset;
+                                    Messenger.Default.Send<PresetStatusEnum>(_PresetStatus);
+
+                                }
+                                CameraSetPreset(preset);
+                                PTZLogger.Log.Debug("Preset {0} saved", preset);
+                                lock (_PresetState)
+                                {
+                                    _PresetStatus = PresetStatusEnum.PresetSaved;
+                                    Messenger.Default.Send<PresetStatusEnum>(_PresetStatus);
+
+                                }
+                            }
+                        }
+                        else
+                            PTZLogger.Log.Debug("Save Preset {0} was canceled", preset);
+
+                    }, _PresetCancellationToken.Token, TaskContinuationOptions.NotOnCanceled, TaskScheduler.Default);
+
+                    _currentWaitingTask.Wait(3000, _PresetCancellationToken.Token);
+                    _PresetCancellationToken = null;
+                });
+            }
+            else
+            {
+                PTZLogger.Log.Warn("Something was wrong, Preset status {0} mode. Reset the state machine", _PresetStatus);
+                lock (_PresetState)
+                {
+                    _PresetStatus = PresetStatusEnum.Idle;
+                    // TODO Notify ViewModel
+
+                    if (_PresetCancellationToken != null && !_PresetCancellationToken.IsCancellationRequested)
+                        _PresetCancellationToken.Cancel();
+                    _PresetCancellationToken = null;
+                }
+
+            }
+        }
+
+        private void CameraCallPreset(int preset)
         {
             if (m_IsStarted && CameraPreview != null)
             {
@@ -448,7 +552,7 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-        public void CameraSetPreset(int preset)
+        private void CameraSetPreset(int preset)
         {
             if (m_IsStarted && CameraPreview != null)
                 CameraPreview.CameraMemorySet((short)preset);

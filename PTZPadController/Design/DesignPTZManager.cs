@@ -27,7 +27,7 @@ namespace PTZPadController.Design
             throw new NotImplementedException();
         }
 
-        public void CameraCallPreset(int preset)
+        public void CameraButtonPresetDown(int preset)
         {
             throw new NotImplementedException();
         }
@@ -37,7 +37,7 @@ namespace PTZPadController.Design
             //
         }
 
-        public void CameraSetPreset(int preset)
+        public void CameraButtonPresetUp(int preset)
         {
             throw new NotImplementedException();
         }

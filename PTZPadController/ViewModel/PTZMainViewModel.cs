@@ -8,8 +8,6 @@ using PTZPadController.PresentationLayer;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -41,9 +39,6 @@ namespace PTZPadController.ViewModel
         private ImageSource _Preset7Image;
         private ImageSource _Preset8Image;
         private PresetStatusEnum _PresetStatus;
-        private Object _PresetState;
-        private CancellationTokenSource _PresetCancellationToken;
-        private Task _currentWaitingTask;
 
         public DeviceItemViewModel Switcher {
             get { return _Switcher; }
@@ -163,7 +158,7 @@ namespace PTZPadController.ViewModel
                 RaisePropertyChanged("PresetStatus");
             }
         }
-        
+
 
         #region Commands
         public ICommand CameraUp { get; private set; }
@@ -200,7 +195,6 @@ namespace PTZPadController.ViewModel
             ////{
             ////    // Code runs "for real"
             ////}
-            _PresetState = new Object();
             m_PtzManager = manager;
             CameraUp = new RelayCommand(CameraUpExecute);
             CameraUpLeft = new RelayCommand(CameraUpLeftExecute);
@@ -238,6 +232,7 @@ namespace PTZPadController.ViewModel
             MessengerInstance.Register<NotificationMessage<CameraMessageArgs>>(this, CameraStatusChange);
             MessengerInstance.Register<NotificationMessage<ISwitcherParser>>(this, SwitcherNotification);
             MessengerInstance.Register<NotificationMessage<IHIDParser>>(this, GamePadNotification);
+            MessengerInstance.Register<PresetStatusEnum>(this, PresetStatusNotification);
 
 
             //Startup the whole system 
@@ -254,26 +249,7 @@ namespace PTZPadController.ViewModel
             int iPreset;
             if (Int32.TryParse(preset, out iPreset))
             {
-                if (_PresetStatus == PresetStatusEnum.WaitingForSetPreset)
-                {
-                    lock(_PresetState)
-                    {
-                        PresetStatus = PresetStatusEnum.CallPreset;
-                        if (_PresetCancellationToken != null)
-                        {
-                            _PresetCancellationToken.Cancel();
-                            _PresetCancellationToken = null;
-                        }
-                    }
-                    m_PtzManager.CameraCallPreset(iPreset);
-                    PTZLogger.Log.Debug("Preset {0} called", iPreset);
-
-                }
-                lock (_PresetState)
-                {
-                    PresetStatus = PresetStatusEnum.Idle;
-                }
-
+                m_PtzManager.CameraButtonPresetUp(iPreset);
             }
         }
 
@@ -282,58 +258,7 @@ namespace PTZPadController.ViewModel
             int iPreset;
             if (Int32.TryParse(preset, out iPreset))
             {
-                if (_PresetStatus == PresetStatusEnum.Idle)
-                {
-                    lock (_PresetState)
-                    {
-                        PresetStatus = PresetStatusEnum.WaitingForSetPreset;
-                    }
-                    PTZLogger.Log.Debug("Preset {0} button down", preset);
-
-                    if (_PresetCancellationToken == null)
-                        _PresetCancellationToken = new CancellationTokenSource();
-                    Task.Factory.StartNew(() =>
-                    {
-                        _currentWaitingTask = Task.Delay(2000, _PresetCancellationToken.Token).ContinueWith((t) =>
-                        {
-
-                            if (!t.IsCanceled)//!_PresetCancellationToken.IsCancellationRequested)
-                            {
-                                if (_PresetStatus == PresetStatusEnum.WaitingForSetPreset)
-                                {
-                                    lock (_PresetState)
-                                    {
-                                        PresetStatus = PresetStatusEnum.SetPreset;
-                                    }
-                                    m_PtzManager.CameraSetPreset(iPreset);
-                                    PTZLogger.Log.Debug("Preset {0} saved", iPreset);
-                                    lock (_PresetState)
-                                    {
-                                        PresetStatus = PresetStatusEnum.PresetSaved;
-                                    }
-                                }
-                            }
-                            else
-                                PTZLogger.Log.Debug("Save Preset {0} was cancled", iPreset);
-
-                        }, _PresetCancellationToken.Token, TaskContinuationOptions.NotOnCanceled, TaskScheduler.Default);
-
-                        _currentWaitingTask.Wait(3000, _PresetCancellationToken.Token);
-                        _PresetCancellationToken = null;
-                    });
-                }
-                else
-                {
-                    PTZLogger.Log.Warn("Something was wrong, Preset status {0} mode. Reset the state machine", _PresetStatus);
-                    lock (_PresetState)
-                    {
-                        PresetStatus = PresetStatusEnum.Idle;
-                        if (_PresetCancellationToken != null && !_PresetCancellationToken.IsCancellationRequested)
-                            _PresetCancellationToken.Cancel();
-                        _PresetCancellationToken = null;
-                    }
-
-                }
+                m_PtzManager.CameraButtonPresetDown(iPreset);
             }
         }
 
@@ -449,7 +374,10 @@ namespace PTZPadController.ViewModel
                     Pad.Connected = obj.Content.Connected;
                 }
         }
-
+        private void PresetStatusNotification(PresetStatusEnum obj)
+        {
+            PresetStatus = obj;
+        }
         //private void AtemSourceChange(NotificationMessage<AtemSourceArgs> msg)
         //{
         //    // C'est un peu le même code que dans les méthodes AtemPreviewSourceChange et AtemProgramSourceChange du PTZManager. 
@@ -540,14 +468,4 @@ namespace PTZPadController.ViewModel
             m_PtzManager.CameraPanTiltStop();
         }
     }
-
-    public enum PresetStatusEnum
-    {
-        Idle,
-        WaitingForSetPreset,
-        SetPreset,
-        CallPreset,
-        PresetSaved
-    }
-
 }

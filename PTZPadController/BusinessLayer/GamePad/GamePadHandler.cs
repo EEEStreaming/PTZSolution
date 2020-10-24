@@ -150,36 +150,56 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraPreset1(ButtonCommand button)
         {
+            ExecutePresetButton(1, button);
         }
 
         public void CameraPreset2(ButtonCommand button)
         {
+            ExecutePresetButton(2, button);
         }
 
         public void CameraPreset3(ButtonCommand button)
         {
+            ExecutePresetButton(3, button);
         }
 
         public void CameraPreset4(ButtonCommand button)
         {
+            ExecutePresetButton(4, button);
         }
 
         public void CameraPreset5(ButtonCommand button)
         {
+            ExecutePresetButton(5, button);
         }
 
         public void CameraPreset6(ButtonCommand button)
         {
+            ExecutePresetButton(6, button);
         }
 
         public void CameraPreset7(ButtonCommand button)
         {
+            ExecutePresetButton(7, button);
         }
 
         public void CameraPreset8(ButtonCommand button)
         {
+            ExecutePresetButton(8, button);
         }
 
+        private void ExecutePresetButton(int preset, ButtonCommand command)
+        {
+            switch (command)
+            {
+                case ButtonCommand.Down:
+                    m_PtzManager.CameraButtonPresetDown(preset);
+                    break;
+                case ButtonCommand.Up:
+                    m_PtzManager.CameraButtonPresetUp(preset);
+                    break;
+            }
+        }
 
         public void CameraZoomAxe(double y)
         {

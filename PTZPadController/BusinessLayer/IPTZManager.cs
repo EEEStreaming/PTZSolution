@@ -29,9 +29,8 @@ namespace PTZPadController.BusinessLayer
         void CameraZoomStop();
         void CameraZoomWide();
         void CameraZoomTele();
-        void CameraCallPreset(int preset);
-        void CameraSetPreset(int preset);
-
+        void CameraButtonPresetDown(int preset);
+        void CameraButtonPresetUp(int preset);
 
         void AddCameraHandler(ICameraHandler camHandler);
 
