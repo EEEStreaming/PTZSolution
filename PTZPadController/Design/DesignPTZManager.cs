@@ -54,6 +54,14 @@ namespace PTZPadController.Design
         {
         }
 
+        public void CameraZoomTele(short zoomSpeed)
+        {
+        }
+
+        public void CameraZoomWide(short zoomSpeed)
+        {
+        }
+
         public List<PresetIconSettingModel> GetPresetSettingFromPreview()
         {
             throw new NotImplementedException();
@@ -130,6 +138,11 @@ namespace PTZPadController.Design
 
         public void CameraFocusOnePushTrigger()
         {
+        }
+
+        public void CameraGetFocusMode()
+        {
+            throw new NotImplementedException();
         }
     }
 }

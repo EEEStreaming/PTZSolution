@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:pl="clr-namespace:PTZPadController.PresentationLayer"
+        xmlns:dal="clr-namespace:PTZPadController.DataAccessLayer"
         xmlns:converters="clr-namespace:PTZPadController.Converter"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
@@ -391,6 +392,25 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0"  Height="50" Margin="0" VerticalAlignment="Top" Command="{Binding CameraFocusModeAuto}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=CameraFocusMode}" Value="{x:Static dal:ECameraFocusMode.Unknown}">
+                                    <Setter Property="Background" Value="AliceBlue"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=CameraFocusMode}" Value="{x:Static dal:ECameraFocusMode.Manual}">
+                                    <Setter Property="Background" Value="AliceBlue"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=CameraFocusMode}" Value="{x:Static dal:ECameraFocusMode.OnePush}">
+                                    <Setter Property="Background" Value="AliceBlue"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=CameraFocusMode}" Value="{x:Static dal:ECameraFocusMode.Auto}">
+                                    <Setter Property="Background" Value="#FF8CFF8C"/>
+                                </DataTrigger>
+
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
                     <StackPanel Orientation="Horizontal">
                         <Path Data="M15.949992,11.737002C15.848994,12.238002,15.648997,12.839999,15.447993,13.441997L14.544994,16.049999 17.353999,16.049999 16.450999,13.341998C16.250987,12.839999,16.049998,12.238002,15.949992,11.737002z M15.247996,10.632999L16.651988,10.632999 19.861993,19.962002 18.557992,19.962002 17.554988,17.052998 14.243999,17.052998 13.240994,19.962002 12.037991,19.962002z M6.9219949,6.1189971L6.9219949,26.081007 24.175988,26.081007 24.175988,6.1189971z M6.4199964,0C6.7209908,0,6.9219949,0.20099644,6.9219949,0.50199888L6.9219949,5.4170013 24.174981,5.4170013 24.174981,0.50199888C24.174981,0.20099644 24.376001,0 24.676995,0 24.977988,0 25.077995,0.20099644 25.077995,0.50199888L25.077995,5.4170013 30.695975,5.4170013C30.896995,5.4170013 30.997001,5.6179977 30.997001,5.7179962 30.997001,5.9180007 30.795982,6.0189987 30.695975,6.0189987L25.077995,6.0189987 25.077995,25.981001 30.695975,25.981001C30.896995,25.981001 30.997001,26.182005 30.997001,26.281996 30.997001,26.483 30.795982,26.583006 30.695975,26.583006L25.077995,26.583006 25.077995,31.498001C25.077995,31.799011 24.877982,31.999998 24.576989,31.999998 24.275994,31.999998 24.075006,31.799011 24.075006,31.498001L24.075006,26.583006 6.9219949,26.583006 6.9219949,31.498001C6.9219949,31.799011 6.7209908,31.999998 6.4199964,31.999998 6.1190016,31.999998 5.9179975,31.799011 5.9179975,31.498001L5.9179975,26.583006 0.30099486,26.583006C0.10000601,26.583006 -6.6048415E-08,26.382002 0,26.281996 -6.6048415E-08,26.081007 0.2010039,25.981001 0.30099486,25.981001L5.9179975,25.981001 5.9179975,6.1189971 0.30099486,6.1189971C0.2010039,6.1189971 -6.6048415E-08,5.9180007 0,5.7179962 -6.6048415E-08,5.5169998 0.2010039,5.4170013 0.30099486,5.4170013L5.9179975,5.4170013 5.9179975,0.50199888C5.9179975,0.20099644,6.1190016,0,6.4199964,0z" Stretch="Uniform" Fill="#FF000000" Width="26" Height="26" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
                             <Path.RenderTransform>
@@ -406,6 +426,26 @@
                     </StackPanel>
                 </Button>
                 <Button Grid.Column="1" Height="50" Margin="0" VerticalAlignment="Top" Command="{Binding CameraFocusModeOnePush}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=CameraFocusMode}" Value="{x:Static dal:ECameraFocusMode.Unknown}">
+                                    <Setter Property="Background" Value="AliceBlue"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=CameraFocusMode}" Value="{x:Static dal:ECameraFocusMode.Manual}">
+                                    <Setter Property="Background" Value="AliceBlue"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=CameraFocusMode}" Value="{x:Static dal:ECameraFocusMode.OnePush}">
+                                    <Setter Property="Background" Value="#FF8CFF8C"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=CameraFocusMode}" Value="{x:Static dal:ECameraFocusMode.Auto}">
+                                    <Setter Property="Background" Value="AliceBlue"/>
+                                </DataTrigger>
+
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
                     <StackPanel Orientation="Horizontal">
                         <Path Data="M29.412018,25.180995L32,25.180995 32,31.816003 25.330994,31.816003 25.330994,29.060998 29.412018,29.060998z M0.022003174,25.163996L2.776001,25.163996 2.776001,29.245995 6.6560059,29.245995 6.6560059,31.833001 0.022003174,31.833001z M0,0.016998291L6.6690063,0.016998291 6.6690063,2.7709956 2.5870056,2.7709956 2.5870056,6.6520069 0,6.6520069z M25.343018,0L31.977997,0 31.977997,6.6690052 29.222992,6.6690052 29.222992,2.5870051 25.343018,2.5870051z" Stretch="Uniform" Fill="#FF000000" Width="26" Height="26" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
                             <Path.RenderTransform>

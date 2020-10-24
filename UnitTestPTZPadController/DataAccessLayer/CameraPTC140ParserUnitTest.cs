@@ -40,6 +40,27 @@ namespace UnitTestPTZPadController.DataAccessLayer
             //Assert. ConvertSpeed(0, 0);
 
         }
+
+        [Test]
+        public void testConvertZoom()
+        {
+            CameraPTC140Parser camera = new CameraPTC140Parser();
+            byte t1 = camera.ConvertZoom(0, 0x20);
+            Assert.AreEqual(t1, 0x20);
+            byte t2 = camera.ConvertZoom(10, 0x20);
+            Assert.AreEqual(t2, 0x2F);
+            byte t3 = camera.ConvertZoom(7, 0x20);
+            Assert.AreEqual(t3, 0x2A);
+            byte t4 = camera.ConvertZoom(1, 0x20);
+            Assert.AreEqual(t4, 0x21);
+            byte t11 = camera.ConvertZoom(0, 0x30);
+            Assert.AreEqual(t11, 0x30);
+            byte t12 = camera.ConvertZoom(10, 0x30);
+            Assert.AreEqual(t12, 0x3F);
+            byte t13 = camera.ConvertZoom(3, 0x30);
+            Assert.AreEqual(t13, 0x34);
+
+        }
     }
 
     public class MockISocketParser : ISocketParser

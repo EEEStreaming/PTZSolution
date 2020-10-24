@@ -29,6 +29,8 @@ namespace PTZPadController.BusinessLayer
         void CameraZoomStop();
         void CameraZoomWide();
         void CameraZoomTele();
+        void CameraZoomWide(short zoomSpeed);
+        void CameraZoomTele(short zoomSpeed);
         void CameraButtonPresetDown(int preset);
         void CameraButtonPresetUp(int preset);
 
@@ -37,6 +39,8 @@ namespace PTZPadController.BusinessLayer
         public void CameraFocusModeManual();
         public void CameraFocusModeOnePush();
         public void CameraFocusOnePushTrigger();
+
+        public void CameraGetFocusMode();
 
         void AddCameraHandler(ICameraHandler camHandler);
 

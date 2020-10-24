@@ -174,13 +174,13 @@ namespace PTZPadController.DataAccessLayer
                             //msgReceived += Encoding.UTF8.GetString(msg, 0, bytesRead);
                             if (PTZLogger.Log.IsEnabled(LogLevel.Debug))
                             {
-                                PTZLogger.Log.Debug("Raw msg : {0}", BitConverter.ToString(receivedByteArray, 0, bytesRead));
+                                PTZLogger.Log.Debug("ReceiveData {0},{1}, Raw msg : {2}", m_Name, m_Host, BitConverter.ToString(receivedByteArray, 0, bytesRead));
                             }
 
                             // check length max and move received byte array in global byte array
                             if(lenByteArray+bytesRead >= MAX_BYTEARRAY_LENGTH)
                             {
-                                PTZLogger.Log.Error("Buffer byteArray overflow (waiting buffer:{0}, bytesRead:{1}, total:{2}, max allowed:{3}) BUFFER CLEARED", lenByteArray,bytesRead, lenByteArray+bytesRead,MAX_BYTEARRAY_LENGTH);
+                                PTZLogger.Log.Error("ReceiveData {0},{1}, Buffer byteArray overflow (waiting buffer:{2}, bytesRead:{3}, total:{4}, max allowed:{5}) BUFFER CLEARED", m_Name, m_Host, lenByteArray, bytesRead, lenByteArray+bytesRead,MAX_BYTEARRAY_LENGTH);
                                 lenByteArray = 0;
                                 Array.Clear(receivedByteArray,0, MAX_RECEIVED_BYTEARRAY_LENGTH);
                                 Array.Clear(bufferByteArray,0, MAX_BYTEARRAY_LENGTH);
@@ -204,7 +204,7 @@ namespace PTZPadController.DataAccessLayer
                             // check startPosition
                             if (startPosition > bytesRead - 2)
                             {
-                                PTZLogger.Log.Debug("startPos({0}) > bytesRead({1}) - 2", startPosition, bytesRead);
+                                PTZLogger.Log.Debug("ReceiveData {0},{1}, startPos({2}) > bytesRead({3}) - 2", m_Name, m_Host, startPosition, bytesRead);
                                 continue;
                             }
 
@@ -212,7 +212,7 @@ namespace PTZPadController.DataAccessLayer
                             short msgLen = bufferByteArray[startPosition + 1];
                             if(msgLen> bytesRead - startPosition)
                             {
-                                PTZLogger.Log.Debug("msgLen({0})> bytesRead({1}) - startPos({2})", msgLen, bytesRead,startPosition);
+                                PTZLogger.Log.Debug("ReceiveData {0},{1}, msgLen({2})> bytesRead({3}) - startPos({4})", m_Name, m_Host, msgLen, bytesRead,startPosition);
                                 continue;
                             }
 
@@ -228,20 +228,20 @@ namespace PTZPadController.DataAccessLayer
                         }
                         else
                         {
-                            PTZLogger.Log.Info("{0},{1}, The client has disconnected. The socket will be closed.", m_Name, m_Host);
+                            PTZLogger.Log.Info("ReceiveData {0},{1}, The client has disconnected. The socket will be closed.", m_Name, m_Host);
                             break;
                         }
                     }
                     catch (SocketException exception)
                     {
                         if (exception.ErrorCode != 10004)//ErrorCode 10004: A blocking operation was interrupted by a call to WSACancelBlockingCall.
-                            PTZLogger.Log.Error(exception,"{0},{1}, Error 10004 when recieved data", m_Name, m_Host);
+                            PTZLogger.Log.Error(exception, "ReceiveData {0},{1}, Error 10004 when received data", m_Name, m_Host);
                         //else Nothing to do, it's just a socket close.                       
                         return m_FreeSocket;
                     }
                     catch (Exception ex)
                     {
-                        PTZLogger.Log.Error(ex, "{0},{1}, Error when recieved data", m_Name, m_Host);
+                        PTZLogger.Log.Error(ex, "ReceiveData {0},{1}, Error when received data", m_Name, m_Host);
                         //a socket error has occured
                         return m_FreeSocket;
                     }
@@ -256,11 +256,11 @@ namespace PTZPadController.DataAccessLayer
         public void SendData(byte[] msg)
         {
             if (PTZLogger.Log.IsEnabled(LogLevel.Debug))
-                PTZLogger.Log.Debug("{0},{1}, Send data:'{2}'", m_Name, m_Host, BitConverter.ToString(msg));
+                PTZLogger.Log.Debug("Send data {0},{1}, msg:'{2}'", m_Name, m_Host, BitConverter.ToString(msg));
             if (Connected)
             {
                 m_Socket.Send(msg);
-                PTZLogger.Log.Debug("{0},{1}, Data sended.", m_Name, m_Host);
+                //PTZLogger.Log.Debug("Send data {0},{1}, Data sended.", m_Name, m_Host);
             }
         }
 

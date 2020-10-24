@@ -23,7 +23,7 @@ namespace PTZPadController.BusinessLayer
 
     public class PTZManager : IPTZManager
     {
-        const short SPEED_MEDIUM = 15;
+        const short SPEED_MEDIUM = 5;
 
         private List<ICameraHandler> m_CameraList;
         private ISwitcherHandler m_AtemHandler;
@@ -185,19 +185,19 @@ namespace PTZPadController.BusinessLayer
             if (!m_Initialized)
                 return;
 
-            CameraMessageArgs args;
+            CameraStatusMessageArgs args;
             if (CameraPreview != null)
             {
                 var lRed = CameraPreview == CameraProgram;
                 CameraPreview.Tally(lRed, false);
 
-                args = new CameraMessageArgs { CameraName = CameraPreview.CameraName };
+                args = new CameraStatusMessageArgs { CameraName = CameraPreview.CameraName };
                 if (lRed)
                     args.Status = CameraStatusEnum.Program;
                 else
                     args.Status = CameraStatusEnum.Off;
 
-                Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
+                Messenger.Default.Send(new NotificationMessage<CameraStatusMessageArgs>(args, NotificationSource.CameraStatusChanged));
             }
             CameraPreview = null;
             foreach (var cam in m_CameraList)
@@ -208,8 +208,8 @@ namespace PTZPadController.BusinessLayer
                     CameraPreview = cam;
                     CameraPreview.Tally(false, m_UseTallyGreen);
 
-                    args = new CameraMessageArgs { CameraName = CameraPreview.CameraName, Status = CameraStatusEnum.Preview };
-                    Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
+                    args = new CameraStatusMessageArgs { CameraName = CameraPreview.CameraName, Status = CameraStatusEnum.Preview };
+                    Messenger.Default.Send(new NotificationMessage<CameraStatusMessageArgs>(args, NotificationSource.CameraStatusChanged));
 
                 }
 
@@ -222,18 +222,18 @@ namespace PTZPadController.BusinessLayer
             if (!m_Initialized)
                 return;
 
-            CameraMessageArgs args;
+            CameraStatusMessageArgs args;
             if (CameraProgram != null)
             {
                 var lGreen = CameraPreview == CameraProgram;
                 CameraProgram.Tally(false, m_UseTallyGreen ? lGreen : false);
-                args = new CameraMessageArgs { CameraName = CameraProgram.CameraName };
+                args = new CameraStatusMessageArgs { CameraName = CameraProgram.CameraName };
                 if (lGreen)
                     args.Status = CameraStatusEnum.Preview;
                 else
                     args.Status = CameraStatusEnum.Off;
 
-                Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
+                Messenger.Default.Send(new NotificationMessage<CameraStatusMessageArgs>(args, NotificationSource.CameraStatusChanged));
 
             }
             CameraProgram = null;
@@ -252,8 +252,8 @@ namespace PTZPadController.BusinessLayer
                     if (CameraProgram.ZoomWorking)
                         CameraProgram.ZoomStop();
 
-                    args = new CameraMessageArgs { CameraName = CameraProgram.CameraName, Status = CameraStatusEnum.Program };
-                    Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
+                    args = new CameraStatusMessageArgs { CameraName = CameraProgram.CameraName, Status = CameraStatusEnum.Program };
+                    Messenger.Default.Send(new NotificationMessage<CameraStatusMessageArgs>(args, NotificationSource.CameraStatusChanged));
 
                 }
 
@@ -276,6 +276,7 @@ namespace PTZPadController.BusinessLayer
                     if (cam.WaitForConnection())
                     {
                         cam.Tally(false, false);
+                        cam.GetFocusMode();
                     }
                 });
                 tasks.Add(t);
@@ -283,12 +284,12 @@ namespace PTZPadController.BusinessLayer
 
             //set camera 0 to preview to initialize UI.
             CameraPreview = m_CameraList[0];
-            CameraMessageArgs args = new CameraMessageArgs
+            CameraStatusMessageArgs args = new CameraStatusMessageArgs
             {
                 CameraName = m_CameraList[0].CameraName,
                 Status = CameraStatusEnum.Preview
             };
-            Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
+            Messenger.Default.Send(new NotificationMessage<CameraStatusMessageArgs>(args, NotificationSource.CameraStatusChanged));
 
             //then Connect ATEM
             m_AtemHandler.ConnectTo();
@@ -303,23 +304,23 @@ namespace PTZPadController.BusinessLayer
                 if (CameraProgram != null)
                 {
                     CameraProgram.Tally(true, false);
-                    args = new CameraMessageArgs
+                    args = new CameraStatusMessageArgs
                     {
                         CameraName = programName,
                         Status = CameraStatusEnum.Program
                     };
-                    Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
+                    Messenger.Default.Send(new NotificationMessage<CameraStatusMessageArgs>(args, NotificationSource.CameraStatusChanged));
                 }
                 CameraPreview = m_CameraList.FirstOrDefault(x => x.CameraName == previewName);
                 if (CameraPreview != null)
                 {
                     CameraPreview.Tally(false, m_UseTallyGreen);
-                    args = new CameraMessageArgs
+                    args = new CameraStatusMessageArgs
                     {
                         CameraName = previewName,
                         Status = CameraStatusEnum.Preview
                     };
-                    Messenger.Default.Send(new NotificationMessage<CameraMessageArgs>(args, NotificationSource.CameraStatusChanged));
+                    Messenger.Default.Send(new NotificationMessage<CameraStatusMessageArgs>(args, NotificationSource.CameraStatusChanged));
                 }
             }
 
@@ -362,7 +363,7 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltUp(SPEED_MEDIUM, SPEED_MEDIUM);
+                CameraPreview.PanTiltUp(SPEED_MEDIUM);
             }
         }
 
@@ -370,7 +371,7 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltUpLeft(SPEED_MEDIUM, SPEED_MEDIUM);
+                CameraPreview.PanTiltUpLeft(SPEED_MEDIUM);
             }
         }
 
@@ -378,7 +379,7 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltUpRight(SPEED_MEDIUM, SPEED_MEDIUM);
+                CameraPreview.PanTiltUpRight(SPEED_MEDIUM);
             }
         }
 
@@ -386,7 +387,7 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltDown(SPEED_MEDIUM, SPEED_MEDIUM);
+                CameraPreview.PanTiltDown(SPEED_MEDIUM);
             }
         }
 
@@ -394,7 +395,7 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltDownLeft(SPEED_MEDIUM, SPEED_MEDIUM);
+                CameraPreview.PanTiltDownLeft(SPEED_MEDIUM);
             }
         }
 
@@ -402,7 +403,7 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltDownRight(SPEED_MEDIUM, SPEED_MEDIUM);
+                CameraPreview.PanTiltDownRight(SPEED_MEDIUM);
             }
         }
 
@@ -410,7 +411,7 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltLeft(SPEED_MEDIUM, SPEED_MEDIUM);
+                CameraPreview.PanTiltLeft(SPEED_MEDIUM);
             }
         }
 
@@ -418,7 +419,7 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltRight(SPEED_MEDIUM, SPEED_MEDIUM);
+                CameraPreview.PanTiltRight(SPEED_MEDIUM);
             }
         }
 
@@ -451,6 +452,22 @@ namespace PTZPadController.BusinessLayer
             if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.ZoomTele();
+            }
+        }
+
+        public void CameraZoomWide(short zoomSpeed)
+        {
+            if (m_IsStarted && CameraPreview != null)
+            {
+                CameraPreview.ZoomWide(zoomSpeed);
+            }
+        }
+
+        public void CameraZoomTele(short zoomSpeed)
+        {
+            if (m_IsStarted && CameraPreview != null)
+            {
+                CameraPreview.ZoomTele(zoomSpeed);
             }
         }
 
@@ -579,6 +596,12 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
                 CameraPreview.FocusOnePushTrigger();
+        }
+
+        public void CameraGetFocusMode()
+        {
+            if (m_IsStarted && CameraPreview != null)
+                CameraPreview.GetFocusMode();
         }
     }
 }

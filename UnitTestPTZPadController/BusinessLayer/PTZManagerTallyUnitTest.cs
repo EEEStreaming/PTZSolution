@@ -215,27 +215,27 @@ namespace UnitTestPTZPadController.BusinessLayer
             ZoomWorking = false;
         }
 
-        public void PanTiltDown(short panSpeed, short tiltSpeed)
+        public void PanTiltDown(short moveSpeed)
         {
             PanTileWorking = true;
         }
 
-        public void PanTiltDownLeft(short panSpeed, short tiltSpeed)
+        public void PanTiltDownLeft(short moveSpeed)
         {
             PanTileWorking = true;
         }
 
-        public void PanTiltDownRight(short panSpeed, short tiltSpeed)
+        public void PanTiltDownRight(short moveSpeed)
         {
             PanTileWorking = true;
         }
 
-        public void PanTiltLeft(short panSpeed, short tiltSpeed)
+        public void PanTiltLeft(short moveSpeed)
         {
             PanTileWorking = true;
         }
 
-        public void PanTiltRight(short panSpeed, short tiltSpeed)
+        public void PanTiltRight(short moveSpeed)
         {
             PanTileWorking = true;
         }
@@ -245,17 +245,17 @@ namespace UnitTestPTZPadController.BusinessLayer
             PanTileWorking = false;
         }
 
-        public void PanTiltUp(short panSpeed, short tiltSpeed)
+        public void PanTiltUp(short moveSpeed)
         {
             PanTileWorking = true;
         }
 
-        public void PanTiltUpLeft(short panSpeed, short tiltSpeed)
+        public void PanTiltUpLeft(short moveSpeed)
         {
             PanTileWorking = true;
         }
 
-        public void PanTiltUpRight(short panSpeed, short tiltSpeed)
+        public void PanTiltUpRight(short moveSpeed)
         {
             PanTileWorking = true;
         }
@@ -326,6 +326,26 @@ namespace UnitTestPTZPadController.BusinessLayer
         }
 
         void ICameraHandler.FocusOnePushTrigger()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ECameraFocusMode FocusMode()
+        {
+            return ECameraFocusMode.Unknown;
+        }
+
+        void ICameraHandler.GetFocusMode()
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICameraHandler.ZoomTele(short zoomSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICameraHandler.ZoomWide(short zoomSpeed)
         {
             throw new NotImplementedException();
         }

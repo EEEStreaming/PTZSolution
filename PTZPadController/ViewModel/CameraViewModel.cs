@@ -24,6 +24,7 @@ namespace PTZPadController.ViewModel
         #region Commands
         public ICommand AtemPreview { get; private set; }
         #endregion
+        
         #region Properties
         public string Name
         {
@@ -80,7 +81,7 @@ namespace PTZPadController.ViewModel
             Connected = cam.Connected;
             AtemPreview = new RelayCommand(AtemSetPreviewExecute);
             MessengerInstance.Register<NotificationMessage<ISocketParser>>(this, SocketNotification);
-            MessengerInstance.Register<NotificationMessage<CameraMessageArgs>>(this, CameraNotification);
+            MessengerInstance.Register<NotificationMessage<CameraStatusMessageArgs>>(this, CameraNotification);
         }
 
         private void AtemSetPreviewExecute()
@@ -88,7 +89,7 @@ namespace PTZPadController.ViewModel
             _Manager.SetSwitcherPreview(_Name);
         }
 
-        private void CameraNotification(NotificationMessage<CameraMessageArgs> obj)
+        private void CameraNotification(NotificationMessage<CameraStatusMessageArgs> obj)
         {
             if (obj.Notification == NotificationSource.CameraStatusChanged)
             {
