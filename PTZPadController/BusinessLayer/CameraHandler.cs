@@ -132,7 +132,7 @@ namespace PTZPadController.BusinessLayer
         public void PanTiltHome()
         {
             //TODO, gerer PanTiltWorking (comment s'arrête ?)
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
             //m_CamParser.PanTiltHome();
             //PanTileWorking = true;
         }

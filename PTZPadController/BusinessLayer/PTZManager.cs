@@ -211,6 +211,12 @@ namespace PTZPadController.BusinessLayer
             CameraStatusMessageArgs args;
             if (CameraPreview != null)
             {
+                if (CameraPreview.PanTileWorking)
+                    CameraPreview.PanTiltStop();
+
+                if (CameraPreview.ZoomWorking)
+                    CameraPreview.ZoomStop();
+
                 var lRed = CameraPreview == CameraProgram;
                 CameraPreview.Tally(lRed, false);
 
