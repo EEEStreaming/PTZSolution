@@ -197,6 +197,27 @@ namespace ConsolPTZPadTools
                             },
 
                         }
+                    },
+                    new HIDGamePadModel
+                    {
+                        HidDeviceName = "Logitech Logitech RumblePad 2 USB",
+                        MappedCommands = new System.Collections.Generic.List<MappCommnadModel>
+                        {
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.CameraPanTiltAxes, GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.GenericDesktopX,HIDGamePadCommands.GenericDesktopY } },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.CameraZoomAxe,  GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.GenericDesktopRz, HIDGamePadCommands.GenericDesktopHatSwitch} },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.CameraPreset1,  GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.Button5 } },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.CameraPreset2,  GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.Button6 } },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.CameraPreset3,  GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.Button7 } },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.CameraPreset4,  GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.Button8 } },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.CameraPreset5,  GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.Button9 } },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.CameraPreset6,  GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.Button10 } },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.Camera1SetPreview, GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.Button1 } },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.Camera2SetPreview, GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.Button2 } },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.Camera3SetPreview, GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.Button3 } },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.SwitcherCut, GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.Button4 } },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.CameraFocusAutoOnePushSwitchMode, GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.Button11 } },
+                            new MappCommnadModel { PTZCommand = GamePadHandlerCommands.CameraFocusOnePushTriger, GamePadCommand = new HIDGamePadCommands[]{HIDGamePadCommands.Button12 } },
+                        }
                     }
                 }
             };
