@@ -14,5 +14,8 @@ namespace PTZPadController.DataAccessLayer
         public string AtemHost { get; set; }
 
         public List<CameraConnexionModel> Cameras = new List<CameraConnexionModel>();
+        public List<HIDGamePadModel> GamePads = new List<HIDGamePadModel>();
+
+
     }
 }

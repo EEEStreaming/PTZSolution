@@ -118,6 +118,99 @@
       ]
     }
   ],
+  "GamePads": [
+    {
+      "HidDeviceName": "Thrustmaster T.16000M",
+      "MappedCommands": [
+        {
+          "PTZCommand": "CameraPanTiltAxes",
+          "GamePadCommand": [
+            "GenericDesktopX",
+            "GenericDesktopY"
+          ]
+        },
+        {
+          "PTZCommand": "CameraZoomAxe",
+          "GamePadCommand": [
+            "GenericDesktopZ"
+          ]
+        },
+        {
+          "PTZCommand": "CameraPreset1",
+          "GamePadCommand": [
+            "Button10"
+          ]
+        },
+        {
+          "PTZCommand": "CameraPreset2",
+          "GamePadCommand": [
+            "Button9"
+          ]
+        },
+        {
+          "PTZCommand": "CameraPreset3",
+          "GamePadCommand": [
+            "Button8"
+          ]
+        },
+        {
+          "PTZCommand": "CameraPreset4",
+          "GamePadCommand": [
+            "Button14"
+          ]
+        },
+        {
+          "PTZCommand": "CameraPreset5",
+          "GamePadCommand": [
+            "Button15"
+          ]
+        },
+        {
+          "PTZCommand": "CameraPreset6",
+          "GamePadCommand": [
+            "Button16"
+          ]
+        },
+        {
+          "PTZCommand": "Camera1SetPreview",
+          "GamePadCommand": [
+            "Button3"
+          ]
+        },
+        {
+          "PTZCommand": "Camera2SetPreview",
+          "GamePadCommand": [
+            "Button2"
+          ]
+        },
+        {
+          "PTZCommand": "Camera3SetPreview",
+          "GamePadCommand": [
+            "Button4"
+          ]
+        },
+        {
+          "PTZCommand": "SwitcherCut",
+          "GamePadCommand": [
+            "Button5"
+          ]
+        },
+        {
+          "PTZCommand": "SwitcherMix",
+          "GamePadCommand": [
+            "Button6"
+          ]
+        },
+        {
+          "PTZCommand": "CameraZoomAxe",
+          "GamePadCommand": [
+            "GenericDesktopHatSwitch"
+          ]
+        }
+      ]
+    }
+  ],
+
   "UseTallyGreen": false,
   "AtemHost": "192.168.1.135"
 }

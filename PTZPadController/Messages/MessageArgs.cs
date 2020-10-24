@@ -10,9 +10,11 @@ namespace PTZPadController.Messages
         public const string ProgramSourceChanged = "ProgramSourceChanged";  // with AtemSourceMessageArgs
         public const string PreviewSourceChanged = "PreviewSourceChanged";  // with AtemSourceMessageArgs
         public const string CameraStatusChanged = "CameraStatusChanged";  // with CameraMessageArgs
+        public const string PresetStatusChanged = "PresetStatusChanged";  // with PresetMessageArgs
 
         public const string SwictcherConnected = "SwictcherConnected"; //
         public const string SocketConnected = "SocketConnected"; //
+        public const string GamePadConnected = "GamePadConnected"; //
     }
 
     public enum CameraStatusEnum

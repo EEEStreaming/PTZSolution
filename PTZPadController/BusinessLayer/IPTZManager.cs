@@ -29,8 +29,8 @@ namespace PTZPadController.BusinessLayer
         void CameraZoomStop();
         void CameraZoomWide();
         void CameraZoomTele();
-        void CameraCallPreset(int preset);
-        void CameraSetPreset(int preset);
+        void CameraButtonPresetDown(int preset);
+        void CameraButtonPresetUp(int preset);
 
         // Focus
         public void CameraFocusModeAuto();
@@ -47,5 +47,6 @@ namespace PTZPadController.BusinessLayer
         void SetSwitcherPreview(string cameraName);
         void UpdatePresetConfiguration(PresetEventArgs obj);
         List<PresetIconSettingModel> GetPresetSettingFromPreview();
+        void AddGamePad(IGamePadHandler pad);
     }
 }
