@@ -130,6 +130,7 @@ namespace PTZPadController.DataAccessLayer
                             logBuilder.Append("Batch ").Append(++batch).AppendLine(":");
 
                             logBuilder.Append("  ").Append(group.Key).AppendLine(":");
+
                             foreach (var change in group)
                             {
                                 logBuilder
@@ -147,18 +148,46 @@ namespace PTZPadController.DataAccessLayer
                                 var mappedCommand = padCfg.MappedCommands.FirstOrDefault(map => map.GamePadCommand.Any(cmd => cmd.GetDescription() == change.Control.Name));
                                 if (mappedCommand != null)
                                 {
+                                    bool CameraPanTiltAxesExecuted = false;
+                                    ButtonCommand btnSatus = ButtonCommand.NA;
                                     switch (mappedCommand.PTZCommand)
                                     {
                                         case GamePadHandlerCommands.CameraPanTiltAxes:
+                                            //set on reset status
+                                            double _x = 0.5;
+                                            double _y = 0.5;
+                                            if (!CameraPanTiltAxesExecuted)
+                                            {
+                                                //we are in CameraPanTiltAxes command. First Axe is for camera X, and second config is for camera y
+                                                if (mappedCommand.GamePadCommand.Count() == 2)
+                                                {
+                                                    string axeName = mappedCommand.GamePadCommand[0].GetDescription();
+                                                    var ctrl = group.Key.Values.FirstOrDefault(c => c.Control.Name == axeName);
+                                                    if (ctrl != null)
+                                                    {
+                                                        _x = ctrl.Value;
+                                                    }
+                                                    axeName = mappedCommand.GamePadCommand[1].GetDescription();
+                                                    ctrl = group.Key.Values.FirstOrDefault(c => c.Control.Name == axeName);
+                                                    if (ctrl != null)
+                                                    {
+                                                        _y = ctrl.Value;
+                                                    }
+
+                                                    _PadHandler.CameraPanTiltAxes(_x, _y);
+                                                }
+                                                
+                                                CameraPanTiltAxesExecuted = true;
+                                            }
                                             break;
                                         case GamePadHandlerCommands.CameraZoomAxe:
-                                            if (mappedCommand.GamePadCommand[0] == HIDGamePadCommands.GenericDesktopHatSwitch)
+                                            if (change.Control.Name == HIDGamePadCommands.GenericDesktopHatSwitch.GetDescription())
                                             {
                                                 //It's a switch. converte to axe
                                                 if (change.Value == 0.0)
-                                                    _PadHandler.CameraZoomAxe(0.8);
-                                                else if (Math.Round(change.Value, 1) == 0.6)
                                                     _PadHandler.CameraZoomAxe(0.2);
+                                                else if (Math.Round(change.Value, 1) == 0.6)
+                                                    _PadHandler.CameraZoomAxe(0.8);
                                                 else if (double.IsNaN(change.Value))
                                                     _PadHandler.CameraZoomAxe(0.5);
                                             }
@@ -166,40 +195,76 @@ namespace PTZPadController.DataAccessLayer
                                                 _PadHandler.CameraZoomAxe(change.Value);
                                             break;
                                         case GamePadHandlerCommands.CameraPreset1:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraPreset1(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.CameraPreset2:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraPreset2(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.CameraPreset3:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraPreset3(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.CameraPreset4:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraPreset4(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.CameraPreset5:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraPreset5(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.CameraPreset6:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraPreset6(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.CameraPreset7:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraPreset7(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.CameraPreset8:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraPreset8(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.CameraFocusAutoMode:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraFocusAutoMode(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.CameraFocusOnePushMode:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraFocusOnePushMode(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.CameraFocusOnePushTriger:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraFocusOnePushTriger(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.CameraFocusAutoOnePushSwitchMode:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            //_PadHandler.CameraPreset2(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.Camera1SetPreview:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.Camera1SetPreview(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.Camera2SetPreview:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.Camera2SetPreview(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.Camera3SetPreview:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.Camera3SetPreview(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.Camera4SetPreview:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.Camera4SetPreview(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.SwitcherCut:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.SwitcherCut(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.SwitcherMix:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.SwitcherMix(btnSatus);
                                             break;
                                         default:
                                             break;
@@ -247,6 +312,15 @@ namespace PTZPadController.DataAccessLayer
             await _DisconnectTcs.Task.ConfigureAwait(false);
 
             logger.Info("HID Parser Finished");
+        }
+
+        private ButtonCommand GetButtonStatus(double value)
+        {
+            if (value == 1.0)
+                return ButtonCommand.Down;
+            if (value == 0.0)
+                return ButtonCommand.Up;
+            return ButtonCommand.NA;
         }
 
         public void Initialize(List<HIDGamePadModel> gamePads, IGamePadHandler padHandler)

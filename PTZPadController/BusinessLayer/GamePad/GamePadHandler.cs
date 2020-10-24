@@ -32,7 +32,7 @@ namespace PTZPadController.BusinessLayer
 
         public void Camera1SetPreview(ButtonCommand button)
         {
-            if (m_PtzManager.Cameras.Count >= 1)
+            if (button == ButtonCommand.Down && m_PtzManager.Cameras.Count >= 1)
             {
                 if (App.Win != null)
                     App.Win.Dispatcher.Invoke(() => m_PtzManager.SetSwitcherPreview(m_PtzManager.Cameras[0].CameraName));
@@ -41,82 +41,81 @@ namespace PTZPadController.BusinessLayer
 
         public void Camera2SetPreview(ButtonCommand button)
         {
-            throw new NotImplementedException();
+            if (button == ButtonCommand.Down && m_PtzManager.Cameras.Count >= 2)
+            {
+                if (App.Win != null)
+                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SetSwitcherPreview(m_PtzManager.Cameras[1].CameraName));
+            }
         }
 
         public void Camera3SetPreview(ButtonCommand button)
         {
-            throw new NotImplementedException();
+            if (button == ButtonCommand.Down && m_PtzManager.Cameras.Count >= 3)
+            {
+                if (App.Win != null)
+                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SetSwitcherPreview(m_PtzManager.Cameras[2].CameraName));
+            }
         }
 
         public void Camera4SetPreview(ButtonCommand button)
         {
-            throw new NotImplementedException();
+            if (button == ButtonCommand.Down && m_PtzManager.Cameras.Count >= 4)
+            {
+                if (App.Win != null)
+                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SetSwitcherPreview(m_PtzManager.Cameras[3].CameraName));
+            }
         }
 
         public void CameraFocusAutoMode(ButtonCommand button)
         {
-            throw new NotImplementedException();
         }
 
         public void CameraFocusAutoOnePushSwitchMode(ButtonCommand button)
         {
-            throw new NotImplementedException();
         }
 
         public void CameraFocusOnePushMode(ButtonCommand button)
         {
-            throw new NotImplementedException();
         }
 
         public void CameraFocusOnePushTriger(ButtonCommand button)
         {
-            throw new NotImplementedException();
         }
 
         public void CameraPanTiltAxes(double x, double y)
         {
-            throw new NotImplementedException();
         }
 
         public void CameraPreset1(ButtonCommand button)
         {
-            throw new NotImplementedException();
         }
 
         public void CameraPreset2(ButtonCommand button)
         {
-            throw new NotImplementedException();
         }
 
         public void CameraPreset3(ButtonCommand button)
         {
-            throw new NotImplementedException();
         }
 
         public void CameraPreset4(ButtonCommand button)
         {
-            throw new NotImplementedException();
         }
 
         public void CameraPreset5(ButtonCommand button)
         {
-            throw new NotImplementedException();
         }
 
         public void CameraPreset6(ButtonCommand button)
         {
-            throw new NotImplementedException();
         }
 
         public void CameraPreset7(ButtonCommand button)
         {
-            throw new NotImplementedException();
         }
 
         public void CameraPreset8(ButtonCommand button)
         {
-            throw new NotImplementedException();
         }
 
 
@@ -180,12 +179,21 @@ namespace PTZPadController.BusinessLayer
 
         public void SwitcherCut(ButtonCommand button)
         {
-            throw new NotImplementedException();
+            if (button == ButtonCommand.Down)
+            {
+                if (App.Win != null)
+                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SendSwitcherTransition(Messages.TransitionEnum.Cut));
+            }
+
         }
 
         public void SwitcherMix(ButtonCommand button)
         {
-            throw new NotImplementedException();
+            if (button == ButtonCommand.Down)
+            {
+                if (App.Win != null)
+                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SendSwitcherTransition(Messages.TransitionEnum.Mix));
+            }
         }
     }
 }
