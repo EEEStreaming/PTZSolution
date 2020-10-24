@@ -23,7 +23,7 @@ namespace PTZPadController.BusinessLayer
 
     public class PTZManager : IPTZManager
     {
-        const short SPEED_MEDIUM = 5;
+        const short SPEED_MEDIUM = 6;
 
         private List<ICameraHandler> m_CameraList;
         private ISwitcherHandler m_AtemHandler;
@@ -420,6 +420,70 @@ namespace PTZPadController.BusinessLayer
             if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.PanTiltRight(SPEED_MEDIUM);
+            }
+        }
+
+        public void CameraPanTiltUp(short moveSpeed)
+        {
+            if (m_IsStarted && CameraPreview != null)
+            {
+                CameraPreview.PanTiltUp(moveSpeed);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltUpLeft(short moveSpeed)
+        {
+            if (m_IsStarted && CameraPreview != null)
+            {
+                CameraPreview.PanTiltUpLeft(moveSpeed);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltUpRight(short moveSpeed)
+        {
+            if (m_IsStarted && CameraPreview != null)
+            {
+                CameraPreview.PanTiltUpRight(moveSpeed);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltDown(short moveSpeed)
+        {
+            if (m_IsStarted && CameraPreview != null)
+            {
+                CameraPreview.PanTiltDown(moveSpeed);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltDownLeft(short moveSpeed)
+        {
+            if (m_IsStarted && CameraPreview != null)
+            {
+                CameraPreview.PanTiltDownLeft(moveSpeed);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltDownRight(short moveSpeed)
+        {
+            if (m_IsStarted && CameraPreview != null)
+            {
+                CameraPreview.PanTiltDownRight(moveSpeed);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltLeft(short moveSpeed)
+        {
+            if (m_IsStarted && CameraPreview != null)
+            {
+                CameraPreview.PanTiltLeft(moveSpeed);
+            }
+        }
+
+        void IPTZManager.CameraPanTiltRight(short moveSpeed)
+        {
+            if (m_IsStarted && CameraPreview != null)
+            {
+                CameraPreview.PanTiltRight(moveSpeed);
             }
         }
 

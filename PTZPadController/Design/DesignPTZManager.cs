@@ -144,5 +144,45 @@ namespace PTZPadController.Design
         {
             throw new NotImplementedException();
         }
+
+        void IPTZManager.CameraPanTiltUp(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IPTZManager.CameraPanTiltUpLeft(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IPTZManager.CameraPanTiltUpRight(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IPTZManager.CameraPanTiltDown(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IPTZManager.CameraPanTiltDownLeft(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IPTZManager.CameraPanTiltDownRight(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IPTZManager.CameraPanTiltLeft(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IPTZManager.CameraPanTiltRight(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

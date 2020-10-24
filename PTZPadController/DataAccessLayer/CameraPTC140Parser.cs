@@ -114,18 +114,19 @@ namespace PTZPadController.DataAccessLayer
         }
 
         #region position
-        private byte ConvertSpeed(short speed,bool pan)
+        private byte ConvertMoveSpeed(short moveSpeed, bool pan)
         {
+            double doubleSpeed = moveSpeed > 10 ? 10 : moveSpeed < 0 ? 0 : moveSpeed;
             short max = pan ? (short)0x18 : (short)0x14;
 
-            byte byteSpeed = (byte) (speed*max/10.0);
+            byte byteSpeed = (byte) (doubleSpeed * max/10.0);
             return byteSpeed;
         }
 
         public void PanTiltUp(short moveSpeed)
         {
-            byte bytePanSpeed = ConvertSpeed(moveSpeed, true);
-            byte byteTiltSpeed = ConvertSpeed(moveSpeed, false);
+            byte bytePanSpeed = ConvertMoveSpeed(moveSpeed, true);
+            byte byteTiltSpeed = ConvertMoveSpeed(moveSpeed, false);
 
             PTZLogger.Log.Info("PanTiltUp({0})", moveSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
@@ -138,8 +139,8 @@ namespace PTZPadController.DataAccessLayer
 
         public void PanTiltDown(short moveSpeed)
         {
-            byte bytePanSpeed = ConvertSpeed(moveSpeed, true);
-            byte byteTiltSpeed = ConvertSpeed(moveSpeed, false);
+            byte bytePanSpeed = ConvertMoveSpeed(moveSpeed, true);
+            byte byteTiltSpeed = ConvertMoveSpeed(moveSpeed, false);
 
             PTZLogger.Log.Info("PanTiltDown({0})", moveSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
@@ -152,8 +153,8 @@ namespace PTZPadController.DataAccessLayer
 
         public void PanTiltLeft(short moveSpeed)
         {
-            byte bytePanSpeed = ConvertSpeed(moveSpeed, true);
-            byte byteTiltSpeed = ConvertSpeed(moveSpeed, false);
+            byte bytePanSpeed = ConvertMoveSpeed(moveSpeed, true);
+            byte byteTiltSpeed = ConvertMoveSpeed(moveSpeed, false);
 
             PTZLogger.Log.Info("PanTiltLeft({0})", moveSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
@@ -166,8 +167,8 @@ namespace PTZPadController.DataAccessLayer
 
         public void PanTiltRight(short moveSpeed)
         {
-            byte bytePanSpeed = ConvertSpeed(moveSpeed, true);
-            byte byteTiltSpeed = ConvertSpeed(moveSpeed, false);
+            byte bytePanSpeed = ConvertMoveSpeed(moveSpeed, true);
+            byte byteTiltSpeed = ConvertMoveSpeed(moveSpeed, false);
 
             PTZLogger.Log.Info("PanTiltRight({0})", moveSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
@@ -180,8 +181,8 @@ namespace PTZPadController.DataAccessLayer
 
         public void PanTiltUpLeft(short moveSpeed)
         {
-            byte bytePanSpeed = ConvertSpeed(moveSpeed, true);
-            byte byteTiltSpeed = ConvertSpeed(moveSpeed, false);
+            byte bytePanSpeed = ConvertMoveSpeed(moveSpeed, true);
+            byte byteTiltSpeed = ConvertMoveSpeed(moveSpeed, false);
 
             PTZLogger.Log.Info("PanTiltUpLeft({0})", moveSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
@@ -194,8 +195,8 @@ namespace PTZPadController.DataAccessLayer
 
         public void PanTiltUpRight(short moveSpeed)
         {
-            byte bytePanSpeed = ConvertSpeed(moveSpeed, true);
-            byte byteTiltSpeed = ConvertSpeed(moveSpeed, false);
+            byte bytePanSpeed = ConvertMoveSpeed(moveSpeed, true);
+            byte byteTiltSpeed = ConvertMoveSpeed(moveSpeed, false);
 
             PTZLogger.Log.Info("PanTiltUpRight({0})", moveSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
@@ -208,8 +209,8 @@ namespace PTZPadController.DataAccessLayer
 
         public void PanTiltDownLeft(short moveSpeed)
         {
-            byte bytePanSpeed = ConvertSpeed(moveSpeed, true);
-            byte byteTiltSpeed = ConvertSpeed(moveSpeed, false);
+            byte bytePanSpeed = ConvertMoveSpeed(moveSpeed, true);
+            byte byteTiltSpeed = ConvertMoveSpeed(moveSpeed, false);
 
             PTZLogger.Log.Info("PanTiltDownLeft({0})", moveSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
@@ -222,8 +223,8 @@ namespace PTZPadController.DataAccessLayer
 
         public void PanTiltDownRight(short moveSpeed)
         {
-            byte bytePanSpeed = ConvertSpeed(moveSpeed, true);
-            byte byteTiltSpeed = ConvertSpeed(moveSpeed, false);
+            byte bytePanSpeed = ConvertMoveSpeed(moveSpeed, true);
+            byte byteTiltSpeed = ConvertMoveSpeed(moveSpeed, false);
 
             PTZLogger.Log.Info("PanTiltDownRight({0})", moveSpeed);
             if (m_SocketClient != null && m_SocketClient.Connected)
@@ -293,6 +294,8 @@ namespace PTZPadController.DataAccessLayer
 
         public byte ConvertZoom(short zoomSpeed, short add)
         {
+            double doubleSpeed = zoomSpeed>10 ? 10 : zoomSpeed<0?0:zoomSpeed;
+
             byte speed = (byte)((double)zoomSpeed*15/10.0);
             return (byte)(add + speed);
         }
