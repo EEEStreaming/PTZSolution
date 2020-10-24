@@ -16,6 +16,7 @@ using HIDDevices.Usages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PTZPadController.BusinessLayer;
+using PTZPadController.Common;
 using PTZPadController.DataAccessLayer;
 using PTZPadController.Messages;
 
@@ -142,7 +143,69 @@ namespace PTZPadController.DataAccessLayer
                                     .Append(change.Elapsed.TotalMilliseconds.ToString("0.###"))
                                     .AppendLine("ms)");
 
-                                switch (change.Control.Name)
+                                //check if control is in the configuration gamepad
+                                var mappedCommand = padCfg.MappedCommands.FirstOrDefault(map => map.GamePadCommand.Any(cmd => cmd.GetDescription() == change.Control.Name));
+                                if (mappedCommand != null)
+                                {
+                                    switch (mappedCommand.PTZCommand)
+                                    {
+                                        case GamePadHandlerCommands.CameraPanTiltAxes:
+                                            break;
+                                        case GamePadHandlerCommands.CameraZoomAxe:
+                                            if (mappedCommand.GamePadCommand[0] == HIDGamePadCommands.GenericDesktopHatSwitch)
+                                            {
+                                                //It's a switch. converte to axe
+                                                if (change.Value == 0.0)
+                                                    _PadHandler.CameraZoomAxe(0.8);
+                                                else if (Math.Round(change.Value, 1) == 0.6)
+                                                    _PadHandler.CameraZoomAxe(0.2);
+                                                else if (double.IsNaN(change.Value))
+                                                    _PadHandler.CameraZoomAxe(0.5);
+                                            }
+                                            else
+                                                _PadHandler.CameraZoomAxe(change.Value);
+                                            break;
+                                        case GamePadHandlerCommands.CameraPreset1:
+                                            break;
+                                        case GamePadHandlerCommands.CameraPreset2:
+                                            break;
+                                        case GamePadHandlerCommands.CameraPreset3:
+                                            break;
+                                        case GamePadHandlerCommands.CameraPreset4:
+                                            break;
+                                        case GamePadHandlerCommands.CameraPreset5:
+                                            break;
+                                        case GamePadHandlerCommands.CameraPreset6:
+                                            break;
+                                        case GamePadHandlerCommands.CameraPreset7:
+                                            break;
+                                        case GamePadHandlerCommands.CameraPreset8:
+                                            break;
+                                        case GamePadHandlerCommands.CameraFocusAutoMode:
+                                            break;
+                                        case GamePadHandlerCommands.CameraFocusOnePushMode:
+                                            break;
+                                        case GamePadHandlerCommands.CameraFocusOnePushTriger:
+                                            break;
+                                        case GamePadHandlerCommands.CameraFocusAutoOnePushSwitchMode:
+                                            break;
+                                        case GamePadHandlerCommands.Camera1SetPreview:
+                                            break;
+                                        case GamePadHandlerCommands.Camera2SetPreview:
+                                            break;
+                                        case GamePadHandlerCommands.Camera3SetPreview:
+                                            break;
+                                        case GamePadHandlerCommands.Camera4SetPreview:
+                                            break;
+                                        case GamePadHandlerCommands.SwitcherCut:
+                                            break;
+                                        case GamePadHandlerCommands.SwitcherMix:
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                                    switch (change.Control.Name)
                                 {
                                     case "Button 1" :
                                         if (change.Value == 1)

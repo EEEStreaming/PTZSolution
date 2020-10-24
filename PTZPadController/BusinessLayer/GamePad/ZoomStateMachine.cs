@@ -111,8 +111,9 @@ namespace PTZPadController.BusinessLayer
             if (!transitions.TryGetValue(transition, out nextState))
             {
                 PTZLogger.Log.Error("Invalid transition: " + CurrentState + " -> " + command);
-                nextState = CurrentState;
+                return CurrentState;
             }
+            PTZLogger.Log.Debug("Transition: " + CurrentState + " -> " + command + " Next : "+ nextState);
             return nextState;
         }
 
