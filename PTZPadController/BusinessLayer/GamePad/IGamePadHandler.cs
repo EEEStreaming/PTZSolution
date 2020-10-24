@@ -7,9 +7,9 @@ namespace PTZPadController.BusinessLayer
         void ConnectTo();
         void Disconnect();
 
-        void CameraPanTiltAxes(int x, int y);
+        void CameraPanTiltAxes(double x, double y);
       
-        void CameraZoomAxe(int x);
+        void CameraZoomAxe(double x);
 
         void CameraPreset1(ButtonCommand button);
         void CameraPreset2(ButtonCommand button);
