@@ -38,21 +38,21 @@ namespace PTZPadController.DataAccessLayer
             {
                 PTZLogger.Log.Debug("CompletionMessage {0} Command Not Executable", CameraName);
             }
-            else if (message == "00-06-90-50-02-FF")
-            {
-                eFocusMode = ECameraFocusMode.Auto;
-                PTZLogger.Log.Debug("CompletionMessage {0}  FocusMode:{1}", CameraName, eFocusMode);
-            }
-            else if (message == "00-06-90-50-03-FF")
-            {
-                eFocusMode = ECameraFocusMode.Manual;
-                PTZLogger.Log.Debug("CompletionMessage {0}  FocusMode:{1}", CameraName, eFocusMode);
-            }
-            else if (message == "00-06-90-50-04-FF")
-            {
-                eFocusMode = ECameraFocusMode.OnePush;
-                PTZLogger.Log.Debug("CompletionMessage {0}  FocusMode:{1}", CameraName, eFocusMode);
-            }
+            //else if (message == "00-06-90-50-02-FF")
+            //{
+            //    eFocusMode = ECameraFocusMode.Auto;
+            //    PTZLogger.Log.Debug("CompletionMessage {0}  FocusMode:{1}", CameraName, eFocusMode);
+            //}
+            //else if (message == "00-06-90-50-03-FF")
+            //{
+            //    eFocusMode = ECameraFocusMode.Manual;
+            //    PTZLogger.Log.Debug("CompletionMessage {0}  FocusMode:{1}", CameraName, eFocusMode);
+            //}
+            //else if (message == "00-06-90-50-04-FF")
+            //{
+            //    eFocusMode = ECameraFocusMode.OnePush;
+            //    PTZLogger.Log.Debug("CompletionMessage {0}  FocusMode:{1}", CameraName, eFocusMode);
+            //}
             else
             {
                 PTZLogger.Log.Debug("CompletionMessage {0} message non traité: {1}", CameraName, message);
@@ -60,19 +60,19 @@ namespace PTZPadController.DataAccessLayer
             //TODO
         }
 
-        public void FocusMode()
-        {
-            PTZLogger.Log.Info("FocusMode()");
-            if (m_SocketClient != null && m_SocketClient.Connected)
-            {
-                eFocusMode = ECameraFocusMode.Unknown;
-                byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x09, 0x04, 0x38, 0xFF };
-                //PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
-                m_SocketClient.SendData(data);
+        //public void FocusMode()
+        //{
+        //    PTZLogger.Log.Info("FocusMode()");
+        //    if (m_SocketClient != null && m_SocketClient.Connected)
+        //    {
+        //        eFocusMode = ECameraFocusMode.Unknown;
+        //        byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x09, 0x04, 0x38, 0xFF };
+        //        //PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
+        //        m_SocketClient.SendData(data);
 
-                PTZLogger.Log.Info("FocusMode() {0} FocusMode:{1}", CameraName, eFocusMode);
-            }
-        }
+        //        PTZLogger.Log.Info("FocusMode() {0} FocusMode:{1}", CameraName, eFocusMode);
+        //    }
+        //}
 
         #endregion
 

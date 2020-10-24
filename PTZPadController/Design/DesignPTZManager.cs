@@ -144,5 +144,15 @@ namespace PTZPadController.Design
         {
             throw new NotImplementedException();
         }
+
+        public void CameraFocusAutoOnePushSwitchMode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ECameraFocusMode GetCameraFocusMode(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

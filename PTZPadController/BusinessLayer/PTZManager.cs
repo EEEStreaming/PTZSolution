@@ -163,6 +163,19 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
+        public void UpdateCameraPreviewFocusModeConfiguration(ECameraFocusMode focusMode)
+        {
+            if (m_IsStarted)
+            {
+                var camcfg = m_Configuration.Cameras.FirstOrDefault(x => x.CameraName == CameraPreview.CameraName);
+                if (camcfg != null)
+                {
+                    camcfg.FocusMode = focusMode;
+                    ConfigurationFileParser.SaveConfiguration(m_Configuration, "Configuration.json");
+                }
+            }
+        }
+
         public List<PresetIconSettingModel> GetPresetSettingFromPreview()
         {
             if (!m_IsStarted)
@@ -178,6 +191,16 @@ namespace PTZPadController.BusinessLayer
                 }
             }
             return null;
+        }
+
+        public ECameraFocusMode GetCameraFocusMode(string name)
+        {
+            var camcfg = m_Configuration.Cameras.FirstOrDefault(x => x.CameraName == name);
+            if (camcfg != null)
+            {
+                return camcfg.FocusMode;
+            }
+            return ECameraFocusMode.Auto;
         }
 
         private void AtemPreviewSourceChange(object sender, AtemSourceMessageArgs e)
@@ -276,7 +299,6 @@ namespace PTZPadController.BusinessLayer
                     if (cam.WaitForConnection())
                     {
                         cam.Tally(false, false);
-                        cam.GetFocusMode();
                     }
                 });
                 tasks.Add(t);
@@ -578,30 +600,78 @@ namespace PTZPadController.BusinessLayer
         public void CameraFocusModeAuto()
         {
             if (m_IsStarted && CameraPreview != null)
+            {
                 CameraPreview.FocusModeAuto();
+                UpdateCameraPreviewFocusModeConfiguration(ECameraFocusMode.Auto);
+                CameraFocusModeMessageArgs args = new CameraFocusModeMessageArgs();
+                args.Focus = ECameraFocusMode.Auto;
+                args.CameraName = CameraPreview.CameraName;
+                Messenger.Default.Send(new NotificationMessage<CameraFocusModeMessageArgs>(args, NotificationSource.CameraFocusModeChanged));
+            }
         }
         public void CameraFocusModeManual()
         {
             if (m_IsStarted && CameraPreview != null)
+            {
                 CameraPreview.FocusModeManual();
+                UpdateCameraPreviewFocusModeConfiguration(ECameraFocusMode.Manual);
+                CameraFocusModeMessageArgs args = new CameraFocusModeMessageArgs();
+                args.Focus = ECameraFocusMode.Manual;
+                args.CameraName = CameraPreview.CameraName;
+                Messenger.Default.Send(new NotificationMessage<CameraFocusModeMessageArgs>(args, NotificationSource.CameraFocusModeChanged));
+            }
         }
 
         public void CameraFocusModeOnePush()
         {
             if (m_IsStarted && CameraPreview != null)
+            {
                 CameraPreview.FocusModeOnePush();
+                UpdateCameraPreviewFocusModeConfiguration(ECameraFocusMode.OnePush);
+                CameraFocusModeMessageArgs args = new CameraFocusModeMessageArgs();
+                args.Focus = ECameraFocusMode.OnePush;
+                args.CameraName = CameraPreview.CameraName;
+                Messenger.Default.Send(new NotificationMessage<CameraFocusModeMessageArgs>(args, NotificationSource.CameraFocusModeChanged));
+            }
+        }
+        public void CameraFocusAutoOnePushSwitchMode()
+        {
+            if (m_IsStarted && CameraPreview != null)
+            {
+                var camcfg = m_Configuration.Cameras.FirstOrDefault(x => x.CameraName == CameraPreview.CameraName);
+                if (camcfg != null)
+                {
+                    ECameraFocusMode newFocusMode;
+                    if (camcfg.FocusMode == ECameraFocusMode.Auto)
+                    {
+                        CameraPreview.FocusModeOnePush();
+                        newFocusMode = ECameraFocusMode.OnePush;
+                    }
+                    else
+                    {
+                        CameraPreview.FocusModeAuto();
+                        newFocusMode = ECameraFocusMode.Auto;
+                    }
+                    UpdateCameraPreviewFocusModeConfiguration(newFocusMode);
+                    CameraFocusModeMessageArgs args = new CameraFocusModeMessageArgs();
+                    args.Focus = newFocusMode;
+                    args.CameraName = CameraPreview.CameraName;
+                    Messenger.Default.Send(new NotificationMessage<CameraFocusModeMessageArgs>(args, NotificationSource.CameraFocusModeChanged));
+                }
+            }
         }
 
         public void CameraFocusOnePushTrigger()
         {
             if (m_IsStarted && CameraPreview != null)
-                CameraPreview.FocusOnePushTrigger();
-        }
-
-        public void CameraGetFocusMode()
-        {
-            if (m_IsStarted && CameraPreview != null)
-                CameraPreview.GetFocusMode();
+            {
+                var camcfg = m_Configuration.Cameras.FirstOrDefault(x => x.CameraName == CameraPreview.CameraName);
+                if (camcfg != null)
+                {
+                    if (camcfg.FocusMode == ECameraFocusMode.OnePush)
+                        CameraPreview.FocusOnePushTrigger();
+                }
+            }
         }
     }
 }
