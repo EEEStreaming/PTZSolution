@@ -5,6 +5,9 @@ using System.Text;
 
 namespace PTZPadController.BusinessLayer
 {
+    // Define 6 regions in the axis of the gamepads controllers
+    
+
     public class GamePadHandler : IGamePadHandler
     {
         // This holds the minimum difference value between two commands needed to trigger a state update
@@ -14,21 +17,11 @@ namespace PTZPadController.BusinessLayer
         private IPTZManager m_PtzManager;
 
         // State machines
-        private ZoomStateMachine m_ZoomState;
-        private PanStateMachine m_PanState;
+        private JoystickStateMachine m_ZoomState;
+        private JoystickStateMachine m_PanState;
         private AtemStateMachine m_AtemState;
         private PresetStateMachine m_PresetState;
         private FocusStateMachine m_FocusState;
-
-        // Zoom state
-        private double m_currentZoomIndex;
-        private readonly double ZoomWFast = 1.0;
-        private readonly double ZoomWMedium = 0.9;
-        private readonly double ZoomWSlow = 0.6;
-        private readonly double ZoomStop = 0.5;
-        private readonly double ZoomTSlow = 0.4;
-        private readonly double ZoomTMedium = 0.2;
-        private readonly double ZoomTFast = 0.1;
 
         public void Camera1SetPreview(ButtonCommand button)
         {
@@ -84,6 +77,78 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraPanTiltAxes(double x, double y)
         {
+            if (m_PanState.CurrentState != m_PanState.MoveNext(x, y))
+            {
+                switch(m_PanState.CurrentState)
+                {
+                    case (AxisPosition.CENTER, AxisPosition.CENTER):
+                        m_PtzManager.CameraPanTiltStop();
+                        break;
+                    case (AxisPosition.NEGATIVE_CLOSE, AxisPosition.CENTER):
+                    case (AxisPosition.NEGATIVE_MEDIUM, AxisPosition.CENTER):
+                    case (AxisPosition.NEGATIVE_FAR, AxisPosition.CENTER):
+                        m_PtzManager.CameraPanTiltLeft();
+                        break;
+                    case (AxisPosition.POSITIVE_CLOSE, AxisPosition.CENTER):
+                    case (AxisPosition.POSITIVE_MEDIUM, AxisPosition.CENTER):
+                    case (AxisPosition.POSITIVE_FAR, AxisPosition.CENTER):
+                        m_PtzManager.CameraPanTiltRight();
+                        break;
+                    case (AxisPosition.CENTER, AxisPosition.NEGATIVE_CLOSE):
+                    case (AxisPosition.CENTER, AxisPosition.NEGATIVE_MEDIUM):
+                    case (AxisPosition.CENTER, AxisPosition.NEGATIVE_FAR):
+                        m_PtzManager.CameraPanTiltDown();
+                        break;
+                    case (AxisPosition.CENTER, AxisPosition.POSITIVE_CLOSE):
+                    case (AxisPosition.CENTER, AxisPosition.POSITIVE_MEDIUM):
+                    case (AxisPosition.CENTER, AxisPosition.POSITIVE_FAR):
+                        m_PtzManager.CameraPanTiltUp();
+                        break;
+                    case (AxisPosition.NEGATIVE_CLOSE, AxisPosition.NEGATIVE_CLOSE):
+                    case (AxisPosition.NEGATIVE_CLOSE, AxisPosition.NEGATIVE_FAR):
+                    case (AxisPosition.NEGATIVE_CLOSE, AxisPosition.NEGATIVE_MEDIUM):
+                    case (AxisPosition.NEGATIVE_MEDIUM, AxisPosition.NEGATIVE_CLOSE):
+                    case (AxisPosition.NEGATIVE_MEDIUM, AxisPosition.NEGATIVE_MEDIUM):
+                    case (AxisPosition.NEGATIVE_MEDIUM, AxisPosition.NEGATIVE_FAR):
+                    case (AxisPosition.NEGATIVE_FAR, AxisPosition.NEGATIVE_CLOSE):
+                    case (AxisPosition.NEGATIVE_FAR, AxisPosition.NEGATIVE_MEDIUM):
+                    case (AxisPosition.NEGATIVE_FAR, AxisPosition.NEGATIVE_FAR):
+                        m_PtzManager.CameraPanTiltDownLeft();
+                        break;
+                    case (AxisPosition.NEGATIVE_CLOSE, AxisPosition.POSITIVE_CLOSE):
+                    case (AxisPosition.NEGATIVE_CLOSE, AxisPosition.POSITIVE_MEDIUM):
+                    case (AxisPosition.NEGATIVE_CLOSE, AxisPosition.POSITIVE_FAR):
+                    case (AxisPosition.NEGATIVE_MEDIUM, AxisPosition.POSITIVE_CLOSE):
+                    case (AxisPosition.NEGATIVE_MEDIUM, AxisPosition.POSITIVE_MEDIUM):
+                    case (AxisPosition.NEGATIVE_MEDIUM, AxisPosition.POSITIVE_FAR):
+                    case (AxisPosition.NEGATIVE_FAR, AxisPosition.POSITIVE_CLOSE):
+                    case (AxisPosition.NEGATIVE_FAR, AxisPosition.POSITIVE_MEDIUM):
+                    case (AxisPosition.NEGATIVE_FAR, AxisPosition.POSITIVE_FAR):
+                        m_PtzManager.CameraPanTiltUpLeft();
+                        break;
+                    case (AxisPosition.POSITIVE_CLOSE, AxisPosition.NEGATIVE_CLOSE):
+                    case (AxisPosition.POSITIVE_CLOSE, AxisPosition.NEGATIVE_MEDIUM):
+                    case (AxisPosition.POSITIVE_CLOSE, AxisPosition.NEGATIVE_FAR):
+                    case (AxisPosition.POSITIVE_MEDIUM, AxisPosition.NEGATIVE_CLOSE):
+                    case (AxisPosition.POSITIVE_MEDIUM, AxisPosition.NEGATIVE_MEDIUM):
+                    case (AxisPosition.POSITIVE_MEDIUM, AxisPosition.NEGATIVE_FAR):
+                    case (AxisPosition.POSITIVE_FAR, AxisPosition.NEGATIVE_CLOSE):
+                    case (AxisPosition.POSITIVE_FAR, AxisPosition.NEGATIVE_MEDIUM):
+                    case (AxisPosition.POSITIVE_FAR, AxisPosition.NEGATIVE_FAR):
+                        m_PtzManager.CameraPanTiltDownRight();
+                        break;
+                    case (AxisPosition.POSITIVE_CLOSE, AxisPosition.POSITIVE_CLOSE):
+                    case (AxisPosition.POSITIVE_CLOSE, AxisPosition.POSITIVE_MEDIUM):
+                    case (AxisPosition.POSITIVE_CLOSE, AxisPosition.POSITIVE_FAR):
+                    case (AxisPosition.POSITIVE_FAR, AxisPosition.POSITIVE_CLOSE):
+                    case (AxisPosition.POSITIVE_FAR, AxisPosition.POSITIVE_MEDIUM):
+                    case (AxisPosition.POSITIVE_FAR, AxisPosition.POSITIVE_FAR):
+                        m_PtzManager.CameraPanTiltUpRight();
+                        break;
+
+                }
+            }
+
         }
 
         public void CameraPreset1(ButtonCommand button)
@@ -121,41 +186,24 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraZoomAxe(double x)
         {
-            // Ignore small updates
-            if (Math.Max(x, m_currentZoomIndex) - Math.Min(x, m_currentZoomIndex) > CHANGE_THRESHOLD) {
-                // Convert value to zoom command
-                var transition = x switch
+            if (m_ZoomState.CurrentState != m_ZoomState.MoveNext(x, 0.5))
+            {
+                switch (m_ZoomState.CurrentState.Item1)
                 {
-                    double value when value <= ZoomTFast => ZoomCommand.TeleFast,
-                    double value when value <= ZoomTMedium => ZoomCommand.TeleMedium,
-                    double value when value <= ZoomTSlow => ZoomCommand.TeleSlow,
-                    double value when value <= ZoomStop => ZoomCommand.Stop,
-                    double value when value <= ZoomWSlow => ZoomCommand.WideSlow,
-                    double value when value <= ZoomWMedium => ZoomCommand.WideMedium,
-                    double value when value <= ZoomWFast => ZoomCommand.WideFast,
-                    _ => ZoomCommand.Stop,
-                };
-                // Trigger command
-                if (m_ZoomState.CurrentState != m_ZoomState.MoveNext(transition))
-                {
-                    switch (m_ZoomState.CurrentState)
-                    {
-                        case ZoomState.Inactive:
-                            m_PtzManager.CameraZoomStop();
-                            break;
-                        case ZoomState.ZoomTeleSlow:
-                        case ZoomState.ZoomTeleMedium:
-                        case ZoomState.ZoomTeleFast:
-                            m_PtzManager.CameraZoomTele();
-                            break;
-                        case ZoomState.ZoomWideFast:
-                        case ZoomState.ZoomWideMedium:
-                        case ZoomState.ZoomWideSlow:
-                            m_PtzManager.CameraZoomWide();
-                            break;
-                    }
+                    case AxisPosition.CENTER:
+                        m_PtzManager.CameraZoomStop();
+                        break;
+                    case AxisPosition.POSITIVE_CLOSE:
+                    case AxisPosition.POSITIVE_MEDIUM:
+                    case AxisPosition.POSITIVE_FAR:
+                        m_PtzManager.CameraZoomTele();
+                        break;
+                    case AxisPosition.NEGATIVE_CLOSE:
+                    case AxisPosition.NEGATIVE_MEDIUM:
+                    case AxisPosition.NEGATIVE_FAR:
+                        m_PtzManager.CameraZoomWide();
+                        break;
                 }
-                m_currentZoomIndex = x;
             }
         }
 
@@ -173,8 +221,8 @@ namespace PTZPadController.BusinessLayer
         {
             m_HidParser = hidParser;
             m_PtzManager = manager;
-            m_ZoomState = new ZoomStateMachine();
-            m_currentZoomIndex = 0.5;
+            m_ZoomState = new JoystickStateMachine();
+            m_PanState = new JoystickStateMachine();
         }
 
         public void SwitcherCut(ButtonCommand button)
