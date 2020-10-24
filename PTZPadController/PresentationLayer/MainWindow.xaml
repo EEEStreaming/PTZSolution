@@ -395,9 +395,6 @@
                     <Button.Style>
                         <Style TargetType="Button">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=CameraFocusMode}" Value="{x:Static dal:ECameraFocusMode.Unknown}">
-                                    <Setter Property="Background" Value="AliceBlue"/>
-                                </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=CameraFocusMode}" Value="{x:Static dal:ECameraFocusMode.Manual}">
                                     <Setter Property="Background" Value="AliceBlue"/>
                                 </DataTrigger>
@@ -429,9 +426,6 @@
                     <Button.Style>
                         <Style TargetType="Button">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=CameraFocusMode}" Value="{x:Static dal:ECameraFocusMode.Unknown}">
-                                    <Setter Property="Background" Value="AliceBlue"/>
-                                </DataTrigger>
                                 <DataTrigger Binding="{Binding Path=CameraFocusMode}" Value="{x:Static dal:ECameraFocusMode.Manual}">
                                     <Setter Property="Background" Value="AliceBlue"/>
                                 </DataTrigger>

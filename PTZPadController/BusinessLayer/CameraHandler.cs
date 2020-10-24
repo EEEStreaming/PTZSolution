@@ -244,15 +244,6 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-        public void GetFocusMode()
-        {
-            if (m_CamParser != null)
-            {
-                m_CamParser.FocusMode();
-
-            }
-            //return EFocusMode.Unknown;
-        }
 
         #endregion
 

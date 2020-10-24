@@ -44,7 +44,6 @@ namespace PTZPadController.BusinessLayer
         public void FocusModeManual();
         public void FocusModeOnePush();
         public void FocusOnePushTrigger();
-        public void GetFocusMode();
 
     }
 }

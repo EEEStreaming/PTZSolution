@@ -62,7 +62,8 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraFocusAutoOnePushSwitchMode(ButtonCommand button)
         {
-            // TODO When focus status is read from cameras.
+            if (button == ButtonCommand.Down)
+                m_PtzManager.CameraFocusAutoOnePushSwitchMode();
         }
 
         public void CameraFocusOnePushMode(ButtonCommand button)

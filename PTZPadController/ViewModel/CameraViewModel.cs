@@ -69,6 +69,8 @@ namespace PTZPadController.ViewModel
             }
         }
 
+        public ECameraFocusMode FocusMode { get; internal set; }
+
         #endregion
 
         #region Construction/Destruction/Initialization

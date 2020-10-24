@@ -205,14 +205,6 @@ namespace PTZPadController.ViewModel
         /// </summary>
         public PTZMainViewModel(IPTZManager manager)
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
             m_PtzManager = manager;
             CameraUp = new RelayCommand(CameraUpExecute);
             CameraUpLeft = new RelayCommand(CameraUpLeftExecute);
@@ -289,15 +281,11 @@ namespace PTZPadController.ViewModel
 
         private void SwitcherMixExecute()
         {
-            //var msg = new NotificationMessage<TransitionMessageArgs>(new TransitionMessageArgs { Transition = TransitionEnum.Mix}, NotificationSource.SendTransition);
-            //MessengerInstance.Send(msg);
             m_PtzManager.SendSwitcherTransition(TransitionEnum.Mix);
         }
 
         private void SwitcherCutExecute()
         {
-            //var msg = new NotificationMessage<TransitionMessageArgs>(new TransitionMessageArgs { Transition = TransitionEnum.Cut }, NotificationSource.SendTransition);
-            //MessengerInstance.Send(msg);
             m_PtzManager.SendSwitcherTransition(TransitionEnum.Cut);
         }
 
@@ -317,7 +305,7 @@ namespace PTZPadController.ViewModel
                         UpdatePresetIcons();
 
                         //Get Focus Mode of the camera
-                        m_PtzManager.CameraGetFocusMode();
+                        CameraFocusMode = m_PtzManager.GetCameraFocusMode(camera.Name);
                     }
                 }
             }
@@ -332,6 +320,7 @@ namespace PTZPadController.ViewModel
                 var camera = Cameras.FirstOrDefault(x => x.Name == obj.Content.CameraName && x.SourceStatus == CameraStatusEnum.Preview);
                 if (camera != null)
                 {
+                    //camera.FocusMode = obj.Content.Focus;
                     CameraFocusMode = obj.Content.Focus;
                     PTZLogger.Log.Debug("camera preview ({0}) focus mode changed ({1})!", obj.Content.CameraName, obj.Content.Focus);
                 }

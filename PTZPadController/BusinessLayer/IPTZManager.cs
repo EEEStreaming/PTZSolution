@@ -48,7 +48,6 @@ namespace PTZPadController.BusinessLayer
         public void CameraFocusModeOnePush();
         public void CameraFocusOnePushTrigger();
 
-        public void CameraGetFocusMode();
 
         void AddCameraHandler(ICameraHandler camHandler);
 
@@ -60,6 +59,7 @@ namespace PTZPadController.BusinessLayer
         void UpdatePresetConfiguration(PresetEventArgs obj);
         List<PresetIconSettingModel> GetPresetSettingFromPreview();
         void AddGamePad(IGamePadHandler pad);
-
+        void CameraFocusAutoOnePushSwitchMode();
+        ECameraFocusMode GetCameraFocusMode(string name);
     }
 }

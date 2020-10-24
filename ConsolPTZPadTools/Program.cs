@@ -20,6 +20,7 @@ namespace ConsolPTZPadTools
                         CameraHost = "192.168.1.131",
                         CameraName = "CAM 1",
                         CameraPort = 5002,
+                        FocusMode = ECameraFocusMode.Auto,
                         PresetIcons =
                         {
                             new PresetIconSettingModel
@@ -69,6 +70,7 @@ namespace ConsolPTZPadTools
                         CameraHost = "192.168.1.132",
                         CameraName = "CAM 2",
                         CameraPort = 5002,
+                        FocusMode = ECameraFocusMode.Auto,
                         PresetIcons =
                         {
                             new PresetIconSettingModel
@@ -119,6 +121,7 @@ namespace ConsolPTZPadTools
                         CameraHost = "192.168.1.133",
                         CameraName = "CAM 3",
                         CameraPort = 5002,
+                        FocusMode = ECameraFocusMode.Auto,
                         PresetIcons =
                         {
                             new PresetIconSettingModel

@@ -332,7 +332,7 @@ namespace UnitTestPTZPadController.BusinessLayer
 
         public ECameraFocusMode FocusMode()
         {
-            return ECameraFocusMode.Unknown;
+            return ECameraFocusMode.Auto;
         }
 
         void ICameraHandler.GetFocusMode()

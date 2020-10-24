@@ -145,42 +145,52 @@ namespace PTZPadController.Design
             throw new NotImplementedException();
         }
 
-        void IPTZManager.CameraPanTiltUp(short moveSpeed)
+        public void CameraPanTiltUp(short moveSpeed)
         {
             throw new NotImplementedException();
         }
 
-        void IPTZManager.CameraPanTiltUpLeft(short moveSpeed)
+        public void CameraPanTiltUpLeft(short moveSpeed)
         {
             throw new NotImplementedException();
         }
 
-        void IPTZManager.CameraPanTiltUpRight(short moveSpeed)
+        public void CameraPanTiltUpRight(short moveSpeed)
         {
             throw new NotImplementedException();
         }
 
-        void IPTZManager.CameraPanTiltDown(short moveSpeed)
+        public void CameraPanTiltDown(short moveSpeed)
         {
             throw new NotImplementedException();
         }
 
-        void IPTZManager.CameraPanTiltDownLeft(short moveSpeed)
+        public void CameraPanTiltDownLeft(short moveSpeed)
         {
             throw new NotImplementedException();
         }
 
-        void IPTZManager.CameraPanTiltDownRight(short moveSpeed)
+        public void CameraPanTiltDownRight(short moveSpeed)
         {
             throw new NotImplementedException();
         }
 
-        void IPTZManager.CameraPanTiltLeft(short moveSpeed)
+        public void CameraPanTiltLeft(short moveSpeed)
         {
             throw new NotImplementedException();
         }
 
-        void IPTZManager.CameraPanTiltRight(short moveSpeed)
+        public void CameraPanTiltRight(short moveSpeed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraFocusAutoOnePushSwitchMode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ECameraFocusMode GetCameraFocusMode(string name)
         {
             throw new NotImplementedException();
         }
