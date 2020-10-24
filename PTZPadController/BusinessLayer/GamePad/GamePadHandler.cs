@@ -17,7 +17,6 @@ namespace PTZPadController.BusinessLayer
         private JoystickStateMachine m_ZoomState;
         private JoystickStateMachine m_PanState;
         private AtemStateMachine m_AtemState;
-        private PresetStateMachine m_PresetState;
         private FocusStateMachine m_FocusState;
 
         public void Camera1SetPreview(ButtonCommand button)
