@@ -8,7 +8,7 @@
         xmlns:converters="clr-namespace:PTZPadController.Converter"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="PTZ Pad Controler" Height="755" Width="440"
+        Title="PTZ Pad Controler" Height="855" Width="440"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <Window.Resources>
         <converters:ParametrizedBooleanToVisibilityConverter x:Key="ParametrizedBooleanToVisibilityConverter"/>
