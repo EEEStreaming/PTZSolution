@@ -185,9 +185,9 @@ namespace PTZPadController.DataAccessLayer
                                             {
                                                 //It's a switch. converte to axe
                                                 if (change.Value == 0.0)
-                                                    _PadHandler.CameraZoomAxe(0.2);
+                                                    _PadHandler.CameraZoomAxe(0.0);
                                                 else if (Math.Round(change.Value, 1) == 0.6)
-                                                    _PadHandler.CameraZoomAxe(0.8);
+                                                    _PadHandler.CameraZoomAxe(1.0);
                                                 else if (double.IsNaN(change.Value))
                                                     _PadHandler.CameraZoomAxe(0.5);
                                             }

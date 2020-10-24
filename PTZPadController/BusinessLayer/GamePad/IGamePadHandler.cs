@@ -1,9 +1,11 @@
 ﻿
+using System.Collections.Generic;
+
 namespace PTZPadController.BusinessLayer
 {
     public interface IGamePadHandler
     {
-        void Initialize(IHIDParser hidParser, IPTZManager manager);
+        void Initialize(IHIDParser hidParser, IPTZManager manager, Dictionary<string, short> speedConfig);
         void ConnectTo();
         void Disconnect();
 

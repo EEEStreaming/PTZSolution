@@ -110,7 +110,7 @@ namespace PTZPadController.ViewModel
             var hidParser = new HIDParser();
            
             hidParser.Initialize(cfg.GamePads, pad);
-            pad.Initialize(hidParser, ptzManager);
+            pad.Initialize(hidParser, ptzManager, cfg.CamSpeed);
             ptzManager.AddGamePad(pad);
         }
 

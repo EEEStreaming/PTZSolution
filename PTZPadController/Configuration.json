@@ -236,5 +236,13 @@
   ],
 
   "UseTallyGreen": false,
-  "AtemHost": "192.168.1.135"
+    "AtemHost": "192.168.1.135",
+    "CamSpeed": {
+        "ZoomSpeedLow": 2,
+        "ZoomSpeedMedium": 5,
+        "ZoomSpeedHigh": 10,
+        "PanSpeedLow": 2,
+        "PanSpeedMedium": 5,
+        "PanSpeedHigh": 10
+    }
 }
