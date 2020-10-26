@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Xaml.Behaviors;
+using PTZPadController.PresentationLayer;
 
 namespace PTZPadController
 {
@@ -23,6 +24,7 @@ namespace PTZPadController
     public partial class MainWindow : Window
     {
         //private List<PresentationLayer.PresetIcon> _IconList;
+        PresetsToolBox _winPresetsToolBox;
 
         public MainWindow()
         {
@@ -46,6 +48,17 @@ namespace PTZPadController
             //listviewTest.ItemsSource = _IconList;
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            App.Current.Shutdown();
+        }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_winPresetsToolBox == null)
+                _winPresetsToolBox = new PresetsToolBox();
+
+            _winPresetsToolBox.Show();
+        }
     }
 }

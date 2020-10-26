@@ -9,14 +9,14 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="PTZ Pad Controler" Height="855" Width="440"
-        DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}" Closed="Window_Closed">
     <Window.Resources>
         <converters:ParametrizedBooleanToVisibilityConverter x:Key="ParametrizedBooleanToVisibilityConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="5"/>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="40*"/>
             <RowDefinition Height="5"/>
@@ -24,7 +24,10 @@
             <RowDefinition Height="10*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <GroupBox Header="Devices" Grid.Row="0" Grid.IsSharedSizeScope="True">
+        <UniformGrid Grid.Row="0" HorizontalAlignment="Left">
+            <Button Content="Preset" Width="40" Click="Button_Click"/>
+        </UniformGrid>
+        <GroupBox Header="Devices" Grid.Row="1" Grid.IsSharedSizeScope="True">
             <UniformGrid Rows="1">
 
 
@@ -86,7 +89,6 @@
 
             </UniformGrid>
         </GroupBox>
-        <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" />
         <GroupBox Header="Cameras" Grid.Row="2">
             <Grid>
                 <Grid.ColumnDefinitions>
