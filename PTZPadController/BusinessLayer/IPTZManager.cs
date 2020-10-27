@@ -2,6 +2,7 @@
 using PTZPadController.Messages;
 using PTZPadController.PresentationLayer;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Documents;
 
 namespace PTZPadController.BusinessLayer
@@ -44,6 +45,9 @@ namespace PTZPadController.BusinessLayer
 
         // Focus
         public void CameraFocusModeAuto();
+        void SaveWindowPosition(Window window, WindowPositionModel winPos);
+
+        WindowPositionModel LoadWindowPosition(Window window);
         public void CameraFocusModeManual();
         public void CameraFocusModeOnePush();
         public void CameraFocusOnePushTrigger();

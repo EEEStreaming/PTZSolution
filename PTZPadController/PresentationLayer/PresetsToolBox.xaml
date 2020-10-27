@@ -6,7 +6,7 @@
         xmlns:pl="clr-namespace:PTZPadController.PresentationLayer"
         mc:Ignorable="d"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}" ResizeMode="CanResizeWithGrip"
-        Title="Presets" Height="150" Width="300" WindowStyle="None" Background="#7FFFFFFF" Topmost="True" AllowsTransparency="True" MouseDown="Window_MouseDown">
+        Title="Presets" Height="150" Width="300" WindowStyle="None" Background="#7FFFFFFF" Topmost="True" AllowsTransparency="True" MouseDown="Window_MouseDown" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

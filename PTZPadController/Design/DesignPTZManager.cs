@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PTZPadController.Design
 {
@@ -191,6 +192,16 @@ namespace PTZPadController.Design
         }
 
         public ECameraFocusMode GetCameraFocusMode(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveWindowPosition(Window window, WindowPositionModel winPos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public WindowPositionModel LoadWindowPosition(Window window)
         {
             throw new NotImplementedException();
         }

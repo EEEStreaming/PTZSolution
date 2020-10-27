@@ -335,11 +335,6 @@ namespace UnitTestPTZPadController.BusinessLayer
             return ECameraFocusMode.Auto;
         }
 
-        void ICameraHandler.GetFocusMode()
-        {
-            throw new NotImplementedException();
-        }
-
         void ICameraHandler.ZoomTele(short zoomSpeed)
         {
             throw new NotImplementedException();

@@ -15,8 +15,9 @@ namespace PTZPadController.DataAccessLayer
 
         public List<CameraConnexionModel> Cameras = new List<CameraConnexionModel>();
         public List<HIDGamePadModel> GamePads = new List<HIDGamePadModel>();
-        public Dictionary<string, short> CamSpeed;
+        public Dictionary<string, short> CamSpeed = new Dictionary<string, short>();
 
+        public Dictionary<string, WindowPositionModel> WindowsPosition = new Dictionary<string, WindowPositionModel>();
 
     }
 }

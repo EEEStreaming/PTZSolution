@@ -302,13 +302,9 @@ namespace UnitTestPTZPadController.BusinessLayer
         
         public ECameraFocusMode FocusMode()
         {
-            return ECameraFocusMode.Unknown;
+            return ECameraFocusMode.OnePush;
         }
 
-        void ICameraHandler.GetFocusMode()
-        {
-            throw new NotImplementedException();
-        }
 
         void ICameraHandler.ZoomTele(short zoomSpeed)
         {

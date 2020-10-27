@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PTZPadController.BusinessLayer
 {
@@ -144,7 +145,7 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-
+        #region Configuration settings
         public void UpdatePresetConfiguration(PresetEventArgs obj)
         {
             //CameraPreview = m_CameraList[0];//to test
@@ -192,6 +193,31 @@ namespace PTZPadController.BusinessLayer
             }
             return null;
         }
+
+        public void SaveWindowPosition(Window window, WindowPositionModel winPos)
+        {
+            string winClassName = window.GetType().Name;
+            if (m_Configuration.WindowsPosition.ContainsKey(winClassName))
+            {
+                m_Configuration.WindowsPosition[winClassName] = winPos;
+            }
+            else
+            {
+                m_Configuration.WindowsPosition.Add(winClassName, winPos);
+            }
+            ConfigurationFileParser.SaveConfiguration(m_Configuration, "Configuration.json");
+        }
+
+        public WindowPositionModel LoadWindowPosition(Window window)
+        {
+            string winClassName = window.GetType().Name;
+            if (m_Configuration.WindowsPosition.ContainsKey(winClassName))
+            {
+                return m_Configuration.WindowsPosition[winClassName];
+            }
+            return null;
+        }
+        #endregion
 
         public ECameraFocusMode GetCameraFocusMode(string name)
         {
@@ -743,5 +769,7 @@ namespace PTZPadController.BusinessLayer
                 }
             }
         }
+
+
     }
 }
