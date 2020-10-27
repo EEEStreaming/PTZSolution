@@ -237,95 +237,186 @@
       ]
     },
     {
-      "HidDeviceName": "Logitech Logitech RumblePad 2 USB",
-      "MappedCommands": [
-        {
-          "PTZCommand": "CameraPanTiltAxes",
-          "GamePadCommand": [
-            "GenericDesktopX",
-            "GenericDesktopY"
-          ]
-        },
-        {
-          "PTZCommand": "CameraZoomAxe",
-          "GamePadCommand": [
-            "GenericDesktopRz",
-            "GenericDesktopHatSwitch"
-          ]
-        },
-        {
-          "PTZCommand": "CameraPreset1",
-          "GamePadCommand": [
-            "Button5"
-          ]
-        },
-        {
-          "PTZCommand": "CameraPreset2",
-          "GamePadCommand": [
-            "Button6"
-          ]
-        },
-        {
-          "PTZCommand": "CameraPreset3",
-          "GamePadCommand": [
-            "Button7"
-          ]
-        },
-        {
-          "PTZCommand": "CameraPreset4",
-          "GamePadCommand": [
-            "Button8"
-          ]
-        },
-        {
-          "PTZCommand": "CameraPreset5",
-          "GamePadCommand": [
-            "Button9"
-          ]
-        },
-        {
-          "PTZCommand": "CameraPreset6",
-          "GamePadCommand": [
-            "Button10"
-          ]
-        },
-        {
-          "PTZCommand": "Camera1SetPreview",
-          "GamePadCommand": [
-            "Button1"
-          ]
-        },
-        {
-          "PTZCommand": "Camera2SetPreview",
-          "GamePadCommand": [
-            "Button2"
-          ]
-        },
-        {
-          "PTZCommand": "Camera3SetPreview",
-          "GamePadCommand": [
-            "Button3"
-          ]
-        },
-        {
-          "PTZCommand": "SwitcherCut",
-          "GamePadCommand": [
-            "Button4"
-          ]
-        },
-        {
-          "PTZCommand": "CameraFocusAutoOnePushSwitchMode",
-          "GamePadCommand": [
-            "Button11"
-          ]
-        },
-        {
-          "PTZCommand": "CameraFocusOnePushTriger",
-          "GamePadCommand": [
-            "Button12"
-          ]
-        }
-      ]
+        "HidDeviceName": "Logitech Logitech RumblePad 2 USB",
+        "MappedCommands": [
+            {
+                "PTZCommand": "CameraPanTiltAxes",
+                "GamePadCommand": [
+                    "GenericDesktopX",
+                    "GenericDesktopY"
+                ]
+            },
+            {
+                "PTZCommand": "CameraZoomAxe",
+                "GamePadCommand": [
+                    "GenericDesktopRz",
+                    "GenericDesktopHatSwitch"
+                ]
+            },
+            {
+                "PTZCommand": "CameraPreset1",
+                "GamePadCommand": [
+                    "Button5"
+                ]
+            },
+            {
+                "PTZCommand": "CameraPreset2",
+                "GamePadCommand": [
+                    "Button6"
+                ]
+            },
+            {
+                "PTZCommand": "CameraPreset3",
+                "GamePadCommand": [
+                    "Button7"
+                ]
+            },
+            {
+                "PTZCommand": "CameraPreset4",
+                "GamePadCommand": [
+                    "Button8"
+                ]
+            },
+            {
+                "PTZCommand": "CameraPreset5",
+                "GamePadCommand": [
+                    "Button9"
+                ]
+            },
+            {
+                "PTZCommand": "CameraPreset6",
+                "GamePadCommand": [
+                    "Button10"
+                ]
+            },
+            {
+                "PTZCommand": "Camera1SetPreview",
+                "GamePadCommand": [
+                    "Button1"
+                ]
+            },
+            {
+                "PTZCommand": "Camera2SetPreview",
+                "GamePadCommand": [
+                    "Button2"
+                ]
+            },
+            {
+                "PTZCommand": "Camera3SetPreview",
+                "GamePadCommand": [
+                    "Button3"
+                ]
+            },
+            {
+                "PTZCommand": "SwitcherCut",
+                "GamePadCommand": [
+                    "Button4"
+                ]
+            },
+            {
+                "PTZCommand": "CameraFocusAutoOnePushSwitchMode",
+                "GamePadCommand": [
+                    "Button11"
+                ]
+            },
+            {
+                "PTZCommand": "CameraFocusOnePushTriger",
+                "GamePadCommand": [
+                    "Button12"
+                ]
+            }
+        ]
+    },
+    {
+        "HidDeviceName": "Nintendo Wireless Gamepad",
+        "MappedCommands": [
+            {
+                "PTZCommand": "CameraPanTiltAxes",
+                "GamePadCommand": [
+                    "GenericDesktopX",
+                    "GenericDesktopY"
+                ]
+            },
+            {
+                "PTZCommand": "CameraZoomAxe",
+                "GamePadCommand": [
+                    "GenericDesktopRy",
+                    "GenericDesktopHatSwitch"
+                ]
+            },
+            {
+                "PTZCommand": "CameraPreset1",
+                "GamePadCommand": [
+                    "Button5"
+                ]
+            },
+            {
+                "PTZCommand": "CameraPreset2",
+                "GamePadCommand": [
+                    "Button6"
+                ]
+            },
+            {
+                "PTZCommand": "CameraPreset3",
+                "GamePadCommand": [
+                    "Button7"
+                ]
+            },
+            {
+                "PTZCommand": "CameraPreset4",
+                "GamePadCommand": [
+                    "Button8"
+                ]
+            },
+            {
+                "PTZCommand": "CameraPreset5",
+                "GamePadCommand": [
+                    "Button9"
+                ]
+            },
+            {
+                "PTZCommand": "CameraPreset6",
+                "GamePadCommand": [
+                    "Button10"
+                ]
+            },
+            {
+                "PTZCommand": "Camera1SetPreview",
+                "GamePadCommand": [
+                    "Button3"
+                ]
+            },
+            {
+                "PTZCommand": "Camera2SetPreview",
+                "GamePadCommand": [
+                    "Button1"
+                ]
+            },
+            {
+                "PTZCommand": "Camera3SetPreview",
+                "GamePadCommand": [
+                    "Button2"
+                ]
+            },
+            {
+                "PTZCommand": "SwitcherCut",
+                "GamePadCommand": [
+                    "Button4"
+                ]
+            },
+            {
+                "PTZCommand": "CameraFocusAutoOnePushSwitchMode",
+                "GamePadCommand": [
+                    "Button11"
+                ]
+            },
+            {
+                "PTZCommand": "CameraFocusOnePushTriger",
+                "GamePadCommand": [
+                    "Button12"
+                ]
+            }
+        ]
     }
   ],
 
