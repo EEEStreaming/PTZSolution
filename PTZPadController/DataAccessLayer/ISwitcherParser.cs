@@ -1,4 +1,5 @@
 ﻿using PTZPadController.Messages;
+using System.Collections.Generic;
 
 namespace PTZPadController.DataAccessLayer
 {
@@ -14,5 +15,6 @@ namespace PTZPadController.DataAccessLayer
         string GetCameraProgramName();
         string GetCameraPreviewName();
         bool FindCameraName(string cameraName);
+        void NextSwitcherPreview(List<string> cameraNames);
     }
 }

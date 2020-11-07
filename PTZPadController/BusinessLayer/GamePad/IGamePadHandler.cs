@@ -29,6 +29,7 @@ namespace PTZPadController.BusinessLayer
         void Camera2SetPreview(ButtonCommand button);
         void Camera3SetPreview(ButtonCommand button);
         void Camera4SetPreview(ButtonCommand button);
+        void NextCameraPreview(ButtonCommand button);
         void SwitcherCut(ButtonCommand button);
         void SwitcherMix(ButtonCommand button);
     }

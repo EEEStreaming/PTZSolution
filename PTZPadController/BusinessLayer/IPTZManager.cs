@@ -60,6 +60,8 @@ namespace PTZPadController.BusinessLayer
         void InitSeetings(ConfigurationModel cfg);
         void SendSwitcherTransition(TransitionEnum transition);
         void SetSwitcherPreview(string cameraName);
+        void NextSwitcherPreview();
+
         void UpdatePresetConfiguration(PresetEventArgs obj);
         List<PresetIconSettingModel> GetPresetSettingFromPreview();
         void AddGamePad(IGamePadHandler pad);

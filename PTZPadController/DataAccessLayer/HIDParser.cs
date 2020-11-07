@@ -258,6 +258,10 @@ namespace PTZPadController.DataAccessLayer
                                             btnSatus = GetButtonStatus(change.Value);
                                             _PadHandler.Camera4SetPreview(btnSatus);
                                             break;
+                                        case GamePadHandlerCommands.NextCameraPreview:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.NextCameraPreview(btnSatus);
+                                            break;
                                         case GamePadHandlerCommands.SwitcherCut:
                                             btnSatus = GetButtonStatus(change.Value);
                                             _PadHandler.SwitcherCut(btnSatus);

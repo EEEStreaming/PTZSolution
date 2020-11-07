@@ -54,6 +54,37 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
+        public void NextCameraPreview(ButtonCommand button)
+        {
+            if (button == ButtonCommand.Down && m_PtzManager.Cameras.Count >= 3)
+            {
+                if (App.Win != null)
+                    App.Win.Dispatcher.Invoke(() => m_PtzManager.NextSwitcherPreview());
+            }
+
+        }
+
+        public void SwitcherCut(ButtonCommand button)
+        {
+            if (button == ButtonCommand.Down)
+            {
+                if (App.Win != null)
+                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SendSwitcherTransition(Messages.TransitionEnum.Cut));
+            }
+
+        }
+
+        public void SwitcherMix(ButtonCommand button)
+        {
+            if (button == ButtonCommand.Down)
+            {
+                if (App.Win != null)
+                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SendSwitcherTransition(Messages.TransitionEnum.Mix));
+            }
+        }
+
+
+
         public void CameraFocusAutoMode(ButtonCommand button)
         {
             if (button == ButtonCommand.Down)
@@ -292,23 +323,6 @@ namespace PTZPadController.BusinessLayer
             m_PanState = new JoystickStateMachine();
         }
 
-        public void SwitcherCut(ButtonCommand button)
-        {
-            if (button == ButtonCommand.Down)
-            {
-                if (App.Win != null)
-                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SendSwitcherTransition(Messages.TransitionEnum.Cut));
-            }
 
-        }
-
-        public void SwitcherMix(ButtonCommand button)
-        {
-            if (button == ButtonCommand.Down)
-            {
-                if (App.Win != null)
-                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SendSwitcherTransition(Messages.TransitionEnum.Mix));
-            }
-        }
     }
 }

@@ -123,6 +123,9 @@ namespace PTZPadController.DataAccessLayer
         private string m_CurrentPreviewName;
 
         private string atem_ip;
+        private string lastCameraName;
+
+
         volatile private bool is_connecting;
         volatile private bool is_connected;
         private CancellationTokenSource m_Cancellation;
@@ -383,17 +386,17 @@ namespace PTZPadController.DataAccessLayer
         #endregion
         private void OnInTransitionChanged()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void UpdateSliderPosition()
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
 
         private void UpdateTransitionFramesRemaining()
         {
-            throw new NotImplementedException();
+          //  throw new NotImplementedException();
         }
 
 
@@ -403,6 +406,7 @@ namespace PTZPadController.DataAccessLayer
             long previewId;
 
             firstMixEffectBlock.GetPreviewInput(out previewId);
+            lastCameraName = m_CurrentPreviewName;
 
             AtemSourceMessageArgs args = new AtemSourceMessageArgs();
             args.PreviousInputName = m_CurrentPreviewName;
@@ -433,7 +437,32 @@ namespace PTZPadController.DataAccessLayer
                 {
                     var input = m_inputHDMIMonitors.FirstOrDefault(x => x.InputName == cameraName);
                     if (input != null)
+                    {
                         firstMixEffectBlock.SetPreviewInput(input.InputId);
+                    }
+                }
+            }
+        }
+
+        public void NextSwitcherPreview(List<string> cameraNames)
+        {
+            if (is_connected)
+            {
+                //we need this variable only if we have 4 cameras. With 3 we don't need it.
+                if (cameraNames.Count < 4)
+                    lastCameraName = String.Empty;
+
+                //Push the next free camera to preview
+                foreach (var name in cameraNames)
+                {
+                    if (name != m_CurrentProgramName && name != m_CurrentPreviewName && name != lastCameraName)
+                    {
+                        var input = m_inputHDMIMonitors.FirstOrDefault(x => x.InputName == name);
+                        if (input != null)
+                        {
+                            firstMixEffectBlock.SetPreviewInput(input.InputId);
+                        }
+                    }
                 }
             }
         }
@@ -521,5 +550,7 @@ namespace PTZPadController.DataAccessLayer
             return m_inputHDMIMonitors.FirstOrDefault(x => x.InputName == cameraName) != null;
             
         }
+
+
     }
 }

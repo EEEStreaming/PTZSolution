@@ -137,6 +137,11 @@ namespace UnitTestPTZPadController.BusinessLayer
             return Configuration.Cameras[iCamProgram].CameraName;
         }
 
+        public void NextSwitcherPreview(List<string> cameraNames)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SetPreviewSource(string cameraName)
         {
             throw new NotImplementedException();

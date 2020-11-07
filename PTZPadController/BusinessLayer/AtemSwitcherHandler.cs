@@ -70,6 +70,11 @@ namespace PTZPadController.BusinessLayer
             m_SwitcherParser.SetPreviewSource(cameraName);
         }
 
+        public void NextSwitcherPreview(List<string> cameraNames)
+        {
+            m_SwitcherParser.NextSwitcherPreview(cameraNames);
+        }
+
         public void StartTransition(TransitionEnum transition)
         {
             m_SwitcherParser.StartTransition(transition);
@@ -89,6 +94,8 @@ namespace PTZPadController.BusinessLayer
         {
             return m_SwitcherParser.FindCameraName(cameraName);
         }
+
+        
         #endregion
     }
 }

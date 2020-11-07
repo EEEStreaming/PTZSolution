@@ -1,5 +1,6 @@
 ﻿using PTZPadController.Messages;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static PTZPadController.BusinessLayer.AtemSwitcherHandler;
 
@@ -33,5 +34,6 @@ namespace PTZPadController.BusinessLayer
         public string GetCameraProgramName();
         public string GetCameraPreviewName();
         bool FindCameraName(string cameraName);
+        void NextSwitcherPreview(List<string> cameraNames);
     }
 }

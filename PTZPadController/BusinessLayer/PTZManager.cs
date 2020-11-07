@@ -27,6 +27,7 @@ namespace PTZPadController.BusinessLayer
         const short SPEED_MEDIUM = 6;
 
         private List<ICameraHandler> m_CameraList;
+        private List<string> m_CameraNameList;
         private ISwitcherHandler m_AtemHandler;
         private bool m_UseTallyGreen;
         private bool m_Initialized;
@@ -69,6 +70,13 @@ namespace PTZPadController.BusinessLayer
                 m_UseTallyGreen = cfg.UseTallyGreen;
                 m_Initialized = true;
                 m_Configuration = cfg;
+
+                m_CameraNameList = new List<string>();
+
+                foreach (var camera in m_Configuration.Cameras)
+                {
+                    m_CameraNameList.Add(camera.CameraName);
+                }
             }
         }
 
@@ -133,6 +141,16 @@ namespace PTZPadController.BusinessLayer
             if (m_IsStarted && m_AtemHandler != null)
                 m_AtemHandler.SetPreviewSource(cameraName);
         }
+
+        public void NextSwitcherPreview()
+        {
+            if (m_IsStarted && m_AtemHandler != null)
+            {
+                m_AtemHandler.NextSwitcherPreview(m_CameraNameList);
+
+            }
+        }
+
 
         private void AtemSourceChange(NotificationMessage<AtemSourceMessageArgs> msg)
         {
@@ -769,7 +787,6 @@ namespace PTZPadController.BusinessLayer
                 }
             }
         }
-
 
     }
 }

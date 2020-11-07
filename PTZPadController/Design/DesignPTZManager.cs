@@ -205,5 +205,10 @@ namespace PTZPadController.Design
         {
             throw new NotImplementedException();
         }
+
+        public void NextSwitcherPreview()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
