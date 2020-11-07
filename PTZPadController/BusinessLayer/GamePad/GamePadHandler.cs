@@ -56,7 +56,7 @@ namespace PTZPadController.BusinessLayer
 
         public void NextCameraPreview(ButtonCommand button)
         {
-            if (button == ButtonCommand.Down && m_PtzManager.Cameras.Count >= 3)
+            if (button == ButtonCommand.Down)
             {
                 if (App.Win != null)
                     App.Win.Dispatcher.Invoke(() => m_PtzManager.NextSwitcherPreview());

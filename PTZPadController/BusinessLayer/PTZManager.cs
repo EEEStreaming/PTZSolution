@@ -144,10 +144,10 @@ namespace PTZPadController.BusinessLayer
 
         public void NextSwitcherPreview()
         {
-            if (m_IsStarted && m_AtemHandler != null)
+            if (m_IsStarted && m_AtemHandler != null && m_CameraNameList.Count >= 3)
             {
+                //this feature make sens only if we have a least 3 cameras.
                 m_AtemHandler.NextSwitcherPreview(m_CameraNameList);
-
             }
         }
 
