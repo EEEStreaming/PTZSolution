@@ -31,16 +31,20 @@ namespace PTZPadController.BusinessLayer
             CurrentState = (AxisPosition.CENTER, AxisPosition.CENTER);
         }
 
-        public (AxisPosition, AxisPosition) GetNext(double x, double y)
+        public (AxisPosition, AxisPosition) GetNext(double x, double y, bool inverse_y)
         {
+            // Inverse Y Axis if needed
+            double y_converted = y;
+            if (!inverse_y)
+                y_converted = 1 - y;
             AxisPosition x_axis = ConvertValueToState(x);
-            AxisPosition y_axis = ConvertValueToState(1-y);
+            AxisPosition y_axis = ConvertValueToState(y_converted);
             return (x_axis, y_axis);
         }
 
-        public (AxisPosition, AxisPosition) MoveNext(double x, double y)
+        public (AxisPosition, AxisPosition) MoveNext(double x, double y, bool inverse_y)
         {
-            CurrentState = GetNext(x, y);
+            CurrentState = GetNext(x, y, inverse_y);
             return CurrentState;
         }
 

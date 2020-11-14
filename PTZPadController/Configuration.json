@@ -139,6 +139,24 @@
                 ]
             },
             {
+                "PTZCommand": "CameraProgramSetPreview",
+                "GamePadCommand": [
+                    "Button3"
+                ]
+            },
+            {
+                "PTZCommand": "CameraNextPreview",
+                "GamePadCommand": [
+                    "Button2"
+                ]
+            },
+            {
+                "PTZCommand": "SwitcherCut",
+                "GamePadCommand": [
+                    "Button1"
+                ]
+            },
+            {
                 "PTZCommand": "CameraPreset1",
                 "GamePadCommand": [
                     "Button5"
@@ -187,57 +205,27 @@
                 ]
             },
             {
-                "PTZCommand": "Camera1SetPreview",
+                "PTZCommand": "CameraFocusOnePushTriger",
                 "GamePadCommand": [
                     "Button14"
                 ]
             },
             {
-                "PTZCommand": "Camera2SetPreview",
+                "PTZCommand": "InverseYAxis",
                 "GamePadCommand": [
                     "Button15"
-                ]
-            },
-            {
-                "PTZCommand": "Camera3SetPreview",
-                "GamePadCommand": [
-                    "Button16"
-                ]
-            },
-            {
-                "PTZCommand": "CameraProgramSetPreview",
-                "GamePadCommand": [
-                    "Button3"
-                ]
-            },
-            {
-                "PTZCommand": "CameraNextPreview",
-                "GamePadCommand": [
-                    "Button2"
-                ]
-            },
-            {
-                "PTZCommand": "SwitcherCut",
-                "GamePadCommand": [
-                    "Button4"
-                ]
-            },
-            {
-                "PTZCommand": "CameraSetSensitivity",
-                "GamePadCommand": [
-                    "GenericDesktopSlider"
-                ]
-            },
-            {
-                "PTZCommand": "CameraFocusOnePushTriger",
-                "GamePadCommand": [
-                    "Button1"
                 ]
             },
             {
                 "PTZCommand": "CameraZoomAxe",
                 "GamePadCommand": [
                     "GenericDesktopHatSwitch"
+                ]
+            },
+            {
+                "PTZCommand": "CameraSetSensitivity",
+                "GamePadCommand": [
+                    "GenericDesktopSlider"
                 ]
             }
         ]
