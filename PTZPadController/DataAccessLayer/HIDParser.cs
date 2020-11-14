@@ -274,6 +274,10 @@ namespace PTZPadController.DataAccessLayer
                                             btnSatus = GetButtonStatus(change.Value);
                                             _PadHandler.SwitcherMix(btnSatus);
                                             break;
+                                        case GamePadHandlerCommands.CameraSetSensitivity:
+                                            // TODO check how to get value of Axe
+                                            _PadHandler.CameraSetSensitivity(change.Value);
+                                            break;
                                         default:
                                             break;
                                     }

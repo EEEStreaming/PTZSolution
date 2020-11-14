@@ -14,6 +14,8 @@ namespace PTZPadController.BusinessLayer
 
         public ICameraHandler CameraProgram { get; }
 
+        public short CameraSensitivity { get; set; }
+
         public System.Collections.Generic.List<ICameraHandler> Cameras { get; }
 
         void StartUp();

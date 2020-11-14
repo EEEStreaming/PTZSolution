@@ -39,6 +39,8 @@ namespace PTZPadController.BusinessLayer
         private PresetStatusEnum _PresetStatus;
         private CancellationTokenSource _PresetCancellationToken;
         private Task _currentWaitingTask;
+
+        private short m_CameraSensitivity;
         
 
         public ICameraHandler CameraPreview { get; private set; }
@@ -46,6 +48,8 @@ namespace PTZPadController.BusinessLayer
         public ICameraHandler CameraProgram { get; private set; }
 
         public List<ICameraHandler> Cameras { get { return m_CameraList; } }
+
+        public short CameraSensitivity { get => m_CameraSensitivity; set => m_CameraSensitivity = value; }
 
         #region Constructor
         /// <summary>
@@ -58,6 +62,7 @@ namespace PTZPadController.BusinessLayer
             m_Initialized = false;
             m_IsStarted = false;
             _PresetState = new Object();
+            m_CameraSensitivity = SPEED_MEDIUM;
         }
         #endregion
 
@@ -499,7 +504,13 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltUp(moveSpeed);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltUp(m_CameraSensitivity);
+                } else
+                {
+                    CameraPreview.PanTiltUp(moveSpeed);
+                }
             }
         }
 
@@ -507,7 +518,14 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltUpLeft(moveSpeed);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltUpLeft(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltUpLeft(moveSpeed);
+                }
             }
         }
 
@@ -515,7 +533,14 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltUpRight(moveSpeed);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltUpRight(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltUpRight(moveSpeed);
+                }
             }
         }
 
@@ -523,7 +548,14 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltDown(moveSpeed);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltDown(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltDown(moveSpeed);
+                }
             }
         }
 
@@ -531,7 +563,14 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltDownLeft(moveSpeed);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltDownLeft(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltDownLeft(moveSpeed);
+                }
             }
         }
 
@@ -539,7 +578,14 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltDownRight(moveSpeed);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltDownRight(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltDownRight(moveSpeed);
+                }
             }
         }
 
@@ -547,7 +593,14 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltLeft(moveSpeed);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltLeft(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltLeft(moveSpeed);
+                }
             }
         }
 
@@ -555,7 +608,14 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltRight(moveSpeed);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltRight(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltRight(moveSpeed);
+                }
             }
         }
 
@@ -595,7 +655,14 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.ZoomWide(zoomSpeed);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.ZoomWide(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.ZoomWide(zoomSpeed);
+                }
             }
         }
 
@@ -603,7 +670,14 @@ namespace PTZPadController.BusinessLayer
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.ZoomTele(zoomSpeed);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.ZoomTele(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.ZoomTele(zoomSpeed);
+                }
             }
         }
 

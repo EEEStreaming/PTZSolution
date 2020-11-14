@@ -313,6 +313,12 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
+        public void CameraSetSensitivity(double x)
+        {
+            // Values are sent for x by the joystick between 1 (min) and 0 (max)
+            m_PtzManager.CameraSensitivity = (short)(1 - (x * 5 + 1));
+        }
+
         public void ConnectTo()
         {
             m_HidParser.ExecuteAsync().ConfigureAwait(true);
