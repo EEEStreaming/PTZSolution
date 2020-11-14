@@ -321,6 +321,7 @@ namespace PTZPadController.BusinessLayer
                 return;
 
             CameraStatusMessageArgs args;
+            var lRed = CameraPreview == CameraProgram && CameraPreview !=null;
             if (CameraPreview != null)
             {
                 if (CameraPreview.PanTileWorking)
@@ -329,7 +330,7 @@ namespace PTZPadController.BusinessLayer
                 if (CameraPreview.ZoomWorking)
                     CameraPreview.ZoomStop();
 
-                var lRed = CameraPreview == CameraProgram;
+                
                 CameraPreview.Tally(lRed, false);
 
                 args = new CameraStatusMessageArgs { CameraName = CameraPreview.CameraName };
@@ -347,7 +348,7 @@ namespace PTZPadController.BusinessLayer
                 {
 
                     CameraPreview = cam;
-                    CameraPreview.Tally(false, m_UseTallyGreen);
+                    CameraPreview.Tally(lRed,lRed?false: m_UseTallyGreen);
 
                     args = new CameraStatusMessageArgs { CameraName = CameraPreview.CameraName, Status = CameraStatusEnum.Preview };
                     Messenger.Default.Send(new NotificationMessage<CameraStatusMessageArgs>(args, NotificationSource.CameraStatusChanged));
