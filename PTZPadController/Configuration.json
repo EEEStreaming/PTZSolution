@@ -211,13 +211,13 @@
                 ]
             },
             {
-                "PTZCommand": "SwitcherCut",
+                "PTZCommand": "CameraNextPreview",
                 "GamePadCommand": [
                     "Button2"
                 ]
             },
             {
-                "PTZCommand": "CameraFocusAutoOnePushSwitchMode",
+                "PTZCommand": "SwitcherCut",
                 "GamePadCommand": [
                     "Button4"
                 ]
@@ -225,7 +225,7 @@
             {
                 "PTZCommand": "CameraSetSensitivity",
                 "GamePadCommand": [
-                    "Slider"
+                    "GenericDesktopSlider"
                 ]
             },
             {

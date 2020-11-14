@@ -9,6 +9,7 @@ namespace PTZPadController.BusinessLayer
 {
     public interface IPTZManager
     {
+        public const short SPEED_MEDIUM = 6;
 
         public ICameraHandler CameraPreview { get; }
 
@@ -20,28 +21,18 @@ namespace PTZPadController.BusinessLayer
 
         void StartUp();
 
-        void CameraPanTiltUp();
-        void CameraPanTiltUpLeft();
-        void CameraPanTiltUpRight();
-        void CameraPanTiltDown();
-        void CameraPanTiltDownLeft();
-        void CameraPanTiltDownRight();
-        void CameraPanTiltLeft();
-        void CameraPanTiltRight();
-        void CameraPanTiltUp(short moveSpeed);
-        void CameraPanTiltUpLeft(short moveSpeed);
-        void CameraPanTiltUpRight(short moveSpeed);
-        void CameraPanTiltDown(short moveSpeed);
-        void CameraPanTiltDownLeft(short moveSpeed);
-        void CameraPanTiltDownRight(short moveSpeed);
-        void CameraPanTiltLeft(short moveSpeed);
-        void CameraPanTiltRight(short moveSpeed);
+        void CameraPanTiltUp(short moveSpeed = SPEED_MEDIUM);
+        void CameraPanTiltUpLeft(short moveSpeed = SPEED_MEDIUM);
+        void CameraPanTiltUpRight(short moveSpeed = SPEED_MEDIUM);
+        void CameraPanTiltDown(short moveSpeed = SPEED_MEDIUM);
+        void CameraPanTiltDownLeft(short moveSpeed = SPEED_MEDIUM);
+        void CameraPanTiltDownRight(short moveSpeed = SPEED_MEDIUM);
+        void CameraPanTiltLeft(short moveSpeed = SPEED_MEDIUM);
+        void CameraPanTiltRight(short moveSpeed = SPEED_MEDIUM);
         void CameraPanTiltStop();
         void CameraZoomStop();
-        void CameraZoomWide();
-        void CameraZoomTele();
-        void CameraZoomWide(short zoomSpeed);
-        void CameraZoomTele(short zoomSpeed);
+        void CameraZoomWide(short zoomSpeed = SPEED_MEDIUM);
+        void CameraZoomTele(short zoomSpeed = SPEED_MEDIUM);
         void CameraButtonPresetDown(int preset);
         void CameraButtonPresetUp(int preset);
 

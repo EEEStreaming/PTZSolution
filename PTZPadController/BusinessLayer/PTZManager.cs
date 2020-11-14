@@ -24,8 +24,7 @@ namespace PTZPadController.BusinessLayer
 
     public class PTZManager : IPTZManager
     {
-        const short SPEED_MEDIUM = 6;
-
+       
         private List<ICameraHandler> m_CameraList;
         private List<string> m_CameraNameList;
         private ISwitcherHandler m_AtemHandler;
@@ -39,6 +38,8 @@ namespace PTZPadController.BusinessLayer
         private PresetStatusEnum _PresetStatus;
         private CancellationTokenSource _PresetCancellationToken;
         private Task _currentWaitingTask;
+        private PanTiltCommand m_LastPanTilte;
+        private ZoomCommand m_LastZoom;
 
         private short m_CameraSensitivity;
         
@@ -49,7 +50,69 @@ namespace PTZPadController.BusinessLayer
 
         public List<ICameraHandler> Cameras { get { return m_CameraList; } }
 
-        public short CameraSensitivity { get => m_CameraSensitivity; set => m_CameraSensitivity = value; }
+        public short CameraSensitivity
+        {
+            get => m_CameraSensitivity; set
+            {
+                m_CameraSensitivity = value;
+
+                if (CameraPreview == CameraProgram)
+                {
+                    if (CameraProgram.PanTileWorking)
+                    {
+                        switch (m_LastPanTilte)
+                        {
+                            case PanTiltCommand.PanTitleStop:
+                                break;
+                            case PanTiltCommand.PanTiltUp:
+                                CameraPanTiltUp();
+                                break;
+                            case PanTiltCommand.PanTiltDown:
+                                CameraPanTiltDown();
+                                break;
+                            case PanTiltCommand.PanTiltLeft:
+                                CameraPanTiltLeft();
+                                break;
+                            case PanTiltCommand.PanTiltRight:
+                                CameraPanTiltRight();
+                                break;
+                            case PanTiltCommand.PanTiltUpLeft:
+                                CameraPanTiltUpLeft();
+                                break;
+                            case PanTiltCommand.PanTiltUpRight:
+                                CameraPanTiltUpRight();
+                                break;
+                            case PanTiltCommand.PanTiltDownLeft:
+                                CameraPanTiltDownLeft();
+                                break;
+                            case PanTiltCommand.PanTiltDownRight:
+                                CameraPanTiltDownRight();
+                                break;
+                            default:
+                                break;
+                        }
+                    } 
+
+                    if (CameraProgram.ZoomWorking)
+                    {
+                        switch (m_LastZoom)
+                        {
+                            case ZoomCommand.ZoomStop:
+                                break;
+                            case ZoomCommand.ZoomWide:
+                                CameraZoomWide();
+                                break;
+                            case ZoomCommand.ZoomTele:
+                                CameraZoomTele();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
+        }
 
         #region Constructor
         /// <summary>
@@ -62,7 +125,7 @@ namespace PTZPadController.BusinessLayer
             m_Initialized = false;
             m_IsStarted = false;
             _PresetState = new Object();
-            m_CameraSensitivity = SPEED_MEDIUM;
+            m_CameraSensitivity = IPTZManager.SPEED_MEDIUM;
         }
         #endregion
 
@@ -436,71 +499,9 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-        public void CameraPanTiltUp()
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltUp(SPEED_MEDIUM);
-            }
-        }
 
-        void IPTZManager.CameraPanTiltUpLeft()
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltUpLeft(SPEED_MEDIUM);
-            }
-        }
 
-        void IPTZManager.CameraPanTiltUpRight()
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltUpRight(SPEED_MEDIUM);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltDown()
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltDown(SPEED_MEDIUM);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltDownLeft()
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltDownLeft(SPEED_MEDIUM);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltDownRight()
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltDownRight(SPEED_MEDIUM);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltLeft()
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltLeft(SPEED_MEDIUM);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltRight()
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltRight(SPEED_MEDIUM);
-            }
-        }
-
-        public void CameraPanTiltUp(short moveSpeed)
+        public void CameraPanTiltUp(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
@@ -511,10 +512,11 @@ namespace PTZPadController.BusinessLayer
                 {
                     CameraPreview.PanTiltUp(moveSpeed);
                 }
+                m_LastPanTilte = PanTiltCommand.PanTiltUp;
             }
         }
 
-        void IPTZManager.CameraPanTiltUpLeft(short moveSpeed)
+        public void CameraPanTiltUpLeft(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
@@ -526,10 +528,11 @@ namespace PTZPadController.BusinessLayer
                 {
                     CameraPreview.PanTiltUpLeft(moveSpeed);
                 }
+                m_LastPanTilte = PanTiltCommand.PanTiltUpLeft;
             }
         }
 
-        void IPTZManager.CameraPanTiltUpRight(short moveSpeed)
+        public void CameraPanTiltUpRight(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
@@ -541,10 +544,11 @@ namespace PTZPadController.BusinessLayer
                 {
                     CameraPreview.PanTiltUpRight(moveSpeed);
                 }
+                m_LastPanTilte = PanTiltCommand.PanTiltUpRight;
             }
         }
 
-        void IPTZManager.CameraPanTiltDown(short moveSpeed)
+        public void CameraPanTiltDown(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
@@ -556,10 +560,11 @@ namespace PTZPadController.BusinessLayer
                 {
                     CameraPreview.PanTiltDown(moveSpeed);
                 }
+                m_LastPanTilte = PanTiltCommand.PanTiltDown;
             }
         }
 
-        void IPTZManager.CameraPanTiltDownLeft(short moveSpeed)
+        public void CameraPanTiltDownLeft(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
@@ -571,10 +576,11 @@ namespace PTZPadController.BusinessLayer
                 {
                     CameraPreview.PanTiltDownLeft(moveSpeed);
                 }
+                m_LastPanTilte = PanTiltCommand.PanTiltDownLeft;
             }
         }
 
-        void IPTZManager.CameraPanTiltDownRight(short moveSpeed)
+        public void CameraPanTiltDownRight(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
@@ -586,10 +592,11 @@ namespace PTZPadController.BusinessLayer
                 {
                     CameraPreview.PanTiltDownRight(moveSpeed);
                 }
+                m_LastPanTilte = PanTiltCommand.PanTiltDownRight;
             }
         }
 
-        void IPTZManager.CameraPanTiltLeft(short moveSpeed)
+        public void CameraPanTiltLeft(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
@@ -601,10 +608,11 @@ namespace PTZPadController.BusinessLayer
                 {
                     CameraPreview.PanTiltLeft(moveSpeed);
                 }
+                m_LastPanTilte = PanTiltCommand.PanTiltLeft;
             }
         }
 
-        void IPTZManager.CameraPanTiltRight(short moveSpeed)
+        public void CameraPanTiltRight(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
@@ -616,14 +624,16 @@ namespace PTZPadController.BusinessLayer
                 {
                     CameraPreview.PanTiltRight(moveSpeed);
                 }
+                m_LastPanTilte = PanTiltCommand.PanTiltRight;
             }
         }
 
-        void IPTZManager.CameraPanTiltStop()
+        public void CameraPanTiltStop()
         {
             if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.PanTiltStop();
+                m_LastPanTilte = PanTiltCommand.PanTitleStop;
             }
         }
 
@@ -632,26 +642,11 @@ namespace PTZPadController.BusinessLayer
             if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.ZoomStop();
+                m_LastZoom = ZoomCommand.ZoomStop;
             }
         }
 
-        public void CameraZoomWide()
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.ZoomWide();
-            }
-        }
-
-        public void CameraZoomTele()
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.ZoomTele();
-            }
-        }
-
-        public void CameraZoomWide(short zoomSpeed)
+        public void CameraZoomWide(short zoomSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
@@ -663,10 +658,11 @@ namespace PTZPadController.BusinessLayer
                 {
                     CameraPreview.ZoomWide(zoomSpeed);
                 }
+                m_LastZoom = ZoomCommand.ZoomWide;
             }
         }
 
-        public void CameraZoomTele(short zoomSpeed)
+        public void CameraZoomTele(short zoomSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
@@ -678,6 +674,8 @@ namespace PTZPadController.BusinessLayer
                 {
                     CameraPreview.ZoomTele(zoomSpeed);
                 }
+                m_LastZoom = ZoomCommand.ZoomTele;
+
             }
         }
 

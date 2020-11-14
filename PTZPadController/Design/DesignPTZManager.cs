@@ -18,6 +18,7 @@ namespace PTZPadController.Design
         public ICameraHandler CameraProgram { get; set; }
 
         public List<ICameraHandler> Cameras { get; set; }
+        public short CameraSensitivity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void AddCameraHandler(ICameraHandler camHandler)
         {
@@ -31,11 +32,6 @@ namespace PTZPadController.Design
         public void CameraButtonPresetDown(int preset)
         {
             throw new NotImplementedException();
-        }
-
-        public void CameraPanTiltUp()
-        {
-            //
         }
 
         public void CameraButtonPresetUp(int preset)
@@ -91,38 +87,6 @@ namespace PTZPadController.Design
         public void UpdatePresetConfiguration(PresetEventArgs obj)
         {
             throw new NotImplementedException();
-        }
-
-        void IPTZManager.CameraPanTiltDown()
-        {
-        }
-
-        void IPTZManager.CameraPanTiltDownLeft()
-        {
-        }
-
-        void IPTZManager.CameraPanTiltDownRight()
-        {
-        }
-
-        void IPTZManager.CameraPanTiltLeft()
-        {
-        }
-
-        void IPTZManager.CameraPanTiltRight()
-        {
-        }
-
-        void IPTZManager.CameraPanTiltStop()
-        {
-        }
-
-        void IPTZManager.CameraPanTiltUpLeft()
-        {
-        }
-
-        void IPTZManager.CameraPanTiltUpRight()
-        {
         }
 
         public void CameraFocusModeAuto()
@@ -207,6 +171,11 @@ namespace PTZPadController.Design
         }
 
         public void NextSwitcherPreview()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CameraPanTiltStop()
         {
             throw new NotImplementedException();
         }
