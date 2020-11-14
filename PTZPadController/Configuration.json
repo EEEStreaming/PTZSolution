@@ -145,6 +145,12 @@
                 ]
             },
             {
+                "PTZCommand": "CameraFocusOnePushTriger",
+                "GamePadCommand": [
+                    "Button4"
+                ]
+            },
+            {
                 "PTZCommand": "CameraNextPreview",
                 "GamePadCommand": [
                     "Button2"
@@ -205,7 +211,7 @@
                 ]
             },
             {
-                "PTZCommand": "CameraFocusOnePushTriger",
+                "PTZCommand": "CameraFocusAutoOnePushSwitchMode",
                 "GamePadCommand": [
                     "Button14"
                 ]

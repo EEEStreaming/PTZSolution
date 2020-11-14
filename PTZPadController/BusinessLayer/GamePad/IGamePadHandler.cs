@@ -37,6 +37,7 @@ namespace PTZPadController.BusinessLayer
 
         void SwitcherCut(ButtonCommand button);
         void SwitcherMix(ButtonCommand button);
+        bool InverseY { get; }
     }
 
     public enum ButtonCommand

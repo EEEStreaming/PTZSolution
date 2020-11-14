@@ -247,8 +247,9 @@ namespace PTZPadController.ViewModel
             MessengerInstance.Register<NotificationMessage<CameraStatusMessageArgs>>(this, CameraStatusChange);
             MessengerInstance.Register<NotificationMessage<CameraFocusModeMessageArgs>>(this, CameraFocusModeChange);
             MessengerInstance.Register<NotificationMessage<ISwitcherParser>>(this, SwitcherNotification);
-            MessengerInstance.Register<NotificationMessage<IHIDParser>>(this, GamePadNotification);
+            MessengerInstance.Register<NotificationMessage<IHIDParser>>(this, HIDPNotification);
             MessengerInstance.Register<PresetStatusEnum>(this, PresetStatusNotification);
+            MessengerInstance.Register<NotificationMessage<IGamePadHandler>>(this, GamePadNotification);
 
 
             //Startup the whole system 
@@ -397,7 +398,7 @@ namespace PTZPadController.ViewModel
                 }
         }
 
-        private void GamePadNotification(NotificationMessage<IHIDParser> obj)
+        private void HIDPNotification(NotificationMessage<IHIDParser> obj)
         {
             if (obj != null && obj.Content != null)
                 if (obj.Notification == NotificationSource.GamePadConnected)
@@ -405,6 +406,16 @@ namespace PTZPadController.ViewModel
                     Pad.Connected = obj.Content.Connected;
                 }
         }
+
+        private void GamePadNotification(NotificationMessage<IGamePadHandler> obj)
+        {
+            if (obj != null && obj.Content != null)
+                if (obj.Notification == NotificationSource.InverseYAxis)
+                {
+                    Pad.InverseAxeY = obj.Content.InverseY;
+                }
+        }
+
         private void PresetStatusNotification(PresetStatusEnum obj)
         {
             PresetStatus = obj;

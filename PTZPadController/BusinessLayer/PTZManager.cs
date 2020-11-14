@@ -125,7 +125,7 @@ namespace PTZPadController.BusinessLayer
             m_Initialized = false;
             m_IsStarted = false;
             _PresetState = new Object();
-            m_CameraSensitivity = IPTZManager.SPEED_MEDIUM;
+            m_CameraSensitivity = 0;
         }
         #endregion
 

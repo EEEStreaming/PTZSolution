@@ -1,4 +1,6 @@
-﻿using PTZPadController.DataAccessLayer;
+﻿using GalaSoft.MvvmLight.Messaging;
+using PTZPadController.DataAccessLayer;
+using PTZPadController.Messages;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +22,8 @@ namespace PTZPadController.BusinessLayer
 
         private bool m_InverseY;
         private short m_CurrentSensitivity;
+
+        public bool InverseY { get => m_InverseY; }
 
         public void Camera1SetPreview(ButtonCommand button)
         {
@@ -328,7 +332,7 @@ namespace PTZPadController.BusinessLayer
         public void CameraSetSensitivity(double x)
         {
             // Values are sent for x by the joystick between 1 (min) and 0 (max)
-            m_PtzManager.CameraSensitivity = (short)((1 - x) * 5 + 1);
+            m_PtzManager.CameraSensitivity = (short)((1 - x/2) * 5 + 1);
         }
 
         public void CameraNextSensitivity(ButtonCommand button)
@@ -344,7 +348,7 @@ namespace PTZPadController.BusinessLayer
                 {
                     m_CurrentSensitivity = m_CamSpeed["PanSpeedLow"];
                 }
-                m_PtzManager.CameraSensitivity = m_CurrentSensitivity;
+                m_PtzManager.CameraSensitivity = (short)(m_CurrentSensitivity/2);
             }
         }
 
@@ -353,7 +357,8 @@ namespace PTZPadController.BusinessLayer
             if (button == ButtonCommand.Down)
             {
                 m_InverseY = !m_InverseY;
-                // TODO update interface
+                // Update interface
+                Messenger.Default.Send(new NotificationMessage<IGamePadHandler>(this, NotificationSource.InverseYAxis));
             }
         }
 
