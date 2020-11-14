@@ -771,7 +771,7 @@ namespace PTZPadController.BusinessLayer
 
         private void CameraCallPreset(int preset)
         {
-            if (m_IsStarted && CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null && CameraPreview != CameraProgram)
             {
                 CameraPreview.CameraMemoryRecall((short)preset);
             }
@@ -779,7 +779,7 @@ namespace PTZPadController.BusinessLayer
 
         private void CameraSetPreset(int preset)
         {
-            if (m_IsStarted && CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null && CameraPreview != CameraProgram)
                 CameraPreview.CameraMemorySet((short)preset);
         }
 
