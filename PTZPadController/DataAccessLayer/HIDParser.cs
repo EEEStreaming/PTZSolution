@@ -24,6 +24,7 @@ namespace PTZPadController.DataAccessLayer
 {
     public class HIDParser : IHIDParser
     {
+        private const int MAX_SIMULTANEOUS_COMMANDS = 7;
         private IGamePadHandler _PadHandler;
         private List<HIDGamePadModel> _ConfigGamePad;
         private TaskCompletionSource<bool> _DisconnectTcs;
@@ -120,7 +121,10 @@ namespace PTZPadController.DataAccessLayer
                 .Subscribe(changes =>
                 {
                     // Log the changes and look for a press of Button 1 on any controller.
-                   
+                   if (changes.Count > MAX_SIMULTANEOUS_COMMANDS)
+                    {
+                        return;
+                    }
                     foreach (var group in changes.GroupBy(c => c.Control.Device))
                     {
                         var padCfg = _ConfigGamePad.FirstOrDefault(g => g.HidDeviceName == group.Key.Name);
@@ -276,6 +280,10 @@ namespace PTZPadController.DataAccessLayer
                                             break;
                                         case GamePadHandlerCommands.CameraSetSensitivity:
                                             _PadHandler.CameraSetSensitivity(change.Value);
+                                            break;
+                                        case GamePadHandlerCommands.CameraNextSensitivity:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraNextSensitivity(btnSatus);
                                             break;
                                         case GamePadHandlerCommands.InverseYAxis:
                                             btnSatus = GetButtonStatus(change.Value);
