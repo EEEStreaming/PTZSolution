@@ -18,6 +18,8 @@ namespace PTZPadController.BusinessLayer
         private JoystickStateMachine m_ZoomState;
         private JoystickStateMachine m_PanState;
 
+        private bool m_InverseY;
+
         public void Camera1SetPreview(ButtonCommand button)
         {
             if (button == ButtonCommand.Down && m_PtzManager.Cameras.Count >= 1)
@@ -59,7 +61,16 @@ namespace PTZPadController.BusinessLayer
             if (button == ButtonCommand.Down)
             {
                 if (App.Win != null)
-                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SetSwitcherPreview(m_PtzManager.CameraProgram.CameraName));
+                {
+                    if (m_PtzManager.CameraPreview == m_PtzManager.CameraProgram)
+                    {
+                        this.CameraNextPreview(button);
+
+                    } else
+                    {
+                        App.Win.Dispatcher.Invoke(() => m_PtzManager.SetSwitcherPreview(m_PtzManager.CameraProgram.CameraName));
+                    }
+                }
             }
         }
 
@@ -120,7 +131,7 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraPanTiltAxes(double x, double y)
         {
-            if (m_PanState.CurrentState != m_PanState.MoveNext(x, y))
+            if (m_PanState.CurrentState != m_PanState.MoveNext(x, y, m_InverseY))
             {
                 switch(m_PanState.CurrentState)
                 {
@@ -284,7 +295,7 @@ namespace PTZPadController.BusinessLayer
 
         public void CameraZoomAxe(double y)
         {
-            if (m_ZoomState.CurrentState != m_ZoomState.MoveNext(0.5, y))
+            if (m_ZoomState.CurrentState != m_ZoomState.MoveNext(0.5, y, false))
             {
                 switch (m_ZoomState.CurrentState.Item2)
                 {
@@ -319,6 +330,15 @@ namespace PTZPadController.BusinessLayer
             m_PtzManager.CameraSensitivity = (short)((1 - x) * 5 + 1);
         }
 
+        public void InverseYAxis(ButtonCommand button)
+        {
+            if (button == ButtonCommand.Down)
+            {
+                m_InverseY = !m_InverseY;
+                // TODO update interface
+            }
+        }
+
         public void ConnectTo()
         {
             m_HidParser.ExecuteAsync().ConfigureAwait(true);
@@ -336,8 +356,7 @@ namespace PTZPadController.BusinessLayer
             m_CamSpeed = camSpeed;
             m_ZoomState = new JoystickStateMachine();
             m_PanState = new JoystickStateMachine();
+            m_InverseY = false;
         }
-
-
     }
 }

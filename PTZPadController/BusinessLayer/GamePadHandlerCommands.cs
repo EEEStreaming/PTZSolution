@@ -29,5 +29,6 @@ namespace PTZPadController.BusinessLayer
         CameraSetSensitivity,
         SwitcherCut,
         SwitcherMix,
+        InverseYAxis,
     }
 }
