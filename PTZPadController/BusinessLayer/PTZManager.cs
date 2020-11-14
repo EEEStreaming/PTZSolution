@@ -125,7 +125,7 @@ namespace PTZPadController.BusinessLayer
             m_Initialized = false;
             m_IsStarted = false;
             _PresetState = new Object();
-            m_CameraSensitivity = IPTZManager.SPEED_MEDIUM;
+            m_CameraSensitivity = 0;
         }
         #endregion
 
@@ -772,7 +772,7 @@ namespace PTZPadController.BusinessLayer
 
         private void CameraCallPreset(int preset)
         {
-            if (m_IsStarted && CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null && CameraPreview != CameraProgram)
             {
                 CameraPreview.CameraMemoryRecall((short)preset);
             }
@@ -780,7 +780,7 @@ namespace PTZPadController.BusinessLayer
 
         private void CameraSetPreset(int preset)
         {
-            if (m_IsStarted && CameraPreview != null)
+            if (m_IsStarted && CameraPreview != null && CameraPreview != CameraProgram)
                 CameraPreview.CameraMemorySet((short)preset);
         }
 

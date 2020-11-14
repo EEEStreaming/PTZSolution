@@ -18,9 +18,9 @@ namespace PTZPadController.BusinessLayer
         // Change these values if you like to change the detection zones (maybe these could be put in config)
         const double POSITIVE_FAR = 0.9;
         const double POSITIVE_MEDIUM = 0.8;
-        const double POSITIVE_CLOSE = 0.55;
+        const double POSITIVE_CLOSE = 0.575;
         
-        const double NEGATIVE_CLOSE = 0.45;
+        const double NEGATIVE_CLOSE = 0.425;
         const double NEGATIVE_MEDIUM = 0.2;
         const double NEGATIVE_FAR = 0.1;
 
