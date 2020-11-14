@@ -54,7 +54,16 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-        public void NextCameraPreview(ButtonCommand button)
+        public void CameraProgramSetPreview(ButtonCommand button)
+        {
+            if (button == ButtonCommand.Down)
+            {
+                if (App.Win != null)
+                    App.Win.Dispatcher.Invoke(() => m_PtzManager.SetSwitcherPreview(m_PtzManager.CameraProgram.CameraName));
+            }
+        }
+
+        public void CameraNextPreview(ButtonCommand button)
         {
             if (button == ButtonCommand.Down)
             {
