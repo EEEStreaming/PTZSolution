@@ -250,72 +250,61 @@
             {
                 "PTZCommand": "CameraPreset1",
                 "GamePadCommand": [
-                    "Button5"
+                    "Button1"
                 ]
             },
             {
                 "PTZCommand": "CameraPreset2",
                 "GamePadCommand": [
-                    "Button6"
+                    "Button2"
                 ]
             },
             {
                 "PTZCommand": "CameraPreset3",
                 "GamePadCommand": [
-                    "Button7"
+                    "Button3"
                 ]
             },
             {
                 "PTZCommand": "CameraPreset4",
                 "GamePadCommand": [
-                    "Button8"
-                ]
-            },
-            {
-                "PTZCommand": "CameraPreset5",
-                "GamePadCommand": [
-                    "Button9"
-                ]
-            },
-            {
-                "PTZCommand": "CameraPreset6",
-                "GamePadCommand": [
-                    "Button10"
-                ]
-            },
-            {
-                "PTZCommand": "Camera1SetPreview",
-                "GamePadCommand": [
-                    "Button1"
-                ]
-            },
-            {
-                "PTZCommand": "Camera2SetPreview",
-                "GamePadCommand": [
-                    "Button2"
-                ]
-            },
-            {
-                "PTZCommand": "Camera3SetPreview",
-                "GamePadCommand": [
-                    "Button3"
-                ]
-            },
-            {
-                "PTZCommand": "SwitcherCut",
-                "GamePadCommand": [
                     "Button4"
                 ]
             },
             {
-                "PTZCommand": "CameraFocusAutoOnePushSwitchMode",
+                "PTZCommand": "CameraProgramSetPreview",
                 "GamePadCommand": [
-                    "Button11"
+                    "Button5"
                 ]
             },
             {
                 "PTZCommand": "CameraFocusOnePushTriger",
                 "GamePadCommand": [
+                    "Button6"
+                ]
+            },
+            {
+                "PTZCommand": "CameraNextPreview",
+                "GamePadCommand": [
+                    "Button7"
+                ]
+            },
+            {
+                "PTZCommand": "SwitcherCut",
+                "GamePadCommand": [
+                    "Button8"
+                ]
+            },
+            {
+                "PTZCommand": "CameraFocusAutoOnePushSwitchMode",
+                "GamePadCommand": [
+                    "Button9"
+                ]
+            },
+            {
+                "PTZCommand": "InverseYAxis",
+                "GamePadCommand": [
+                    "Button11",
                     "Button12"
                 ]
             }
@@ -341,72 +330,61 @@
             {
                 "PTZCommand": "CameraPreset1",
                 "GamePadCommand": [
-                    "Button5"
+                    "Button3"
                 ]
             },
             {
                 "PTZCommand": "CameraPreset2",
                 "GamePadCommand": [
-                    "Button6"
+                    "Button1"
                 ]
             },
             {
                 "PTZCommand": "CameraPreset3",
                 "GamePadCommand": [
-                    "Button7"
+                    "Button2"
                 ]
             },
             {
                 "PTZCommand": "CameraPreset4",
                 "GamePadCommand": [
-                    "Button8"
-                ]
-            },
-            {
-                "PTZCommand": "CameraPreset5",
-                "GamePadCommand": [
-                    "Button9"
-                ]
-            },
-            {
-                "PTZCommand": "CameraPreset6",
-                "GamePadCommand": [
-                    "Button10"
+                    "Button4"
                 ]
             },
             {
                 "PTZCommand": "CameraProgramSetPreview",
                 "GamePadCommand": [
-                    "Button3"
-                ]
-            },
-            {
-                "PTZCommand": "CameraNextPreview",
-                "GamePadCommand": [
-                    "Button1"
-                ]
-            },
-            {
-                "PTZCommand": "SwitcherCut",
-                "GamePadCommand": [
-                    "Button2"
-                ]
-            },
-            {
-                "PTZCommand": "SwitcherCut",
-                "GamePadCommand": [
-                    "Button4"
-                ]
-            },
-            {
-                "PTZCommand": "CameraFocusAutoOnePushSwitchMode",
-                "GamePadCommand": [
-                    "Button11"
+                    "Button5"
                 ]
             },
             {
                 "PTZCommand": "CameraFocusOnePushTriger",
                 "GamePadCommand": [
+                    "Button6"
+                ]
+            },
+            {
+                "PTZCommand": "CameraNextPreview",
+                "GamePadCommand": [
+                    "Button7"
+                ]
+            },
+            {
+                "PTZCommand": "SwitcherCut",
+                "GamePadCommand": [
+                    "Button8"
+                ]
+            },
+            {
+                "PTZCommand": "CameraFocusAutoOnePushSwitchMode",
+                "GamePadCommand": [
+                    "Button9"
+                ]
+            },
+            {
+                "PTZCommand": "InverseYAxis",
+                "GamePadCommand": [
+                    "Button11",
                     "Button12"
                 ]
             }
