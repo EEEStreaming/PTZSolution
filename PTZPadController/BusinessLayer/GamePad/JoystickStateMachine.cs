@@ -18,9 +18,9 @@ namespace PTZPadController.BusinessLayer
         // Change these values if you like to change the detection zones (maybe these could be put in config)
         const double POSITIVE_FAR = 0.9;
         const double POSITIVE_MEDIUM = 0.8;
-        const double POSITIVE_CLOSE = 0.6;
+        const double POSITIVE_CLOSE = 0.55;
         
-        const double NEGATIVE_CLOSE = 0.4;
+        const double NEGATIVE_CLOSE = 0.45;
         const double NEGATIVE_MEDIUM = 0.2;
         const double NEGATIVE_FAR = 0.1;
 
@@ -31,16 +31,20 @@ namespace PTZPadController.BusinessLayer
             CurrentState = (AxisPosition.CENTER, AxisPosition.CENTER);
         }
 
-        public (AxisPosition, AxisPosition) GetNext(double x, double y)
+        public (AxisPosition, AxisPosition) GetNext(double x, double y, bool inverse_y)
         {
+            // Inverse Y Axis if needed
+            double y_converted = y;
+            if (!inverse_y)
+                y_converted = 1 - y;
             AxisPosition x_axis = ConvertValueToState(x);
-            AxisPosition y_axis = ConvertValueToState(1-y);
+            AxisPosition y_axis = ConvertValueToState(y_converted);
             return (x_axis, y_axis);
         }
 
-        public (AxisPosition, AxisPosition) MoveNext(double x, double y)
+        public (AxisPosition, AxisPosition) MoveNext(double x, double y, bool inverse_y)
         {
-            CurrentState = GetNext(x, y);
+            CurrentState = GetNext(x, y, inverse_y);
             return CurrentState;
         }
 

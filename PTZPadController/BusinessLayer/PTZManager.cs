@@ -24,8 +24,7 @@ namespace PTZPadController.BusinessLayer
 
     public class PTZManager : IPTZManager
     {
-        const short SPEED_MEDIUM = 6;
-
+       
         private List<ICameraHandler> m_CameraList;
         private List<string> m_CameraNameList;
         private ISwitcherHandler m_AtemHandler;
@@ -39,6 +38,10 @@ namespace PTZPadController.BusinessLayer
         private PresetStatusEnum _PresetStatus;
         private CancellationTokenSource _PresetCancellationToken;
         private Task _currentWaitingTask;
+        private PanTiltCommand m_LastPanTilte;
+        private ZoomCommand m_LastZoom;
+
+        private short m_CameraSensitivity;
         
 
         public ICameraHandler CameraPreview { get; private set; }
@@ -46,6 +49,70 @@ namespace PTZPadController.BusinessLayer
         public ICameraHandler CameraProgram { get; private set; }
 
         public List<ICameraHandler> Cameras { get { return m_CameraList; } }
+
+        public short CameraSensitivity
+        {
+            get => m_CameraSensitivity; set
+            {
+                m_CameraSensitivity = value;
+
+                if (CameraPreview == CameraProgram)
+                {
+                    if (CameraProgram.PanTileWorking)
+                    {
+                        switch (m_LastPanTilte)
+                        {
+                            case PanTiltCommand.PanTitleStop:
+                                break;
+                            case PanTiltCommand.PanTiltUp:
+                                CameraPanTiltUp();
+                                break;
+                            case PanTiltCommand.PanTiltDown:
+                                CameraPanTiltDown();
+                                break;
+                            case PanTiltCommand.PanTiltLeft:
+                                CameraPanTiltLeft();
+                                break;
+                            case PanTiltCommand.PanTiltRight:
+                                CameraPanTiltRight();
+                                break;
+                            case PanTiltCommand.PanTiltUpLeft:
+                                CameraPanTiltUpLeft();
+                                break;
+                            case PanTiltCommand.PanTiltUpRight:
+                                CameraPanTiltUpRight();
+                                break;
+                            case PanTiltCommand.PanTiltDownLeft:
+                                CameraPanTiltDownLeft();
+                                break;
+                            case PanTiltCommand.PanTiltDownRight:
+                                CameraPanTiltDownRight();
+                                break;
+                            default:
+                                break;
+                        }
+                    } 
+
+                    if (CameraProgram.ZoomWorking)
+                    {
+                        switch (m_LastZoom)
+                        {
+                            case ZoomCommand.ZoomStop:
+                                break;
+                            case ZoomCommand.ZoomWide:
+                                CameraZoomWide();
+                                break;
+                            case ZoomCommand.ZoomTele:
+                                CameraZoomTele();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
+        }
 
         #region Constructor
         /// <summary>
@@ -58,6 +125,7 @@ namespace PTZPadController.BusinessLayer
             m_Initialized = false;
             m_IsStarted = false;
             _PresetState = new Object();
+            m_CameraSensitivity = IPTZManager.SPEED_MEDIUM;
         }
         #endregion
 
@@ -253,6 +321,7 @@ namespace PTZPadController.BusinessLayer
                 return;
 
             CameraStatusMessageArgs args;
+            var lRed = CameraPreview !=null && CameraProgram != null && CameraPreview == CameraProgram ;
             if (CameraPreview != null)
             {
                 if (CameraPreview.PanTileWorking)
@@ -261,7 +330,7 @@ namespace PTZPadController.BusinessLayer
                 if (CameraPreview.ZoomWorking)
                     CameraPreview.ZoomStop();
 
-                var lRed = CameraPreview == CameraProgram;
+                
                 CameraPreview.Tally(lRed, false);
 
                 args = new CameraStatusMessageArgs { CameraName = CameraPreview.CameraName };
@@ -279,7 +348,7 @@ namespace PTZPadController.BusinessLayer
                 {
 
                     CameraPreview = cam;
-                    CameraPreview.Tally(false, m_UseTallyGreen);
+                    CameraPreview.Tally(lRed,lRed?false: m_UseTallyGreen);
 
                     args = new CameraStatusMessageArgs { CameraName = CameraPreview.CameraName, Status = CameraStatusEnum.Preview };
                     Messenger.Default.Send(new NotificationMessage<CameraStatusMessageArgs>(args, NotificationSource.CameraStatusChanged));
@@ -431,139 +500,141 @@ namespace PTZPadController.BusinessLayer
             }
         }
 
-        public void CameraPanTiltUp()
+
+
+        public void CameraPanTiltUp(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltUp(SPEED_MEDIUM);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltUp(m_CameraSensitivity);
+                } else
+                {
+                    CameraPreview.PanTiltUp(moveSpeed);
+                }
+                m_LastPanTilte = PanTiltCommand.PanTiltUp;
             }
         }
 
-        void IPTZManager.CameraPanTiltUpLeft()
+        public void CameraPanTiltUpLeft(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltUpLeft(SPEED_MEDIUM);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltUpLeft(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltUpLeft(moveSpeed);
+                }
+                m_LastPanTilte = PanTiltCommand.PanTiltUpLeft;
             }
         }
 
-        void IPTZManager.CameraPanTiltUpRight()
+        public void CameraPanTiltUpRight(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltUpRight(SPEED_MEDIUM);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltUpRight(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltUpRight(moveSpeed);
+                }
+                m_LastPanTilte = PanTiltCommand.PanTiltUpRight;
             }
         }
 
-        void IPTZManager.CameraPanTiltDown()
+        public void CameraPanTiltDown(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltDown(SPEED_MEDIUM);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltDown(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltDown(moveSpeed);
+                }
+                m_LastPanTilte = PanTiltCommand.PanTiltDown;
             }
         }
 
-        void IPTZManager.CameraPanTiltDownLeft()
+        public void CameraPanTiltDownLeft(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltDownLeft(SPEED_MEDIUM);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltDownLeft(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltDownLeft(moveSpeed);
+                }
+                m_LastPanTilte = PanTiltCommand.PanTiltDownLeft;
             }
         }
 
-        void IPTZManager.CameraPanTiltDownRight()
+        public void CameraPanTiltDownRight(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltDownRight(SPEED_MEDIUM);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltDownRight(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltDownRight(moveSpeed);
+                }
+                m_LastPanTilte = PanTiltCommand.PanTiltDownRight;
             }
         }
 
-        void IPTZManager.CameraPanTiltLeft()
+        public void CameraPanTiltLeft(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltLeft(SPEED_MEDIUM);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltLeft(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltLeft(moveSpeed);
+                }
+                m_LastPanTilte = PanTiltCommand.PanTiltLeft;
             }
         }
 
-        void IPTZManager.CameraPanTiltRight()
+        public void CameraPanTiltRight(short moveSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.PanTiltRight(SPEED_MEDIUM);
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.PanTiltRight(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.PanTiltRight(moveSpeed);
+                }
+                m_LastPanTilte = PanTiltCommand.PanTiltRight;
             }
         }
 
-        public void CameraPanTiltUp(short moveSpeed)
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltUp(moveSpeed);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltUpLeft(short moveSpeed)
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltUpLeft(moveSpeed);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltUpRight(short moveSpeed)
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltUpRight(moveSpeed);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltDown(short moveSpeed)
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltDown(moveSpeed);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltDownLeft(short moveSpeed)
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltDownLeft(moveSpeed);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltDownRight(short moveSpeed)
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltDownRight(moveSpeed);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltLeft(short moveSpeed)
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltLeft(moveSpeed);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltRight(short moveSpeed)
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.PanTiltRight(moveSpeed);
-            }
-        }
-
-        void IPTZManager.CameraPanTiltStop()
+        public void CameraPanTiltStop()
         {
             if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.PanTiltStop();
+                m_LastPanTilte = PanTiltCommand.PanTitleStop;
             }
         }
 
@@ -572,38 +643,40 @@ namespace PTZPadController.BusinessLayer
             if (m_IsStarted && CameraPreview != null)
             {
                 CameraPreview.ZoomStop();
+                m_LastZoom = ZoomCommand.ZoomStop;
             }
         }
 
-        public void CameraZoomWide()
+        public void CameraZoomWide(short zoomSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.ZoomWide();
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.ZoomWide(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.ZoomWide(zoomSpeed);
+                }
+                m_LastZoom = ZoomCommand.ZoomWide;
             }
         }
 
-        public void CameraZoomTele()
+        public void CameraZoomTele(short zoomSpeed = IPTZManager.SPEED_MEDIUM)
         {
             if (m_IsStarted && CameraPreview != null)
             {
-                CameraPreview.ZoomTele();
-            }
-        }
+                if (CameraPreview == CameraProgram)
+                {
+                    CameraProgram.ZoomTele(m_CameraSensitivity);
+                }
+                else
+                {
+                    CameraPreview.ZoomTele(zoomSpeed);
+                }
+                m_LastZoom = ZoomCommand.ZoomTele;
 
-        public void CameraZoomWide(short zoomSpeed)
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.ZoomWide(zoomSpeed);
-            }
-        }
-
-        public void CameraZoomTele(short zoomSpeed)
-        {
-            if (m_IsStarted && CameraPreview != null)
-            {
-                CameraPreview.ZoomTele(zoomSpeed);
             }
         }
 

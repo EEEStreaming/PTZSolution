@@ -24,8 +24,11 @@ namespace PTZPadController.BusinessLayer
         Camera2SetPreview,
         Camera3SetPreview,
         Camera4SetPreview,
-        NextCameraPreview,
+        CameraProgramSetPreview,
+        CameraNextPreview,
+        CameraSetSensitivity,
         SwitcherCut,
-        SwitcherMix
+        SwitcherMix,
+        InverseYAxis,
     }
 }

@@ -433,14 +433,14 @@ namespace PTZPadController.DataAccessLayer
         {
             if (is_connected)
             {
-                if (cameraName != m_CurrentProgramName && cameraName != m_CurrentPreviewName)
-                {
+                //if (cameraName != m_CurrentProgramName && cameraName != m_CurrentPreviewName)
+                //{
                     var input = m_inputHDMIMonitors.FirstOrDefault(x => x.InputName == cameraName);
                     if (input != null)
                     {
                         firstMixEffectBlock.SetPreviewInput(input.InputId);
                     }
-                }
+                //}
             }
         }
 
