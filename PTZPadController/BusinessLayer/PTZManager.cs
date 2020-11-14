@@ -321,7 +321,7 @@ namespace PTZPadController.BusinessLayer
                 return;
 
             CameraStatusMessageArgs args;
-            var lRed = CameraPreview == CameraProgram && CameraPreview !=null;
+            var lRed = CameraPreview !=null && CameraProgram != null && CameraPreview == CameraProgram ;
             if (CameraPreview != null)
             {
                 if (CameraPreview.PanTileWorking)
