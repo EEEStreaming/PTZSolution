@@ -302,6 +302,12 @@
                 ]
             },
             {
+                "PTZCommand": "CameraNextSensitivity",
+                "GamePadCommand": [
+                    "Button10"
+                ]
+            },
+            {
                 "PTZCommand": "InverseYAxis",
                 "GamePadCommand": [
                     "Button11",
@@ -379,6 +385,12 @@
                 "PTZCommand": "CameraFocusAutoOnePushSwitchMode",
                 "GamePadCommand": [
                     "Button9"
+                ]
+            },
+            {
+                "PTZCommand": "CameraNextSensitivity",
+                "GamePadCommand": [
+                    "Button10"
                 ]
             },
             {

@@ -30,6 +30,7 @@ namespace PTZPadController.BusinessLayer
         void Camera3SetPreview(ButtonCommand button);
         void Camera4SetPreview(ButtonCommand button);
         void CameraNextPreview(ButtonCommand button);
+        void CameraNextSensitivity(ButtonCommand button);
         void CameraSetSensitivity(double x);
         void InverseYAxis(ButtonCommand button);
         public void CameraProgramSetPreview(ButtonCommand button);

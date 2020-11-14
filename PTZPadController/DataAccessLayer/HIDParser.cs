@@ -277,6 +277,10 @@ namespace PTZPadController.DataAccessLayer
                                         case GamePadHandlerCommands.CameraSetSensitivity:
                                             _PadHandler.CameraSetSensitivity(change.Value);
                                             break;
+                                        case GamePadHandlerCommands.CameraNextSensitivity:
+                                            btnSatus = GetButtonStatus(change.Value);
+                                            _PadHandler.CameraNextSensitivity(btnSatus);
+                                            break;
                                         case GamePadHandlerCommands.InverseYAxis:
                                             btnSatus = GetButtonStatus(change.Value);
                                             _PadHandler.InverseYAxis(btnSatus);

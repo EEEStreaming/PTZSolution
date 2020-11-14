@@ -19,6 +19,7 @@ namespace PTZPadController.BusinessLayer
         private JoystickStateMachine m_PanState;
 
         private bool m_InverseY;
+        private short m_CurrentSensitivity;
 
         public void Camera1SetPreview(ButtonCommand button)
         {
@@ -330,6 +331,23 @@ namespace PTZPadController.BusinessLayer
             m_PtzManager.CameraSensitivity = (short)((1 - x) * 5 + 1);
         }
 
+        public void CameraNextSensitivity(ButtonCommand button)
+        {
+            if (button == ButtonCommand.Down)
+            {
+                if (m_CurrentSensitivity == m_CamSpeed["PanSpeedLow"])
+                {
+                    m_CurrentSensitivity = m_CamSpeed["PanSpeedMedium"];
+                } else if (m_CurrentSensitivity == m_CamSpeed["PanSpeedMedium"]) {
+                    m_CurrentSensitivity = m_CamSpeed["PanSpeedHigh"];
+                } else
+                {
+                    m_CurrentSensitivity = m_CamSpeed["PanSpeedLow"];
+                }
+                m_PtzManager.CameraSensitivity = m_CurrentSensitivity;
+            }
+        }
+
         public void InverseYAxis(ButtonCommand button)
         {
             if (button == ButtonCommand.Down)
@@ -357,6 +375,7 @@ namespace PTZPadController.BusinessLayer
             m_ZoomState = new JoystickStateMachine();
             m_PanState = new JoystickStateMachine();
             m_InverseY = false;
+            m_CurrentSensitivity = camSpeed["PanSpeedLow"];
         }
     }
 }
