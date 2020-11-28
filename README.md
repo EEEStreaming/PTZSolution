@@ -1,3 +1,5 @@
+![Build PTZPadController](https://github.com/EEEStreaming/PTZSolution/workflows/Build%20PTZPadController/badge.svg)
+
 # PTZPadController Application for controlling cameras
 ## Objectives & Requirements
 The objectives of this project are:
@@ -12,4 +14,15 @@ This program will be developed for the Windows OS, and only for the Datavideo PT
 Design a desktop application that allows the cameras to be controlled using a joystick from the EEA Streaming computer. The application should also be able to turn the camera's LED to green when it is in Preview of the ATEM Mini and to red when it is in Program.
 The application will be used live, so it must be extremely stable and manage automatic disconnection and reconnection with the different peripherals without having to reboot the application.
 
-![Build PTZPadController](https://github.com/EEEStreaming/PTZSolution/workflows/Build%20PTZPadController/badge.svg)
+## Installation
+PTZPadControler use API of "Blackmagic ATEM Switchers" https://www.blackmagicdesign.com/support/family/atem-live-production-switchers.
+But if you want use it without the installation of ATEM Switcher, so you need to register manualy ATEM Switcher API
+
+download BMDSwitcherAPI.zip on release and unzip within you PTZPad folder.
+
+Open windows command in administrator mode and run :
+```
+cd [your PTZPadController folder]
+regsvr32 BMDSwitcherAPI.dll
+regsvr32 BMDSwitcherAPI64.dll
+```

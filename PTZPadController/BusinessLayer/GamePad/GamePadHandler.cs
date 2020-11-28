@@ -332,7 +332,9 @@ namespace PTZPadController.BusinessLayer
         public void CameraSetSensitivity(double x)
         {
             // Values are sent for x by the joystick between 1 (min) and 0 (max)
-            m_PtzManager.CameraSensitivity = (short)((1 - x/2) * 5 + 1);
+            // Values accepted by CameraHandlers are between 0-10.
+            // Here we send values between 0-5 in order to go slow when moving program cameras.
+            m_PtzManager.CameraSensitivity = (short)((1 - x) * 5);
         }
 
         public void CameraNextSensitivity(ButtonCommand button)
@@ -348,6 +350,7 @@ namespace PTZPadController.BusinessLayer
                 {
                     m_CurrentSensitivity = m_CamSpeed["PanSpeedLow"];
                 }
+                // We send half the speed in order to be slow when moving Program Camera.
                 m_PtzManager.CameraSensitivity = (short)(m_CurrentSensitivity/2);
             }
         }
