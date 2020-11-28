@@ -10,14 +10,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using DynamicData;
 using GalaSoft.MvvmLight.Messaging;
-using HIDDevices;
-using HIDDevices.Controllers;
-using HIDDevices.Usages;
+using DevDecoder.HIDDevices;
+using DevDecoder.HIDDevices.Usages;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using PTZPadController.BusinessLayer;
 using PTZPadController.Common;
-using PTZPadController.DataAccessLayer;
 using PTZPadController.Messages;
 
 namespace PTZPadController.DataAccessLayer
