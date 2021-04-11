@@ -328,46 +328,46 @@ namespace PTZPadController.DataAccessLayer
         #region Focus
         public void FocusModeAuto()
         {
-            PTZLogger.Log.Info("FocusModeAuto()");
-            if (m_SocketClient != null && m_SocketClient.Connected)
-            {
-                byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x38, 0x02, 0xFF };
-                //PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
-                m_SocketClient.SendData(data);
-            }
+            //PTZLogger.Log.Info("FocusModeAuto()");
+            //if (m_SocketClient != null && m_SocketClient.Connected)
+            //{
+            //    byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x38, 0x02, 0xFF };
+            //    //PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
+            //    m_SocketClient.SendData(data);
+            //}
         }
 
         public void FocusModeManual()
         {
-            PTZLogger.Log.Info("FocusModeManual()");
-            if (m_SocketClient != null && m_SocketClient.Connected)
-            {
-                byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x38, 0x03, 0xFF };
-               // PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
-                m_SocketClient.SendData(data);
-            }
+            //PTZLogger.Log.Info("FocusModeManual()");
+            //if (m_SocketClient != null && m_SocketClient.Connected)
+            //{
+            //    byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x38, 0x03, 0xFF };
+            //   // PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
+            //    m_SocketClient.SendData(data);
+            //}
         }
 
         public void FocusModeOnePush()
         {
-            PTZLogger.Log.Info("FocusModeOnePush()");
-            if (m_SocketClient != null && m_SocketClient.Connected)
-            {
-                byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x38, 0x04, 0xFF };
-                //PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
-                m_SocketClient.SendData(data);
-            }
+            //PTZLogger.Log.Info("FocusModeOnePush()");
+            //if (m_SocketClient != null && m_SocketClient.Connected)
+            //{
+            //    byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x38, 0x04, 0xFF };
+            //    //PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
+            //    m_SocketClient.SendData(data);
+            //}
         }
 
         public void FocusOnePushTrigger()
         {
-            PTZLogger.Log.Info("FocusOnePushTrigger()");
-            if (m_SocketClient != null && m_SocketClient.Connected)
-            {
-                byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x18, 0x01, 0xFF };
-                //PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
-                m_SocketClient.SendData(data);
-            }
+            //PTZLogger.Log.Info("FocusOnePushTrigger()");
+            //if (m_SocketClient != null && m_SocketClient.Connected)
+            //{
+            //    byte[] data = new byte[] { 0x00, 0x08, 0x81, 0x01, 0x04, 0x18, 0x01, 0xFF };
+            //    //PTZLogger.Log.Debug("data:{0}", BitConverter.ToString(data));
+            //    m_SocketClient.SendData(data);
+            //}
         }
         #endregion
 
